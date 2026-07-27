@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hub Jornada InfraSec</title>
+  <style>
+    :root {
+      --bg: #f5f7f8;
+      --surface: #ffffff;
+      --ink: #142126;
+      --muted: #607078;
+      --line: #d7e1e5;
+      --primary: #0d6b75;
+      --primary-2: #084d55;
+      --accent: #b65335;
+      --ok: #2f7d57;
+      --warn: #a66f00;
+      --blue: #2d5f9a;
+      --soft: #edf4f6;
+      --shadow: 0 12px 30px rgba(20,33,38,.08);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+    a { color: inherit; }
+    code { font-family: Consolas, Menlo, monospace; }
+
+    .app {
+      min-height: 100dvh;
+      display: grid;
+      grid-template-columns: 278px minmax(0, 1fr);
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100dvh;
+      padding: 22px 18px;
+      background: #17252b;
+      color: #f6fbfc;
+      overflow: auto;
+    }
+
+    .brand h1 {
+      margin: 0 0 6px;
+      font-size: 23px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .brand p, .side-note {
+      color: #b9c9cf;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    nav {
+      display: grid;
+      gap: 8px;
+      margin: 24px 0;
+    }
+
+    nav a, .side-note {
+      display: block;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: 11px 12px;
+      text-decoration: none;
+    }
+
+    nav a:hover, nav a:focus {
+      background: rgba(255,255,255,.08);
+      outline: 2px solid transparent;
+    }
+
+    main {
+      min-width: 0;
+      padding: 26px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+      gap: 16px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .panel, .task, .node, .template-card, .library-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel { padding: 18px; }
+
+    .hero h2 {
+      margin: 0 0 10px;
+      max-width: 850px;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin: 0;
+      max-width: 72ch;
+      font-size: 17px;
+    }
+
+    .week-picker {
+      display: grid;
+      gap: 10px;
+    }
+
+    select, button, .button {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      padding: 10px 12px;
+    }
+
+    button, .button {
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover, .button:hover, select:focus, button:focus, .button:focus {
+      border-color: var(--primary);
+      outline: 2px solid rgba(13,107,117,.16);
+    }
+
+    .primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    section {
+      margin: 30px 0;
+      scroll-margin-top: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h3 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      max-width: 78ch;
+    }
+
+    .journey {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .today {
+      display: grid;
+      gap: 12px;
+    }
+
+    .today strong {
+      color: var(--primary-2);
+    }
+
+    .task-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .task .num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .task h4 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    .task p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .task-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .deliverable {
+      border-left: 4px solid var(--primary);
+      background: #f9fbfc;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 12px;
+      color: #31414a;
+    }
+
+    .tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--soft);
+      color: #394850;
+      padding: 5px 9px;
+      font-size: 12px;
+    }
+
+    .tree {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .node {
+      min-height: 210px;
+      padding: 14px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .node.locked {
+      opacity: .58;
+      box-shadow: none;
+    }
+
+    .node.active {
+      border-color: var(--primary);
+      outline: 3px solid rgba(13,107,117,.12);
+    }
+
+    .badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .node h4, .template-card h4, .library-card h4 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .node p, .library-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .node ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .node-detail {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .templates, .library {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .template-card, .library-card {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .template-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 260px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      resize: vertical;
+      font: 14px/1.5 Consolas, Menlo, monospace;
+      color: var(--ink);
+      background: #f9fbfc;
+    }
+
+    .avoid-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .avoid {
+      border-left: 4px solid var(--accent);
+      background: var(--surface);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 13px;
+      box-shadow: var(--shadow);
+    }
+
+    .avoid strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #7c351f;
+    }
+
+    .avoid span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .plugged {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .launcher {
+      display: grid;
+      gap: 8px;
+    }
+
+    .launcher button {
+      justify-content: start;
+      text-align: left;
+    }
+
+    .launcher button.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    iframe {
+      width: 100%;
+      min-height: 680px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 1060px) {
+      .app, .hero, .journey, .tree, .node-detail, .templates, .library, .avoid-grid, .plugged {
+        grid-template-columns: 1fr;
+      }
+      aside {
+        position: static;
+        height: auto;
+      }
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      main { padding: 18px; }
+    }
+
+    @media (max-width: 560px) {
+      nav { grid-template-columns: 1fr; }
+      .section-head { align-items: start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <h1>Hub Jornada InfraSec</h1>
+        <p>Redes primeiro. SOC/NOC depois. Cloud quando fizer sentido.</p>
+      </div>
+      <nav aria-label="Navegacao">
+        <a href="#jornada">Jornada atual</a>
+        <a href="#arvore">Arvore clicavel</a>
+        <a href="#templates">Templates</a>
+        <a href="#nao-estudar">Nao estudar ainda</a>
+        <a href="#biblioteca">Biblioteca</a>
+        <a href="#laboratorio">Laboratorio</a>
+      </nav>
+      <div class="side-note">
+        Regra do hub: se uma ferramenta nao estiver ligada a uma tarefa, ela fica na biblioteca.
+      </div>
+    </aside>
+
+    <main>
+      <section class="hero" id="jornada">
+        <div class="panel">
+          <h2>Voce esta na Semana <span id="weekTitle">1</span>.</h2>
+          <p id="weekSummary">Comece por conectividade basica. A meta nao e decorar CCNA; e conseguir diagnosticar rede sem travar.</p>
+        </div>
+        <div class="panel week-picker">
+          <label for="weekSelect"><strong>Escolha sua semana atual</strong></label>
+          <select id="weekSelect" aria-label="Selecionar semana da jornada"></select>
+          <a class="button primary" href="#tarefas">Ver tarefas da semana</a>
+          <a class="button" href="#arvore">Ver dependencias</a>
+        </div>
+      </section>
+
+      <section id="tarefas">
+        <div class="section-head">
+          <div>
+            <h3>Hoje, Esta Semana, Entregavel</h3>
+            <p>O hub agora so mostra ferramenta quando ela serve a uma tarefa. O resto fica guardado na biblioteca.</p>
+          </div>
+        </div>
+        <div class="journey">
+          <div class="panel today">
+            <strong>Hoje</strong>
+            <p id="todayText"></p>
+            <div class="deliverable">
+              <strong>Entregavel da semana</strong>
+              <div id="deliverableText"></div>
+            </div>
+            <div>
+              <strong>Ferramentas necessarias</strong>
+              <div class="tools" id="toolTags"></div>
+            </div>
+          </div>
+          <div class="task-list" id="taskList"></div>
+        </div>
+      </section>
+
+      <section id="arvore">
+        <div class="section-head">
+          <div>
+            <h3>Arvore Clicavel por Dependencia</h3>
+            <p>Clique em um bloco para ver o que ele destrava. Os blocos opacos sao importantes, mas nao sao prioridade ate a base anterior estar ok.</p>
+          </div>
+        </div>
+        <div class="tree" id="tree"></div>
+        <div class="node-detail">
+          <div class="panel">
+            <h4 id="nodeName">IP, DNS e DHCP</h4>
+            <p id="nodeDescription"></p>
+            <div class="tools" id="nodeTools"></div>
+          </div>
+          <div class="panel">
+            <h4>Destrava</h4>
+            <p id="nodeUnlocks"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="templates">
+        <div class="section-head">
+          <div>
+            <h3>Templates de Entregaveis</h3>
+            <p>Cada pratica deve virar um artefato. Copie um modelo, preencha e depois jogue no seu GitHub/Notion/Docs.</p>
+          </div>
+        </div>
+        <div class="templates">
+          <article class="template-card">
+            <h4>README de lab</h4>
+            <p>Para Packet Tracer, AWS, Azure ou automacao.</p>
+            <button data-template="readme">Carregar modelo</button>
+          </article>
+          <article class="template-card">
+            <h4>Ticket NOC</h4>
+            <p>Para incidente, troubleshooting e escalonamento.</p>
+            <button data-template="ticket">Carregar modelo</button>
+          </article>
+          <article class="template-card">
+            <h4>Investigacao SOC</h4>
+            <p>Para alerta, IOC, evidencia e decisao.</p>
+            <button data-template="soc">Carregar modelo</button>
+          </article>
+          <article class="template-card">
+            <h4>Relatorio cloud</h4>
+            <p>Para VPC/VNet, SG/NSG, IAM e custo.</p>
+            <button data-template="cloud">Carregar modelo</button>
+          </article>
+        </div>
+        <div class="panel" style="margin-top:12px">
+          <textarea id="templateText" aria-label="Template selecionado"></textarea>
+          <div class="tools">
+            <button id="copyTemplate" class="primary">Copiar template</button>
+            <span class="tag" id="copyStatus">Escolha um modelo acima.</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="nao-estudar">
+        <div class="section-head">
+          <div>
+            <h3>Nao Estudar Ainda</h3>
+            <p>Essa parte existe para proteger seu foco. Nao e proibicao eterna; e ordem.</p>
+          </div>
+        </div>
+        <div class="avoid-grid">
+          <div class="avoid"><strong>Kubernetes</strong><span>Antes de entender IP, porta, DNS, subnet, security group e logs, Kubernetes vira neblina cara.</span></div>
+          <div class="avoid"><strong>Pentest ofensivo pesado</strong><span>Aprenda blue team, logs, rede e hardening antes. Para SOC junior, investigacao pesa mais.</span></div>
+          <div class="avoid"><strong>AWS/Azure avancado</strong><span>Nao abra arquitetura complexa antes de VPC/VNet, IAM, custo e firewall basico.</span></div>
+          <div class="avoid"><strong>Certificacao cara agora</strong><span>Primeiro monte 3 entregaveis bons. Depois escolha CCNA, AZ-900, AWS CLF ou Security+.</span></div>
+          <div class="avoid"><strong>Trocar de trilha toda semana</strong><span>Escolha Help Desk/NOC como entrada e SOC como evolucao. O resto orbita essa decisao.</span></div>
+          <div class="avoid"><strong>Ferramenta sem tarefa</strong><span>Se voce abriu uma ferramenta e nao sabe qual evidencia gerar, feche e volte para a Semana Atual.</span></div>
+        </div>
+      </section>
+
+      <section id="biblioteca">
+        <div class="section-head">
+          <div>
+            <h3>Biblioteca</h3>
+            <p>Repos, livros e PDFs ficam aqui. Eles apoiam a jornada, mas nao mandam nela.</p>
+          </div>
+        </div>
+        <div class="library">
+          <article class="library-card">
+            <h4>Cisco CCNA Exam Topics</h4>
+            <p>PDF oficial Cisco Public. Use como checklist de conteudo, nao como livro.</p>
+            <a class="button" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-0.pdf" target="_blank">Abrir PDF local</a>
+            <a class="button" href="https://learningnetwork.cisco.com/s/ccna-exam-topics" target="_blank" rel="noreferrer">Topicos atuais</a>
+          </article>
+          <article class="library-card">
+            <h4>Cisco Press Official Cert Guide</h4>
+            <p>Amostra oficial gratuita da Pearson/Cisco Press. Nao e o livro completo.</p>
+            <a class="button" href="biblioteca/cisco-press-ccna-200-301-official-cert-guide-vol1-sample.pdf" target="_blank">Abrir PDF local</a>
+          </article>
+          <article class="library-card">
+            <h4>CCNA Simplified online</h4>
+            <p>Livro/guia gratuito online com teoria, mini-labs e exemplos. Bom para leitura complementar.</p>
+            <a class="button" href="https://www.howtonetwork.com/free-ccna-study-guide-ccna-book/" target="_blank" rel="noreferrer">Abrir online</a>
+          </article>
+          <article class="library-card">
+            <h4>Jeremy's IT Lab Notes</h4>
+            <p>Notas comunitarias em GitHub, clonadas localmente. Use junto dos videos gratuitos.</p>
+            <a class="button" href="projetos/CCNA_Course_Notes/README.md" target="_blank">Abrir local</a>
+          </article>
+          <article class="library-card">
+            <h4>CCNA 1 Study Hub</h4>
+            <p>Quiz e trainer offline. Abra pela tarefa da semana ou pelo laboratorio.</p>
+            <a class="button" href="projetos/CCNA-1-Study-Hub/index.html" target="_blank">Abrir local</a>
+          </article>
+          <article class="library-card">
+            <h4>CCNA Packet Tracer Labs</h4>
+            <p>Labs `.pkt` locais: VLAN, DHCP, OSPF, ACL, NAT, wireless e mais.</p>
+            <a class="button" href="projetos/CCNA-Labs/README.html" target="_blank">Abrir indice</a>
+          </article>
+          <article class="library-card">
+            <h4>SOC Roadmap 2026</h4>
+            <p>Roadmap SOC por projetos, bom depois de redes basicas.</p>
+            <a class="button" href="projetos/soc-roadmap-2026/SOC-Analyst-Roadmap.md" target="_blank">Abrir local</a>
+          </article>
+          <article class="library-card">
+            <h4>Cyber Career Roadmap</h4>
+            <p>Mapa de carreiras cyber para comparar rotas sem se dispersar.</p>
+            <a class="button" href="projetos/cybersecurity-career-roadmap/README.md" target="_blank">Abrir local</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="laboratorio">
+        <div class="section-head">
+          <div>
+            <h3>Laboratorio</h3>
+            <p>Area secundaria. Use quando uma tarefa mandar abrir uma ferramenta especifica.</p>
+          </div>
+        </div>
+        <div class="plugged">
+          <div class="panel launcher">
+            <button class="active" data-open="projetos/CCNA-1-Study-Hub/index.html">CCNA 1 Hub</button>
+            <button data-open="projetos/CCNA-1-Study-Hub/quiz.html">Quiz CCNA 1</button>
+            <button data-open="projetos/CCNA-1-Study-Hub/trainer.html">Trainer CLI/VLSM</button>
+            <button data-open="projetos/CCNA-Exam-Simulator/dist/index.html">CCNA Exam Simulator</button>
+            <button data-open="projetos/soc-roadmap-2026/SOC-Analyst-Roadmap.md">SOC Roadmap</button>
+          </div>
+          <iframe id="labFrame" title="Ferramenta local" src="projetos/CCNA-1-Study-Hub/index.html"></iframe>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const weeks = [
+      {
+        title: '1',
+        summary: 'Conectividade basica: IP, mascara, gateway, DNS, DHCP e comandos de diagnostico.',
+        today: 'Faca 20 questoes em modo estudo e rode comandos reais no seu Windows: ipconfig, ping, nslookup, tracert e arp.',
+        deliverable: 'Checklist de troubleshooting “usuario sem internet” com comandos, prints e conclusao.',
+        tools: ['Windows CMD/PowerShell', 'CCNA quiz', 'Template Ticket NOC'],
+        tasks: [
+          ['Revisar IP/DNS/DHCP', 'Explique com suas palavras o que acontece quando voce acessa um site.', [['Abrir quiz', 'projetos/CCNA-1-Study-Hub/quiz.html'], ['Modelo ticket', '#templates']]],
+          ['Rodar diagnostico local', 'Execute ipconfig /all, ping gateway, nslookup e tracert. Anote o que cada comando provou.', [['Carregar ticket NOC', 'template:ticket']]],
+          ['Escrever evidencia', 'Transforme a pratica em ticket curto, com problema, teste, resultado e proximo passo.', [['Templates', '#templates']]]
+        ]
+      },
+      {
+        title: '2',
+        summary: 'Subnetting e primeira topologia Packet Tracer.',
+        today: 'Resolva subnets simples e monte uma topologia com 2 redes se comunicando por roteador.',
+        deliverable: 'README de lab com topologia, tabela IP, testes de ping e aprendizado.',
+        tools: ['Packet Tracer', 'README de lab', 'CCNA notes'],
+        tasks: [
+          ['Subnetting sem pular etapa', 'Calcule rede, broadcast, primeiro host, ultimo host e gateway.', [['Jeremy notes', 'projetos/CCNA_Course_Notes/README.md']]],
+          ['Montar topologia simples', 'Use hosts, switch e router. Configure IPs e teste ping.', [['Abrir Packet Tracer lab base', 'projetos/CCNA-Labs/labs/StaticRoute.pkt']]],
+          ['Documentar', 'Preencha README com objetivo, desenho, comandos e validacao.', [['Modelo README', 'template:readme']]]
+        ]
+      },
+      {
+        title: '3',
+        summary: 'Switching: VLAN, trunk, access port e erros comuns de camada 2.',
+        today: 'Abra o lab VLAN com trunk, quebre algo de proposito e documente como descobriu.',
+        deliverable: 'Tabela problema → causa → correcao para VLAN/trunk.',
+        tools: ['Packet Tracer', 'VLAN lab', 'README de lab'],
+        tasks: [
+          ['Entender access vs trunk', 'Liste quais portas sao access e qual porta e trunk.', [['Abrir VLAN trunk', 'projetos/CCNA-Labs/labs/VLAN-2(With Trunk).pkt']]],
+          ['Troubleshooting', 'Remova uma VLAN de uma porta, teste ping, corrija e documente.', [['Modelo README', 'template:readme']]],
+          ['Quiz de fixacao', 'Faca 20 questoes sobre switching/rede.', [['Abrir quiz', 'projetos/CCNA-1-Study-Hub/quiz.html']]]
+        ]
+      },
+      {
+        title: '4',
+        summary: 'Roteamento: rotas conectadas, estaticas, default route e OSPF.',
+        today: 'Abra OSPF e descubra rotas com show ip route. Teste conectividade ponta a ponta.',
+        deliverable: 'README com 3 comandos show e explicacao do que cada um prova.',
+        tools: ['Packet Tracer', 'OSPF lab', 'README'],
+        tasks: [
+          ['Rotas e tabela', 'Entenda C, L, S e O na tabela de rotas.', [['Abrir OSPF', 'projetos/CCNA-Labs/labs/Routing(OSPF Protocol).pkt']]],
+          ['Validar OSPF', 'Use show ip ospf neighbor e show ip route.', [['Modelo README', 'template:readme']]],
+          ['Escrever resumo NOC', 'Explique impacto e acao como se fosse ticket.', [['Modelo ticket', 'template:ticket']]]
+        ]
+      },
+      {
+        title: '5',
+        summary: 'ACL, NAT e pensamento de firewall.',
+        today: 'Permita um trafego, bloqueie outro e prove com teste.',
+        deliverable: 'Matriz origem/destino/porta/acao + prints de validacao.',
+        tools: ['Packet Tracer', 'ACL/NAT labs', 'README'],
+        tasks: [
+          ['ACL standard', 'Veja ordem das regras e impacto do deny implicito.', [['Abrir ACL', 'projetos/CCNA-Labs/labs/AccessControlList(Standard).pkt']]],
+          ['NAT overload', 'Identifique inside/outside e teste acesso externo.', [['Abrir NAT', 'projetos/CCNA-Labs/labs/Overload-NAT.pkt']]],
+          ['Documentar matriz', 'Escreva origem, destino, porta, acao e evidencia.', [['Modelo README', 'template:readme']]]
+        ]
+      },
+      {
+        title: '6',
+        summary: 'Rotina NOC: monitoramento, incidente, impacto, prioridade e escalonamento.',
+        today: 'Pegue um lab anterior e escreva um ticket como se fosse incidente real.',
+        deliverable: 'Runbook NOC de conectividade e modelo de ticket preenchido.',
+        tools: ['Template Ticket NOC', 'Labs anteriores'],
+        tasks: [
+          ['Criar runbook', 'Liste diagnostico por ordem: fisico, IP, gateway, DNS, rota, firewall.', [['Modelo ticket', 'template:ticket']]],
+          ['Simular incidente', 'Quebre DNS ou gateway em um lab e registre sintomas.', [['Abrir DHCP', 'projetos/CCNA-Labs/labs/Dynamic-Host-Configuration-Protocol(DHCP).pkt']]],
+          ['Escrever escalonamento', 'Defina quando mandar para N2/rede/security.', [['Templates', '#templates']]]
+        ]
+      },
+      {
+        title: '7',
+        summary: 'SOC junior: logs, eventos, IOC e triagem inicial.',
+        today: 'Analise eventos de login falho e escreva linha do tempo.',
+        deliverable: 'Mini investigacao SOC com evidencia, severidade e decisao.',
+        tools: ['Event Viewer', 'Template SOC', 'VirusTotal'],
+        tasks: [
+          ['Coletar evento', 'No Windows, procure eventos 4625 e 4624.', [['Modelo SOC', 'template:soc']]],
+          ['Classificar alerta', 'Defina se parece erro humano, servico quebrado ou tentativa suspeita.', [['SOC roadmap', 'projetos/soc-roadmap-2026/SOC-Analyst-Roadmap.md']]],
+          ['Escrever decisao', 'Fechar, monitorar ou escalar? Justifique.', [['Modelo SOC', 'template:soc']]]
+        ]
+      },
+      {
+        title: '8',
+        summary: 'SIEM e playbook: alerta, falso positivo, severidade e resposta inicial.',
+        today: 'Escreva um playbook simples para brute force.',
+        deliverable: 'Playbook “failed login / brute force” em Markdown.',
+        tools: ['SOC roadmap', 'Template SOC'],
+        tasks: [
+          ['Definir campos', 'Fonte, destino, usuario, janela de tempo, quantidade, acao.', [['SOC roadmap', 'projetos/soc-roadmap-2026/SOC-Analyst-Roadmap.md']]],
+          ['Criar playbook', 'Entrada, investigacao, contencao, escalonamento.', [['Modelo SOC', 'template:soc']]],
+          ['Revisar clareza', 'Um analista junior conseguiria seguir seu playbook?', [['Templates', '#templates']]]
+        ]
+      },
+      {
+        title: '9',
+        summary: 'AWS base: IAM, EC2, S3, VPC, subnet, security group e budget.',
+        today: 'Antes de criar recurso, configure alerta de custo. Depois estude security group como ACL moderna.',
+        deliverable: 'Relatorio AWS com VPC/SG/IAM/custo e prints.',
+        tools: ['AWS console', 'Template Cloud'],
+        tasks: [
+          ['Budget primeiro', 'Crie alerta de custo antes de VM/EC2.', [['Modelo cloud', 'template:cloud']]],
+          ['Security group', 'Permita SSH/RDP so do seu IP e explique a regra.', [['Cloud projects', 'projetos/Cloud-Security-Projects-For-Beginners/README.md']]],
+          ['Documentar risco', 'O que daria errado com 0.0.0.0/0?', [['Modelo cloud', 'template:cloud']]]
+        ]
+      },
+      {
+        title: '10',
+        summary: 'Azure base: Entra ID, VM, VNet, subnet, NSG, Monitor e custo.',
+        today: 'Compare NSG com security group e documente regra inbound/outbound.',
+        deliverable: 'Relatorio Azure com VM protegida por NSG.',
+        tools: ['Azure portal', 'Template Cloud'],
+        tasks: [
+          ['Criar VNet mental', 'Entenda subnet, NSG e IP publico/privado.', [['Modelo cloud', 'template:cloud']]],
+          ['Regra segura', 'Permita acesso administrativo so do seu IP.', [['Cloud projects', 'projetos/Cloud-Security-Projects-For-Beginners/README.md']]],
+          ['Escrever comparacao', 'AWS SG vs Azure NSG em 8 linhas.', [['Modelo cloud', 'template:cloud']]]
+        ]
+      },
+      {
+        title: '11',
+        summary: 'Automacao util: Python/PowerShell para logs, CSV, IPs e relatorio.',
+        today: 'Crie script que le log, extrai IPs e gera CSV.',
+        deliverable: 'Script pequeno + README + exemplo de entrada/saida.',
+        tools: ['Python ou PowerShell', 'README'],
+        tasks: [
+          ['Definir entrada', 'Escolha access.log, security log exportado ou CSV fake.', [['Modelo README', 'template:readme']]],
+          ['Gerar saida', 'CSV com IP, quantidade, primeiro evento e ultimo evento.', [['Modelo README', 'template:readme']]],
+          ['Explicar uso', 'Inclua comando para rodar e exemplo de resultado.', [['Modelo README', 'template:readme']]]
+        ]
+      },
+      {
+        title: '12',
+        summary: 'Portfolio e entrevista: organizar evidencias e contar historias tecnicas.',
+        today: 'Escolha 3 projetos e escreva uma narrativa STAR para cada.',
+        deliverable: 'GitHub com 3 projetos e 10 respostas de entrevista.',
+        tools: ['GitHub', 'Templates', 'Roadmaps'],
+        tasks: [
+          ['Selecionar 3 evidencias', 'Uma rede, um NOC/SOC, uma cloud/automacao.', [['Templates', '#templates']]],
+          ['Melhorar README', 'Objetivo, arquitetura, comandos, testes, aprendizado.', [['Modelo README', 'template:readme']]],
+          ['Preparar entrevista', 'Conte problema, acao e resultado sem enrolar.', [['Cyber roadmap', 'projetos/cybersecurity-career-roadmap/README.md']]]
+        ]
+      }
+    ];
+
+    const treeNodes = [
+      ['IP/DNS/DHCP', 'Base da conectividade. Sem isso, todo resto fica artificial.', ['ipconfig', 'ping', 'nslookup', 'tracert'], 'VLAN, troubleshooting NOC, cloud networking'],
+      ['VLAN', 'Segmentacao de rede e switching basico.', ['access', 'trunk', 'MAC table'], 'Inter-VLAN, ACL, port security'],
+      ['Inter-VLAN', 'Roteamento entre redes locais.', ['subinterfaces', 'gateway', 'trunk'], 'OSPF e troubleshooting de rotas'],
+      ['Roteamento/OSPF', 'Caminho entre redes e validacao por tabela de rotas.', ['show ip route', 'neighbor', 'area'], 'NOC, cloud VPC/VNet, incidentes de conectividade'],
+      ['ACL/NAT', 'Primeiro contato real com firewall mental.', ['permit/deny', 'inside/outside', 'porta'], 'Firewall, security group, NSG, cloud security']
+    ];
+
+    const templates = {
+      readme: `# Nome do Lab
+
+## Objetivo
+Descreva o que este lab prova.
+
+## Topologia / Arquitetura
+- Dispositivos:
+- Redes/subnets:
+- Diagrama ou print:
+
+## Configuracao
+\`\`\`
+Cole comandos relevantes aqui.
+\`\`\`
+
+## Testes
+| Teste | Resultado esperado | Resultado obtido |
+|---|---|---|
+| ping origem -> destino | sucesso | |
+
+## Problemas Encontrados
+- Sintoma:
+- Causa:
+- Correcao:
+
+## Aprendizado
+O que voce entende agora que nao entendia antes?`,
+      ticket: `# Ticket NOC
+
+## Resumo
+Usuario/servico afetado:
+Impacto:
+Prioridade:
+
+## Sintomas
+- 
+
+## Testes Executados
+| Comando/Teste | Resultado | Interpretacao |
+|---|---|---|
+| ipconfig /all | | |
+| ping gateway | | |
+| nslookup dominio | | |
+| tracert destino | | |
+
+## Hipotese
+
+## Acao Tomada
+
+## Escalonamento
+Escalar para:
+Motivo:
+
+## Status Final`,
+      soc: `# Investigacao SOC
+
+## Alerta
+Nome:
+Severidade:
+Horario:
+Fonte:
+
+## Evidencias
+| Evidencia | Valor | Observacao |
+|---|---|---|
+| Usuario | | |
+| IP origem | | |
+| Host destino | | |
+| Event ID / Log | | |
+
+## Linha do Tempo
+- HH:MM - 
+
+## Analise
+O alerta parece verdadeiro positivo, falso positivo ou inconclusivo?
+
+## Decisao
+Fechar, monitorar ou escalar?
+
+## Proximos Passos`,
+      cloud: `# Relatorio Cloud
+
+## Objetivo
+
+## Ambiente
+Provedor:
+Regiao:
+Servicos usados:
+
+## Rede
+VPC/VNet:
+Subnets:
+IP publico/privado:
+
+## Controle de Acesso
+IAM/Entra ID:
+Security Group/NSG:
+Regra administrativa:
+
+## Custo
+Budget/alerta configurado:
+Recursos desligados/removidos:
+
+## Evidencias
+Prints:
+Testes:
+
+## Riscos e Melhorias`
+    };
+
+    const weekSelect = document.getElementById('weekSelect');
+    const weekTitle = document.getElementById('weekTitle');
+    const weekSummary = document.getElementById('weekSummary');
+    const todayText = document.getElementById('todayText');
+    const deliverableText = document.getElementById('deliverableText');
+    const toolTags = document.getElementById('toolTags');
+    const taskList = document.getElementById('taskList');
+    const labFrame = document.getElementById('labFrame');
+
+    weeks.forEach((week, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = `Semana ${week.title}`;
+      weekSelect.appendChild(option);
+    });
+
+    function openAction(target) {
+      if (target.startsWith('template:')) {
+        loadTemplate(target.replace('template:', ''));
+        location.hash = '#templates';
+        return;
+      }
+      if (target.startsWith('#')) {
+        location.hash = target;
+        return;
+      }
+      labFrame.src = target;
+      location.hash = '#laboratorio';
+    }
+
+    function renderWeek(index) {
+      const week = weeks[index];
+      weekTitle.textContent = week.title;
+      weekSummary.textContent = week.summary;
+      todayText.textContent = week.today;
+      deliverableText.textContent = week.deliverable;
+      toolTags.innerHTML = week.tools.map((tool) => `<span class="tag">${tool}</span>`).join('');
+      taskList.innerHTML = week.tasks.map((task, taskIndex) => `
+        <article class="task">
+          <span class="num">${taskIndex + 1}</span>
+          <div>
+            <h4>${task[0]}</h4>
+            <p>${task[1]}</p>
+            <div class="task-actions">
+              ${task[2].map((action) => `<button data-action="${action[1]}">${action[0]}</button>`).join('')}
+            </div>
+          </div>
+        </article>
+      `).join('');
+      document.querySelectorAll('[data-action]').forEach((button) => {
+        button.addEventListener('click', () => openAction(button.dataset.action));
+      });
+      localStorage.setItem('infrasec-current-week', String(index));
+    }
+
+    weekSelect.addEventListener('change', () => renderWeek(Number(weekSelect.value)));
+    const savedWeek = Number(localStorage.getItem('infrasec-current-week') || '0');
+    weekSelect.value = Number.isFinite(savedWeek) ? savedWeek : 0;
+    renderWeek(Number(weekSelect.value));
+
+    const tree = document.getElementById('tree');
+    const nodeName = document.getElementById('nodeName');
+    const nodeDescription = document.getElementById('nodeDescription');
+    const nodeTools = document.getElementById('nodeTools');
+    const nodeUnlocks = document.getElementById('nodeUnlocks');
+
+    tree.innerHTML = treeNodes.map((node, index) => `
+      <article class="node ${index > 1 ? 'locked' : ''}" data-node="${index}">
+        <span class="badge">${index + 1}</span>
+        <h4>${node[0]}</h4>
+        <p>${node[1]}</p>
+        <ul>${node[2].map((item) => `<li>${item}</li>`).join('')}</ul>
+      </article>
+    `).join('');
+
+    function renderNode(index) {
+      const node = treeNodes[index];
+      document.querySelectorAll('.node').forEach((item) => item.classList.remove('active'));
+      document.querySelector(`[data-node="${index}"]`).classList.add('active');
+      nodeName.textContent = node[0];
+      nodeDescription.textContent = node[1];
+      nodeTools.innerHTML = node[2].map((item) => `<span class="tag">${item}</span>`).join('');
+      nodeUnlocks.textContent = node[3];
+    }
+
+    document.querySelectorAll('.node').forEach((item) => {
+      item.addEventListener('click', () => renderNode(Number(item.dataset.node)));
+    });
+    renderNode(0);
+
+    const templateText = document.getElementById('templateText');
+    const copyStatus = document.getElementById('copyStatus');
+
+    function loadTemplate(name) {
+      templateText.value = templates[name];
+      copyStatus.textContent = 'Modelo carregado.';
+    }
+
+    document.querySelectorAll('[data-template]').forEach((button) => {
+      button.addEventListener('click', () => loadTemplate(button.dataset.template));
+    });
+    loadTemplate('readme');
+
+    document.getElementById('copyTemplate').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(templateText.value);
+      copyStatus.textContent = 'Copiado.';
+    });
+
+    document.querySelectorAll('[data-open]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-open]').forEach((item) => item.classList.remove('active'));
+        button.classList.add('active');
+        labFrame.src = button.dataset.open;
+      });
+    });
+  </script>
+</body>
+</html>
