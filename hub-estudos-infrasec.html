@@ -1089,15 +1089,15 @@
         <div class="shelf-layout">
           <article class="shelf-panel">
             <h4>Na sua estante agora</h4>
-            <p>Os dois primeiros livros apoiam a Semana 1. Os materiais de certificacao ficam guardados para consulta e revisao.</p>
+            <p>Os dois primeiros livros acompanham a semana selecionada. Os materiais de certificacao ficam guardados para consulta e revisao.</p>
             <div class="book-shelf" aria-label="Livros e guias da estante">
-              <a class="book network" href="projetos/CCNA_Course_Notes/Course_Notes/OSI_Model_TCPSuite.md" target="_blank">
-                <strong>Semana 1<br>OSI e TCP/IP</strong>
-                <span>Notas locais · leitura principal</span>
+              <a class="book network" id="weekBookPrimary" href="projetos/CCNA_Course_Notes/Course_Notes/OSI_Model_TCPSuite.md" target="_blank">
+                <strong id="weekBookPrimaryTitle">Semana 1<br>OSI e TCP/IP</strong>
+                <span id="weekBookPrimaryMeta">Notas locais · leitura principal</span>
               </a>
-              <a class="book ccna" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-0.pdf" target="_blank">
-                <strong>CCNA 200-301<br>Exam Topics</strong>
-                <span>Cisco oficial · PDF</span>
+              <a class="book ccna" id="weekBookSecondary" href="projetos/CCNA_Course_Notes/Course_Notes/IPv4_Addressing_Part1.md" target="_blank">
+                <strong id="weekBookSecondaryTitle">Semana 1<br>IPv4</strong>
+                <span id="weekBookSecondaryMeta">Notas locais · leitura de apoio</span>
               </a>
               <a class="book aws" href="biblioteca/certificacoes/aws-cloud-practitioner-clf-c02-exam-guide.pdf" target="_blank">
                 <strong>AWS CLF-C02<br>Exam Guide</strong>
@@ -1696,13 +1696,43 @@ Testes:
     const kindleFormat = document.getElementById('kindleFormat');
     const kindleCommand = document.getElementById('kindleCommand');
     const kindleStatus = document.getElementById('kindleStatus');
+    const weekShelf = [
+      [['OSI e TCP/IP', 'OSI_Model_TCPSuite.md'], ['IPv4', 'IPv4_Addressing_Part1.md']],
+      [['Subnetting', 'Subnetting_Part1.md'], ['VLSM', 'Subnetting_VLSM_Part3.md']],
+      [['Switching', 'Ethernet_LAN_Switching_Part1.md'], ['VLAN', 'VLAN_Part1.md']],
+      [['Roteamento', 'Routing_Fundamentals_Part1.md'], ['Rotas estaticas', 'Static_Routing_Part2.md']],
+      [['OSPF parte 1', 'OSPF_Part1.md'], ['OSPF parte 2', 'OSPF_Part2.md']],
+      [['ACL', 'Standard_Access_Control_Lists.md'], ['NAT', 'NAT_Static_Part1.md']],
+      [['NTP e tempo', 'NTP.md'], ['SNMP e monitoramento', 'SNMP.md']],
+      [['Fundamentos security', 'Security_Fundamentals.md'], ['Port security', 'Port_Security.md']],
+      [['Wireless', 'Wireless_Fundamentals.md'], ['Configuracao Wi-Fi', 'Wireless_Configuration.md']],
+      [['Cloud', 'Virtualizations_and_Cloud_Part1.md'], ['Containers', 'Virtualization_Containers.md']],
+      [['Automacao de rede', 'Introduction_to_Network_Automation.md'], ['REST APIs', 'REST_APIs.md']],
+      [['Revisao de devices', 'Network_Devices.md'], ['WAN', 'WAN_Architectures.md']]
+    ];
+
+    function renderWeekShelf() {
+      const weekIndex = Number(kindleWeek.value) - 1;
+      const [primaryBook, secondaryBook] = weekShelf[weekIndex];
+      const notesBase = 'projetos/CCNA_Course_Notes/Course_Notes/';
+      document.getElementById('weekBookPrimary').href = notesBase + primaryBook[1];
+      document.getElementById('weekBookPrimaryTitle').innerHTML = `Semana ${weekIndex + 1}<br>${primaryBook[0]}`;
+      document.getElementById('weekBookSecondary').href = notesBase + secondaryBook[1];
+      document.getElementById('weekBookSecondaryTitle').innerHTML = `Semana ${weekIndex + 1}<br>${secondaryBook[0]}`;
+    }
 
     function renderKindleCommand() {
       kindleCommand.textContent = `.\\scripts\\preparar-kindle.ps1 -Week ${kindleWeek.value} -Format ${kindleFormat.value}`;
+      renderWeekShelf();
     }
 
     kindleWeek.addEventListener('change', renderKindleCommand);
     kindleFormat.addEventListener('change', renderKindleCommand);
+    weekSelect.addEventListener('change', () => {
+      kindleWeek.value = String(Number(weekSelect.value) + 1);
+      renderKindleCommand();
+    });
+    kindleWeek.value = String(Number(weekSelect.value) + 1);
     document.getElementById('copyKindleCommand').addEventListener('click', async () => {
       await navigator.clipboard.writeText(kindleCommand.textContent);
       kindleStatus.textContent = 'Comando copiado. Execute no PowerShell aberto na pasta do projeto.';
