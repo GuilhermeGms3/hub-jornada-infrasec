@@ -95,7 +95,7 @@
       margin-bottom: 18px;
     }
 
-    .panel, .task, .node, .template-card, .library-card, .cert-card, .cert-resource {
+    .panel, .task, .node, .template-card, .library-card, .cert-card, .cert-resource, .shelf-panel {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -593,8 +593,123 @@
       color: #fff;
     }
 
+    .shelf-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .shelf-panel {
+      padding: 16px;
+    }
+
+    .shelf-panel h4 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .shelf-panel > p {
+      margin: 6px 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .book-shelf {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      align-items: end;
+      padding: 8px 8px 18px;
+      border-bottom: 10px solid #7a4e36;
+      box-shadow: 0 5px 0 #d2b39b;
+    }
+
+    .book {
+      min-height: 210px;
+      border: 1px solid rgba(20,33,38,.2);
+      border-radius: 4px 7px 7px 4px;
+      padding: 14px 11px;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: inset 7px 0 rgba(255,255,255,.12), 3px 5px 10px rgba(20,33,38,.16);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .book:hover, .book:focus {
+      transform: translateY(-4px);
+      outline: 3px solid rgba(13,107,117,.2);
+      box-shadow: inset 7px 0 rgba(255,255,255,.12), 5px 9px 14px rgba(20,33,38,.2);
+    }
+
+    .book strong {
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .book span {
+      font-size: 12px;
+      opacity: .88;
+    }
+
+    .book.network { background: #16636b; }
+    .book.ccna { background: #315b8a; }
+    .book.aws { background: #9a4e32; }
+    .book.security { background: #3d6450; }
+
+    .kindle-builder {
+      display: grid;
+      gap: 12px;
+    }
+
+    .builder-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .builder-grid label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .command-box {
+      margin: 0;
+      min-height: 86px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: #e7f3f5;
+      background: #17252b;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font: 13px/1.55 Consolas, Menlo, monospace;
+    }
+
+    .kindle-note {
+      padding: 12px;
+      border-left: 4px solid var(--warn);
+      background: #fff8e8;
+      color: #604b1c;
+      font-size: 13px;
+    }
+
+    .kindle-status {
+      min-height: 22px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     @media (max-width: 1060px) {
-      .app, .hero, .journey, .tree, .node-detail, .templates, .library, .avoid-grid, .plugged, .cert-grid, .cert-resources, .study-worktree, .day-grid, .track-grid, .decision-grid, .decision-form {
+      .app, .hero, .journey, .tree, .node-detail, .templates, .library, .avoid-grid, .plugged, .cert-grid, .cert-resources, .study-worktree, .day-grid, .track-grid, .decision-grid, .decision-form, .shelf-layout {
         grid-template-columns: 1fr;
       }
       aside {
@@ -610,6 +725,9 @@
     @media (max-width: 560px) {
       nav { grid-template-columns: 1fr; }
       .section-head { align-items: start; flex-direction: column; }
+      .book-shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .book { min-height: 180px; }
+      .builder-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -628,6 +746,7 @@
         <a href="#linux-git">Linux e Git</a>
         <a href="#nao-estudar">Nao estudar ainda</a>
         <a href="#certificacoes">Certificacoes</a>
+        <a href="#estante">Estante Kindle</a>
         <a href="#biblioteca">Biblioteca</a>
         <a href="#laboratorio">Laboratorio</a>
       </nav>
@@ -956,6 +1075,78 @@
             <p>Treino oficial gratuito e antena local comunitaria para organizar seu progresso.</p>
             <a class="button" href="https://training.fortinet.com/" target="_blank" rel="noreferrer">Training Institute</a>
             <a class="button" href="projetos/cert-antenas/Fortinet-Certified-Fundamentals-Cybersecurity/README.md" target="_blank">Antena local</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="estante">
+        <div class="section-head">
+          <div>
+            <h3>Estante Kindle e Calibre</h3>
+            <p>Escolha o que pertence a sua semana, gere um pacote de leitura e leve para o Kindle sem transformar a biblioteca em outra lista infinita.</p>
+          </div>
+        </div>
+        <div class="shelf-layout">
+          <article class="shelf-panel">
+            <h4>Na sua estante agora</h4>
+            <p>Os dois primeiros livros apoiam a Semana 1. Os materiais de certificacao ficam guardados para consulta e revisao.</p>
+            <div class="book-shelf" aria-label="Livros e guias da estante">
+              <a class="book network" href="projetos/CCNA_Course_Notes/Course_Notes/OSI_Model_TCPSuite.md" target="_blank">
+                <strong>Semana 1<br>OSI e TCP/IP</strong>
+                <span>Notas locais · leitura principal</span>
+              </a>
+              <a class="book ccna" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-0.pdf" target="_blank">
+                <strong>CCNA 200-301<br>Exam Topics</strong>
+                <span>Cisco oficial · PDF</span>
+              </a>
+              <a class="book aws" href="biblioteca/certificacoes/aws-cloud-practitioner-clf-c02-exam-guide.pdf" target="_blank">
+                <strong>AWS CLF-C02<br>Exam Guide</strong>
+                <span>AWS oficial · PDF</span>
+              </a>
+              <a class="book security" href="biblioteca/certificacoes/sc-900-exam-ref-sample.pdf" target="_blank">
+                <strong>SC-900<br>Exam Ref</strong>
+                <span>Microsoft Press · amostra</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="shelf-panel kindle-builder">
+            <div>
+              <h4>Preparar pacote de leitura</h4>
+              <p>O navegador monta o comando; execute-o na pasta do projeto para o PowerShell chamar o Calibre instalado.</p>
+            </div>
+            <div class="builder-grid">
+              <label for="kindleWeek">Semana
+                <select id="kindleWeek">
+                  <option value="1">Semana 1 · fundamentos</option>
+                  <option value="2">Semana 2 · subnetting</option>
+                  <option value="3">Semana 3 · switching/VLAN</option>
+                  <option value="4">Semana 4 · roteamento</option>
+                  <option value="5">Semana 5 · OSPF</option>
+                  <option value="6">Semana 6 · ACL/NAT</option>
+                  <option value="7">Semana 7 · servicos</option>
+                  <option value="8">Semana 8 · seguranca</option>
+                  <option value="9">Semana 9 · wireless</option>
+                  <option value="10">Semana 10 · cloud</option>
+                  <option value="11">Semana 11 · automacao</option>
+                  <option value="12">Semana 12 · revisao</option>
+                </select>
+              </label>
+              <label for="kindleFormat">Formato
+                <select id="kindleFormat">
+                  <option value="epub">EPUB · Send to Kindle</option>
+                  <option value="azw3">AZW3 · USB/Calibre</option>
+                </select>
+              </label>
+            </div>
+            <pre class="command-box" id="kindleCommand" aria-live="polite"></pre>
+            <button class="primary" id="copyKindleCommand">Copiar comando</button>
+            <a class="button" href="https://github.com/GuilhermeGms3/hub-jornada-infrasec/archive/refs/heads/master.zip">Baixar projeto completo</a>
+            <a class="button" href="scripts/preparar-kindle.ps1" target="_blank">Ver script PowerShell</a>
+            <p class="kindle-status" id="kindleStatus" aria-live="polite"></p>
+            <div class="kindle-note">
+              PDF com tabelas e diagramas pode ficar ruim quando convertido. O pacote mantem os PDFs oficiais no formato original e converte as notas textuais para EPUB/AZW3.
+            </div>
           </article>
         </div>
       </section>
@@ -1500,6 +1691,23 @@ Testes:
       input.addEventListener('change', renderCertDecision);
     });
     renderCertDecision();
+
+    const kindleWeek = document.getElementById('kindleWeek');
+    const kindleFormat = document.getElementById('kindleFormat');
+    const kindleCommand = document.getElementById('kindleCommand');
+    const kindleStatus = document.getElementById('kindleStatus');
+
+    function renderKindleCommand() {
+      kindleCommand.textContent = `.\\scripts\\preparar-kindle.ps1 -Week ${kindleWeek.value} -Format ${kindleFormat.value}`;
+    }
+
+    kindleWeek.addEventListener('change', renderKindleCommand);
+    kindleFormat.addEventListener('change', renderKindleCommand);
+    document.getElementById('copyKindleCommand').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(kindleCommand.textContent);
+      kindleStatus.textContent = 'Comando copiado. Execute no PowerShell aberto na pasta do projeto.';
+    });
+    renderKindleCommand();
 
     document.querySelectorAll('[data-library-filter]').forEach((button) => {
       button.addEventListener('click', () => {

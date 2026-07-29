@@ -29,7 +29,31 @@ Comece pela Semana 1 e siga a ordem:
 - Secao "Nao estudar ainda" para reduzir dispersao.
 - Guia de certificacoes para Fortinet NSE 1-3, AZ-900, AWS Cloud Practitioner, SC-900, CCNA, KCNA, Linux Essentials e Security+.
 - Biblioteca categorizada em oficial, comunidade, simulados, labs e cuidado anti-dumps.
+- Estante por semana e certificacao, com pacote de leitura para Kindle.
+- Integracao local com Calibre para gerar EPUB ou AZW3 a partir das notas.
 - Labs e simuladores plugados localmente.
+
+## Estante Kindle e Calibre
+
+O GitHub Pages nao consegue acessar um Kindle conectado por USB. Por isso, o hub monta o comando e o script local faz a integracao com o Calibre.
+
+Com o Calibre instalado, execute na raiz do projeto:
+
+```powershell
+.\scripts\preparar-kindle.ps1 -Week 1 -Format epub
+```
+
+O resultado fica em `dist/kindle/`. As notas da semana viram EPUB ou AZW3 e os PDFs oficiais sao preservados como PDF, pois documentos com tabelas e diagramas frequentemente perdem qualidade na conversao.
+
+Para copiar diretamente para uma pasta do Kindle montada no Windows:
+
+```powershell
+.\scripts\preparar-kindle.ps1 -Week 1 -Format azw3 -KindlePath "E:\documents"
+```
+
+Use `epub` para enviar pelo Send to Kindle e `azw3` para enviar pelo Calibre ou por USB.
+
+Quem estiver usando apenas o GitHub Pages deve baixar o projeto completo, extrair o ZIP e executar o comando dentro da pasta extraida. Um navegador nao recebe permissao para chamar programas locais ou gravar diretamente em um dispositivo USB.
 
 ## Biblioteca CCNA
 
