@@ -507,8 +507,94 @@
       display: none;
     }
 
+    .day-grid, .track-grid, .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .day-card, .track-card, .decision-result {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .day-card strong, .track-card strong {
+      color: var(--primary-2);
+    }
+
+    .progress-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .progress-option {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f9fbfc;
+      padding: 7px 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .progress-option input {
+      accent-color: var(--primary);
+    }
+
+    .progress-summary {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .decision-form {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .decision-form label {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f9fbfc;
+      padding: 12px;
+      cursor: pointer;
+      display: grid;
+      gap: 8px;
+      min-height: 92px;
+    }
+
+    .decision-form input {
+      accent-color: var(--primary);
+    }
+
+    .library-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .library-filter.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
     @media (max-width: 1060px) {
-      .app, .hero, .journey, .tree, .node-detail, .templates, .library, .avoid-grid, .plugged, .cert-grid, .cert-resources, .study-worktree {
+      .app, .hero, .journey, .tree, .node-detail, .templates, .library, .avoid-grid, .plugged, .cert-grid, .cert-resources, .study-worktree, .day-grid, .track-grid, .decision-grid, .decision-form {
         grid-template-columns: 1fr;
       }
       aside {
@@ -536,8 +622,10 @@
       </div>
       <nav aria-label="Navegacao">
         <a href="#jornada">Jornada atual</a>
+        <a href="#semana1">Semana 1 detalhada</a>
         <a href="#arvore">Arvore clicavel</a>
         <a href="#templates">Templates</a>
+        <a href="#linux-git">Linux e Git</a>
         <a href="#nao-estudar">Nao estudar ainda</a>
         <a href="#certificacoes">Certificacoes</a>
         <a href="#biblioteca">Biblioteca</a>
@@ -583,6 +671,23 @@
             </div>
           </div>
           <div class="task-list" id="taskList"></div>
+        </div>
+      </section>
+
+      <section id="semana1">
+        <div class="section-head">
+          <div>
+            <h3>Semana 1 Detalhada</h3>
+            <p>Use isto quando bater a duvida de “o que eu faco hoje?”. A semana 1 e fechada para criar ritmo, nao para te sobrecarregar.</p>
+          </div>
+        </div>
+        <div class="day-grid">
+          <article class="day-card"><strong>Segunda</strong><span>Leia OSI/TCP-IP, IP, mascara, gateway e DNS. Entregue 10 linhas explicando como um site abre no navegador.</span><a class="button" href="projetos/CCNA_Course_Notes/Course_Notes/OSI_Model_TCPSuite.md" target="_blank">Abrir notas</a></article>
+          <article class="day-card"><strong>Terca</strong><span>Rode `ipconfig /all`, `ping`, `nslookup`, `tracert` e `arp -a`. Anote o que cada comando prova.</span><button data-template="ticket">Carregar ticket NOC</button></article>
+          <article class="day-card"><strong>Quarta</strong><span>Faca 20 questoes em modo estudo. Para cada erro, escreva o assunto e a explicacao correta em uma frase.</span><a class="button" href="projetos/CCNA-1-Study-Hub/quiz.html" target="_blank">Abrir quiz</a></article>
+          <article class="day-card"><strong>Quinta</strong><span>Monte uma mini topologia no Packet Tracer ou abra um lab base. Teste ping e documente origem/destino.</span><a class="button" href="projetos/CCNA-Labs/labs/StaticRoute.pkt">Abrir lab</a></article>
+          <article class="day-card"><strong>Sexta</strong><span>Transforme tudo em README/ticket: problema, comandos, resultado, conclusao e proximo estudo.</span><button data-template="readme">Carregar README</button></article>
+          <article class="day-card"><strong>Fim de semana</strong><span>Revisao leve: explique em voz alta IP, DNS, DHCP, gateway e ping. Se travar, repita segunda e terca.</span><a class="button" href="#tarefas">Voltar tarefas</a></article>
         </div>
       </section>
 
@@ -640,8 +745,50 @@
           <textarea id="templateText" aria-label="Template selecionado"></textarea>
           <div class="tools">
             <button id="copyTemplate" class="primary">Copiar template</button>
+            <button id="downloadTemplate">Baixar .md</button>
             <span class="tag" id="copyStatus">Escolha um modelo acima.</span>
           </div>
+        </div>
+      </section>
+
+      <section id="linux-git">
+        <div class="section-head">
+          <div>
+            <h3>Trilhas Linux e Git/GitHub</h3>
+            <p>Linux entra porque NOC/SOC/DevOps vivem de terminal, logs e SSH. Git entra porque seu portfolio precisa ser publicado e legivel.</p>
+          </div>
+        </div>
+        <div class="track-grid">
+          <article class="track-card">
+            <strong>Linux 1: terminal basico</strong>
+            <span>`pwd`, `ls`, `cd`, `cat`, `less`, `head`, `tail`, `grep`, `find`, `ip addr`, `ping`, `ss`, `curl`.</span>
+            <div class="deliverable">Entregavel: README com 12 comandos, o que fazem e um exemplo real.</div>
+          </article>
+          <article class="track-card">
+            <strong>Linux 2: permissoes e processos</strong>
+            <span>`chmod`, `chown`, usuarios/grupos, `ps`, `top`, `systemctl`, servicos e arquivos em `/var/log`.</span>
+            <div class="deliverable">Entregavel: mini runbook para diagnosticar servico parado.</div>
+          </article>
+          <article class="track-card">
+            <strong>Linux 3: rede e SSH</strong>
+            <span>SSH, portas, DNS, firewall local, rotas, `journalctl`, `auth.log` e troubleshooting remoto.</span>
+            <div class="deliverable">Entregavel: checklist de acesso SSH falhando.</div>
+          </article>
+          <article class="track-card">
+            <strong>Git 1: portfolio minimo</strong>
+            <span>`git init`, `status`, `add`, `commit`, `remote`, `push`, README e `.gitignore`.</span>
+            <div class="deliverable">Entregavel: primeiro repo de lab com README publicavel.</div>
+          </article>
+          <article class="track-card">
+            <strong>Git 2: rotina profissional</strong>
+            <span>Branch, issue, commit pequeno, diff, pull request e historico limpo.</span>
+            <div class="deliverable">Entregavel: issue descrevendo melhoria de um lab e commit fechando a issue.</div>
+          </article>
+          <article class="track-card">
+            <strong>GitHub Pages</strong>
+            <span>Publicar HTML estatico, colocar link no README e usar o projeto como evidencia no LinkedIn.</span>
+            <div class="deliverable">Entregavel: um lab acessivel por URL publica.</div>
+          </article>
         </div>
       </section>
 
@@ -668,6 +815,18 @@
             <h3>Guia de Certificacoes</h3>
             <p>Use certificacao como validacao, nao como substituta de pratica. A ordem abaixo favorece entrada em Help Desk, NOC, SOC junior, suporte N2 e base para DevSecOps.</p>
           </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:12px">
+          <h4>Mapa de decisao rapido</h4>
+          <p>Escolha o foco mais provavel agora. O hub recomenda a primeira certificacao e a segunda aposta.</p>
+          <div class="decision-form" role="radiogroup" aria-label="Escolher foco de carreira">
+            <label><input type="radio" name="careerGoal" value="noc" checked><strong>NOC / Redes</strong><span>Quero troubleshooting, rede, monitoramento e suporte N2.</span></label>
+            <label><input type="radio" name="careerGoal" value="soc"><strong>SOC junior</strong><span>Quero alerta, logs, triagem, phishing e blue team.</span></label>
+            <label><input type="radio" name="careerGoal" value="cloud"><strong>Cloud / Suporte</strong><span>Quero Azure/AWS, IAM, VM, rede cloud e suporte cloud.</span></label>
+            <label><input type="radio" name="careerGoal" value="devsecops"><strong>DevSecOps</strong><span>Quero cloud, Linux, Git, automacao e seguranca em pipeline depois.</span></label>
+          </div>
+          <div class="decision-result" id="certDecision"></div>
         </div>
 
         <div class="cert-grid">
@@ -805,50 +964,73 @@
         <div class="section-head">
           <div>
             <h3>Biblioteca</h3>
-            <p>Repos, livros e PDFs ficam aqui. Eles apoiam a jornada, mas nao mandam nela.</p>
+            <p>Repos, livros e PDFs ficam aqui. Eles apoiam a jornada, mas nao mandam nela. Filtre por tipo para nao cair em bagunca.</p>
           </div>
         </div>
+        <div class="library-filters" role="toolbar" aria-label="Filtros da biblioteca">
+          <button class="library-filter active" data-library-filter="all">Tudo</button>
+          <button class="library-filter" data-library-filter="oficial">Oficial</button>
+          <button class="library-filter" data-library-filter="comunidade">Comunidade</button>
+          <button class="library-filter" data-library-filter="simulados">Simulados</button>
+          <button class="library-filter" data-library-filter="labs">Labs</button>
+          <button class="library-filter" data-library-filter="cuidado">Cuidado</button>
+        </div>
         <div class="library">
-          <article class="library-card">
+          <article class="library-card" data-library="oficial">
             <h4>Cisco CCNA Exam Topics</h4>
             <p>PDF oficial Cisco Public. Use como checklist de conteudo, nao como livro.</p>
             <a class="button" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-0.pdf" target="_blank">Abrir PDF local</a>
             <a class="button" href="https://learningnetwork.cisco.com/s/ccna-exam-topics" target="_blank" rel="noreferrer">Topicos atuais</a>
           </article>
-          <article class="library-card">
+          <article class="library-card" data-library="oficial">
             <h4>Cisco Press Official Cert Guide</h4>
             <p>Amostra oficial gratuita da Pearson/Cisco Press. Nao e o livro completo.</p>
             <a class="button" href="biblioteca/cisco-press-ccna-200-301-official-cert-guide-vol1-sample.pdf" target="_blank">Abrir PDF local</a>
           </article>
-          <article class="library-card">
+          <article class="library-card" data-library="comunidade">
             <h4>CCNA Simplified online</h4>
             <p>Livro/guia gratuito online com teoria, mini-labs e exemplos. Bom para leitura complementar.</p>
             <a class="button" href="https://www.howtonetwork.com/free-ccna-study-guide-ccna-book/" target="_blank" rel="noreferrer">Abrir online</a>
           </article>
-          <article class="library-card">
+          <article class="library-card" data-library="comunidade">
             <h4>Jeremy's IT Lab Notes</h4>
             <p>Notas comunitarias em GitHub, clonadas localmente. Use junto dos videos gratuitos.</p>
             <a class="button" href="projetos/CCNA_Course_Notes/README.md" target="_blank">Abrir local</a>
           </article>
-          <article class="library-card">
+          <article class="library-card" data-library="simulados">
             <h4>CCNA 1 Study Hub</h4>
             <p>Quiz e trainer offline. Abra pela tarefa da semana ou pelo laboratorio.</p>
             <a class="button" href="projetos/CCNA-1-Study-Hub/index.html" target="_blank">Abrir local</a>
           </article>
-          <article class="library-card">
+          <article class="library-card" data-library="labs">
             <h4>CCNA Packet Tracer Labs</h4>
             <p>Labs `.pkt` locais: VLAN, DHCP, OSPF, ACL, NAT, wireless e mais.</p>
             <a class="button" href="projetos/CCNA-Labs/README.html" target="_blank">Abrir indice</a>
           </article>
-          <article class="library-card">
+          <article class="library-card" data-library="comunidade">
             <h4>SOC Roadmap 2026</h4>
             <p>Roadmap SOC por projetos, bom depois de redes basicas.</p>
             <a class="button" href="projetos/soc-roadmap-2026/SOC-Analyst-Roadmap.md" target="_blank">Abrir local</a>
           </article>
-          <article class="library-card">
+          <article class="library-card" data-library="comunidade">
             <h4>Cyber Career Roadmap</h4>
             <p>Mapa de carreiras cyber para comparar rotas sem se dispersar.</p>
             <a class="button" href="projetos/cybersecurity-career-roadmap/README.md" target="_blank">Abrir local</a>
+          </article>
+          <article class="library-card" data-library="oficial">
+            <h4>AWS CLF-C02 Exam Guide</h4>
+            <p>Guia oficial do exame AWS Cloud Practitioner. Use para blueprint e revisao por dominio.</p>
+            <a class="button" href="biblioteca/certificacoes/aws-cloud-practitioner-clf-c02-exam-guide.pdf" target="_blank">Abrir PDF</a>
+          </article>
+          <article class="library-card" data-library="simulados comunidade">
+            <h4>AWS CLF-C02 Practice</h4>
+            <p>Simulados comunitarios locais. Use para treinar, mas revise com material oficial quando errar.</p>
+            <a class="button" href="projetos/cert-antenas/AWS-Certified-Cloud-Practitioner-Notes/practice-exam/exams.md" target="_blank">Abrir local</a>
+          </article>
+          <article class="library-card" data-library="cuidado">
+            <h4>Nao use dumps</h4>
+            <p>Dumps prometem passar, mas treinam decoreba, violam regras de exame e podem te deixar pior em entrevista tecnica.</p>
+            <a class="button" href="#certificacoes">Ver worktree limpo</a>
           </article>
         </div>
       </section>
@@ -1154,6 +1336,8 @@ Testes:
     const toolTags = document.getElementById('toolTags');
     const taskList = document.getElementById('taskList');
     const labFrame = document.getElementById('labFrame');
+    const progressKey = 'infrasec-task-progress';
+    const progressState = JSON.parse(localStorage.getItem(progressKey) || '{}');
 
     weeks.forEach((week, index) => {
       const option = document.createElement('option');
@@ -1192,13 +1376,45 @@ Testes:
             <div class="task-actions">
               ${task[2].map((action) => `<button data-action="${action[1]}">${action[0]}</button>`).join('')}
             </div>
+            <div class="progress-row" role="radiogroup" aria-label="Progresso da tarefa ${taskIndex + 1}">
+              ${['feito', 'revisar', 'nao-entendi'].map((status) => `
+                <label class="progress-option">
+                  <input type="radio" name="progress-${index}-${taskIndex}" value="${status}" data-progress="${index}-${taskIndex}" ${progressState[`${index}-${taskIndex}`] === status ? 'checked' : ''}>
+                  ${status === 'nao-entendi' ? 'nao entendi' : status}
+                </label>
+              `).join('')}
+            </div>
           </div>
         </article>
       `).join('');
       document.querySelectorAll('[data-action]').forEach((button) => {
         button.addEventListener('click', () => openAction(button.dataset.action));
       });
+      document.querySelectorAll('[data-progress]').forEach((input) => {
+        input.addEventListener('change', () => {
+          progressState[input.dataset.progress] = input.value;
+          localStorage.setItem(progressKey, JSON.stringify(progressState));
+          renderProgressSummary();
+        });
+      });
+      renderProgressSummary();
       localStorage.setItem('infrasec-current-week', String(index));
+    }
+
+    function renderProgressSummary() {
+      let summary = document.getElementById('progressSummary');
+      if (!summary) {
+        summary = document.createElement('div');
+        summary.id = 'progressSummary';
+        summary.className = 'progress-summary';
+        taskList.after(summary);
+      }
+      const currentWeek = Number(weekSelect.value);
+      const values = weeks[currentWeek].tasks.map((_, taskIndex) => progressState[`${currentWeek}-${taskIndex}`]);
+      const done = values.filter((value) => value === 'feito').length;
+      const review = values.filter((value) => value === 'revisar').length;
+      const stuck = values.filter((value) => value === 'nao-entendi').length;
+      summary.textContent = `Progresso da semana: ${done} feito(s), ${review} para revisar, ${stuck} nao entendido(s).`;
     }
 
     weekSelect.addEventListener('change', () => renderWeek(Number(weekSelect.value)));
@@ -1252,6 +1468,49 @@ Testes:
     document.getElementById('copyTemplate').addEventListener('click', async () => {
       await navigator.clipboard.writeText(templateText.value);
       copyStatus.textContent = 'Copiado.';
+    });
+
+    document.getElementById('downloadTemplate').addEventListener('click', () => {
+      const blob = new Blob([templateText.value], { type: 'text/markdown;charset=utf-8' });
+      const link = document.createElement('a');
+      const title = templateText.value.split('\n')[0].replace(/^#\s*/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'entregavel';
+      link.href = URL.createObjectURL(blob);
+      link.download = `${title}.md`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(link.href);
+      copyStatus.textContent = 'Arquivo .md baixado.';
+    });
+
+    const certRecommendations = {
+      noc: ['Fortinet NSE 1-3 primeiro', 'Depois CCNA. Se aparecer vaga Microsoft/Azure, coloque AZ-900 como apoio.'],
+      soc: ['Fortinet NSE 1-3 primeiro', 'Depois SC-900. CCNA continua valendo como base forte de rede.'],
+      cloud: ['AZ-900 ou AWS Cloud Practitioner', 'Escolha pelo mercado que voce mais ve nas vagas. Faca Fortinet junto se firewall aparecer.'],
+      devsecops: ['Linux + Git + AWS Cloud Practitioner', 'Depois AZ-900 ou KCNA. DevSecOps sem Linux/Git vira castelo de areia.']
+    };
+
+    function renderCertDecision() {
+      const selected = document.querySelector('input[name="careerGoal"]:checked').value;
+      const [first, second] = certRecommendations[selected];
+      document.getElementById('certDecision').innerHTML = `<strong>${first}</strong><p>${second}</p>`;
+    }
+
+    document.querySelectorAll('input[name="careerGoal"]').forEach((input) => {
+      input.addEventListener('change', renderCertDecision);
+    });
+    renderCertDecision();
+
+    document.querySelectorAll('[data-library-filter]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-library-filter]').forEach((item) => item.classList.remove('active'));
+        button.classList.add('active');
+        const filter = button.dataset.libraryFilter;
+        document.querySelectorAll('[data-library]').forEach((card) => {
+          const visible = filter === 'all' || card.dataset.library.split(' ').includes(filter);
+          card.style.display = visible ? 'grid' : 'none';
+        });
+      });
     });
 
     document.querySelectorAll('[data-open]').forEach((button) => {

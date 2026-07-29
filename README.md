@@ -19,11 +19,16 @@ Comece pela Semana 1 e siga a ordem:
 ## O que tem no hub
 
 - Jornada de 12 semanas.
+- Semana 1 detalhada por dia: segunda a fim de semana.
+- Sistema de progresso por tarefa com estados `feito`, `revisar` e `nao entendi`, salvo no navegador.
 - Arvore clicavel por dependencia: IP/DNS/DHCP, VLAN, Inter-VLAN, OSPF, ACL/NAT e cloud/firewall.
 - Templates de README de lab, ticket NOC, investigacao SOC e relatorio cloud.
+- Exportacao de templates como arquivo `.md`.
+- Mapa rapido de decisao de certificacao por foco: NOC, SOC, Cloud ou DevSecOps.
+- Trilhas de Linux e Git/GitHub para suporte, SOC, DevOps e portfolio.
 - Secao "Nao estudar ainda" para reduzir dispersao.
 - Guia de certificacoes para Fortinet NSE 1-3, AZ-900, AWS Cloud Practitioner, SC-900, CCNA, KCNA, Linux Essentials e Security+.
-- Biblioteca local com materiais CCNA legais/seguros.
+- Biblioteca categorizada em oficial, comunidade, simulados, labs e cuidado anti-dumps.
 - Labs e simuladores plugados localmente.
 
 ## Biblioteca CCNA
