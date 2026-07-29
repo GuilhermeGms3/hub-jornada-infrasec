@@ -95,7 +95,7 @@
       margin-bottom: 18px;
     }
 
-    .panel, .task, .node, .template-card, .library-card {
+    .panel, .task, .node, .template-card, .library-card, .cert-card, .cert-resource {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -327,6 +327,101 @@
       gap: 12px;
     }
 
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .cert-card {
+      padding: 15px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      min-height: 310px;
+    }
+
+    .cert-card.recommended {
+      border-color: var(--primary);
+      outline: 3px solid rgba(13,107,117,.12);
+    }
+
+    .cert-card h4, .cert-resource h4 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .cert-card p, .cert-resource p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .cert-meta {
+      display: grid;
+      gap: 7px;
+      margin: 0;
+    }
+
+    .cert-meta div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .cert-meta dt {
+      color: var(--muted);
+    }
+
+    .cert-meta dd {
+      margin: 0;
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .cert-resources {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .cert-resource {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .study-worktree {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .study-step {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f9fbfc;
+      padding: 12px;
+      min-height: 142px;
+    }
+
+    .study-step strong {
+      display: block;
+      color: var(--primary-2);
+      margin-bottom: 6px;
+    }
+
+    .study-step span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .template-card, .library-card {
       padding: 14px;
       display: grid;
@@ -413,7 +508,7 @@
     }
 
     @media (max-width: 1060px) {
-      .app, .hero, .journey, .tree, .node-detail, .templates, .library, .avoid-grid, .plugged {
+      .app, .hero, .journey, .tree, .node-detail, .templates, .library, .avoid-grid, .plugged, .cert-grid, .cert-resources, .study-worktree {
         grid-template-columns: 1fr;
       }
       aside {
@@ -444,6 +539,7 @@
         <a href="#arvore">Arvore clicavel</a>
         <a href="#templates">Templates</a>
         <a href="#nao-estudar">Nao estudar ainda</a>
+        <a href="#certificacoes">Certificacoes</a>
         <a href="#biblioteca">Biblioteca</a>
         <a href="#laboratorio">Laboratorio</a>
       </nav>
@@ -566,6 +662,145 @@
         </div>
       </section>
 
+      <section id="certificacoes">
+        <div class="section-head">
+          <div>
+            <h3>Guia de Certificacoes</h3>
+            <p>Use certificacao como validacao, nao como substituta de pratica. A ordem abaixo favorece entrada em Help Desk, NOC, SOC junior, suporte N2 e base para DevSecOps.</p>
+          </div>
+        </div>
+
+        <div class="cert-grid">
+          <article class="cert-card recommended">
+            <h4>Fortinet NSE 1 / NSE 2 / NSE 3</h4>
+            <p>Melhor primeiro alvo se voce quer firewall, NOC, SOC ou suporte de seguranca. Prioridade alta porque o treino oficial self-paced e gratuito e conversa com FortiGate.</p>
+            <dl class="cert-meta">
+              <div><dt>Prioridade</dt><dd>1</dd></div>
+              <div><dt>Custo</dt><dd>Treino gratuito; exame online no curso</dd></div>
+              <div><dt>Quando fazer</dt><dd>Semanas 1-5</dd></div>
+              <div><dt>Serve para</dt><dd>NOC, SOC, firewall</dd></div>
+            </dl>
+            <div class="tools">
+              <a class="button" href="https://training.fortinet.com/" target="_blank" rel="noreferrer">Portal oficial</a>
+              <a class="button" href="projetos/cert-antenas/Fortinet-Certified-Fundamentals-Cybersecurity/README.md" target="_blank">Antena local</a>
+            </div>
+          </article>
+
+          <article class="cert-card recommended">
+            <h4>Microsoft AZ-900</h4>
+            <p>Boa se voce mira empresas com Microsoft, suporte corporativo, Azure, identidade e administracao. Pague so depois de entender rede e cloud basica.</p>
+            <dl class="cert-meta">
+              <div><dt>Prioridade</dt><dd>2A</dd></div>
+              <div><dt>Custo</dt><dd>US$ 99*</dd></div>
+              <div><dt>Quando fazer</dt><dd>Semanas 9-10</dd></div>
+              <div><dt>Serve para</dt><dd>Cloud, suporte, NOC</dd></div>
+            </dl>
+            <div class="tools">
+              <a class="button" href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" rel="noreferrer">Oficial</a>
+              <a class="button" href="projetos/cert-antenas/az-900/README.md" target="_blank">Antena local</a>
+            </div>
+          </article>
+
+          <article class="cert-card recommended">
+            <h4>AWS Cloud Practitioner</h4>
+            <p>Boa para cloud geral e caminho DevOps/DevSecOps, mas a prova nao e gratuita. Treinamento pode ser gratuito; exame oficial custa US$ 100.</p>
+            <dl class="cert-meta">
+              <div><dt>Prioridade</dt><dd>2B</dd></div>
+              <div><dt>Custo</dt><dd>US$ 100</dd></div>
+              <div><dt>Quando fazer</dt><dd>Semanas 9-10</dd></div>
+              <div><dt>Serve para</dt><dd>Cloud, DevOps, suporte</dd></div>
+            </dl>
+            <div class="tools">
+              <a class="button" href="biblioteca/certificacoes/aws-cloud-practitioner-clf-c02-exam-guide.pdf" target="_blank">PDF oficial</a>
+              <a class="button" href="projetos/cert-antenas/AWS-Certified-Cloud-Practitioner-Notes/practice-exam/exams.md" target="_blank">Simulado local</a>
+            </div>
+          </article>
+
+          <article class="cert-card">
+            <h4>Microsoft SC-900</h4>
+            <p>Boa para SOC Microsoft, identidade, compliance e seguranca em Microsoft 365/Azure. Eu faria depois de AZ-900 ou junto se SOC Microsoft aparecer nas vagas.</p>
+            <dl class="cert-meta">
+              <div><dt>Prioridade</dt><dd>3</dd></div>
+              <div><dt>Custo</dt><dd>US$ 99*</dd></div>
+              <div><dt>Quando fazer</dt><dd>Semanas 8-11</dd></div>
+              <div><dt>Serve para</dt><dd>SOC, IAM, security</dd></div>
+            </dl>
+            <div class="tools">
+              <a class="button" href="https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/" target="_blank" rel="noreferrer">Oficial</a>
+              <a class="button" href="projetos/cert-antenas/SC-900-Study-Prep/index.html" target="_blank">Guia local</a>
+            </div>
+          </article>
+
+          <article class="cert-card">
+            <h4>CCNA</h4>
+            <p>Mais pesada, mas muito mais forte para NOC/redes do que qualquer cloud fundamental. Trate como projeto de medio prazo, com Packet Tracer e troubleshooting.</p>
+            <dl class="cert-meta">
+              <div><dt>Prioridade</dt><dd>3/4</dd></div>
+              <div><dt>Custo</dt><dd>Ver Cisco/Pearson</dd></div>
+              <div><dt>Quando fazer</dt><dd>Apos 8-12 semanas</dd></div>
+              <div><dt>Serve para</dt><dd>NOC, redes, infra</dd></div>
+            </dl>
+            <div class="tools">
+              <a class="button" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-0.pdf" target="_blank">PDF oficial</a>
+              <a class="button" href="projetos/CCNA-1-Study-Hub/quiz.html" target="_blank">Quiz local</a>
+            </div>
+          </article>
+
+          <article class="cert-card">
+            <h4>KCNA / Linux Essentials / Security+</h4>
+            <p>Segure por enquanto. KCNA pede base de Linux, container e cloud. Linux Essentials pode ser bom se Linux estiver fraco. Security+ e boa, mas geralmente cara.</p>
+            <dl class="cert-meta">
+              <div><dt>Prioridade</dt><dd>Depois</dd></div>
+              <div><dt>Custo</dt><dd>Varia</dd></div>
+              <div><dt>Quando fazer</dt><dd>Depois da base</dd></div>
+              <div><dt>Serve para</dt><dd>DevSecOps, SOC, infra</dd></div>
+            </dl>
+            <div class="tools">
+              <a class="button" href="https://training.linuxfoundation.org/certification/kubernetes-cloud-native-associate/" target="_blank" rel="noreferrer">KCNA oficial</a>
+              <a class="button" href="https://www.lpi.org/our-certifications/linux-essentials-overview" target="_blank" rel="noreferrer">Linux Essentials</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="panel" style="margin-top:12px">
+          <h4>Worktree de estudo para qualquer certificacao</h4>
+          <div class="study-worktree">
+            <div class="study-step"><strong>1. Blueprint</strong><span>Leia objetivos oficiais e marque o que voce ja sabe, o que viu em lab e o que e novo.</span></div>
+            <div class="study-step"><strong>2. Base</strong><span>Estude teoria minima em Microsoft Learn, AWS Skill Builder, Fortinet Training ou notas locais.</span></div>
+            <div class="study-step"><strong>3. Lab</strong><span>Gere evidencia: print, comando, diagrama, tabela, ticket ou README.</span></div>
+            <div class="study-step"><strong>4. Simulado</strong><span>Use simulado limpo. Evite dumps. Revise erro por dominio, nao por decoreba.</span></div>
+            <div class="study-step"><strong>5. Decisao</strong><span>Pague prova so quando bater 80%+ em revisoes e conseguir explicar os topicos em voz alta.</span></div>
+          </div>
+        </div>
+
+        <div class="cert-resources">
+          <article class="cert-resource">
+            <h4>AWS CLF-C02</h4>
+            <p>PDF oficial, notas locais e pratica local. Melhor se voce escolher caminho cloud/DevOps.</p>
+            <a class="button" href="biblioteca/certificacoes/aws-cloud-practitioner-clf-c02-exam-guide.pdf" target="_blank">PDF oficial</a>
+            <a class="button" href="projetos/cert-antenas/AWS-Certified-Cloud-Practitioner-Notes/study-guide.md" target="_blank">Guia local</a>
+          </article>
+          <article class="cert-resource">
+            <h4>AZ-900</h4>
+            <p>Pagina oficial Microsoft Learn e notas locais. Melhor se voce mirar ambiente Microsoft/Azure.</p>
+            <a class="button" href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900" target="_blank" rel="noreferrer">Study guide oficial</a>
+            <a class="button" href="projetos/cert-antenas/az-900/README.md" target="_blank">Guia local</a>
+          </article>
+          <article class="cert-resource">
+            <h4>SC-900</h4>
+            <p>Seguranca, compliance e identidade. Bom complemento para SOC Microsoft.</p>
+            <a class="button" href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-900" target="_blank" rel="noreferrer">Study guide oficial</a>
+            <a class="button" href="biblioteca/certificacoes/sc-900-exam-ref-sample.pdf" target="_blank">PDF amostra</a>
+          </article>
+          <article class="cert-resource">
+            <h4>Fortinet</h4>
+            <p>Treino oficial gratuito e antena local comunitaria para organizar seu progresso.</p>
+            <a class="button" href="https://training.fortinet.com/" target="_blank" rel="noreferrer">Training Institute</a>
+            <a class="button" href="projetos/cert-antenas/Fortinet-Certified-Fundamentals-Cybersecurity/README.md" target="_blank">Antena local</a>
+          </article>
+        </div>
+      </section>
+
       <section id="biblioteca">
         <div class="section-head">
           <div>
@@ -632,6 +867,11 @@
             <button data-open="projetos/CCNA-1-Study-Hub/trainer.html">Trainer CLI/VLSM</button>
             <button data-open="projetos/CCNA-Exam-Simulator/dist/index.html">CCNA Exam Simulator</button>
             <button data-open="projetos/soc-roadmap-2026/SOC-Analyst-Roadmap.md">SOC Roadmap</button>
+            <button data-open="projetos/cert-antenas/AWS-Certified-Cloud-Practitioner-Notes/study-guide.md">AWS CLF-C02 Guia</button>
+            <button data-open="projetos/cert-antenas/AWS-Certified-Cloud-Practitioner-Notes/practice-exam/exams.md">AWS CLF-C02 Simulado</button>
+            <button data-open="projetos/cert-antenas/az-900/README.md">AZ-900 Guia</button>
+            <button data-open="projetos/cert-antenas/SC-900-Study-Prep/index.html">SC-900 Guia</button>
+            <button data-open="projetos/cert-antenas/Fortinet-Certified-Fundamentals-Cybersecurity/README.md">Fortinet NSE 1-3</button>
           </div>
           <iframe id="labFrame" title="Ferramenta local" src="projetos/CCNA-1-Study-Hub/index.html"></iframe>
         </div>
@@ -1024,3 +1264,4 @@ Testes:
   </script>
 </body>
 </html>
+

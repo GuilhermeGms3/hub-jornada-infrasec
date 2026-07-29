@@ -22,6 +22,7 @@ Comece pela Semana 1 e siga a ordem:
 - Arvore clicavel por dependencia: IP/DNS/DHCP, VLAN, Inter-VLAN, OSPF, ACL/NAT e cloud/firewall.
 - Templates de README de lab, ticket NOC, investigacao SOC e relatorio cloud.
 - Secao "Nao estudar ainda" para reduzir dispersao.
+- Guia de certificacoes para Fortinet NSE 1-3, AZ-900, AWS Cloud Practitioner, SC-900, CCNA, KCNA, Linux Essentials e Security+.
 - Biblioteca local com materiais CCNA legais/seguros.
 - Labs e simuladores plugados localmente.
 
@@ -35,6 +36,25 @@ Materiais incluidos ou referenciados:
 - Notas comunitarias baseadas no curso gratuito Jeremy's IT Lab.
 
 Eu evitei incluir PDFs completos de livros pagos encontrados em sites aleatorios, porque isso normalmente envolve distribuicao nao autorizada.
+
+## Certificacoes
+
+A secao de certificacoes organiza:
+
+- prioridade para quem mira Help Desk, NOC, SOC junior, suporte N2 e base DevSecOps;
+- custo aproximado/status de gratuidade quando indicado por fonte oficial;
+- worktree de estudo reutilizavel: blueprint, base, lab, simulado e decisao;
+- antenas locais para AWS CLF-C02, AZ-900, SC-900 e Fortinet fundamentals;
+- PDFs oficiais/seguros quando disponiveis.
+
+Materiais locais adicionados:
+
+- AWS Cloud Practitioner CLF-C02 official exam guide.
+- SC-900 Exam Ref sample PDF da Pearson/Microsoft Press.
+- AWS Cloud Practitioner Notes e practice exam local.
+- AZ-900 community study guide.
+- SC-900 static study prep.
+- Fortinet Certified Fundamentals Cybersecurity learning journey.
 
 ## Projetos e ferramentas locais
 
@@ -72,3 +92,4 @@ O hub salva algumas preferencias no `localStorage` do navegador, como a semana a
 ## Licenca
 
 O codigo do hub criado neste repositório pode ser usado livremente para estudo pessoal. Conteudos de terceiros mantem suas proprias licencas, marcas e termos.
+
