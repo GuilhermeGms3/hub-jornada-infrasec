@@ -4,6 +4,8 @@ Hub de estudos em formato de jornada para quem quer entrar em Help Desk, NOC, SO
 
 O projeto organiza o estudo por semana, dependencias e entregaveis. Em vez de mostrar uma vitrine de links, ele mostra a tarefa atual, a ferramenta certa para aquela tarefa e o artefato que deve virar evidencia de portfolio.
 
+Versao publicada: [Hub Jornada InfraSec no GitHub Pages](https://guilhermegms3.github.io/hub-jornada-infrasec/)
+
 ## Como usar
 
 Abra `index.html` ou `hub-estudos-infrasec.html` no navegador.
@@ -29,13 +31,15 @@ Comece pela Semana 1 e siga a ordem:
 - Secao "Nao estudar ainda" para reduzir dispersao.
 - Guia de certificacoes para Fortinet NSE 1-3, AZ-900, AWS Cloud Practitioner, SC-900, CCNA, KCNA, Linux Essentials e Security+.
 - Biblioteca categorizada em oficial, comunidade, simulados, labs e cuidado anti-dumps.
-- Estante por semana e certificacao, com pacote de leitura para Kindle.
+- Estante dinamica sincronizada com a semana atual e materiais separados por certificacao.
 - Integracao local com Calibre para gerar EPUB ou AZW3 a partir das notas.
 - Labs e simuladores plugados localmente.
 
 ## Estante Kindle e Calibre
 
 O GitHub Pages nao consegue acessar um Kindle conectado por USB. Por isso, o hub monta o comando e o script local faz a integracao com o Calibre.
+
+Ao trocar a semana da jornada ou o seletor da estante, os dois primeiros livros mudam automaticamente para as leituras correspondentes. Os guias de certificacao permanecem disponiveis na mesma prateleira para consulta.
 
 Com o Calibre instalado, execute na raiz do projeto:
 
