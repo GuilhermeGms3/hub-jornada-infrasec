@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hub Jornada InfraSec</title>
   <link rel="stylesheet" href="hub-modulos.css">
+  <link rel="stylesheet" href="hub-aprofundamento.css">
   <style>
     :root {
       --bg: #f5f7f8;
@@ -742,6 +743,7 @@
       <nav aria-label="Navegacao">
         <a href="#jornada">Jornada atual</a>
         <a href="#semana1">Semana 1 detalhada</a>
+        <a href="#academia-pratica">Academia pratica</a>
         <a href="#arvore">Arvore clicavel</a>
         <a href="#templates">Templates</a>
         <a href="#central-carreira">Central de carreira</a>
@@ -809,6 +811,186 @@
           <article class="day-card"><strong>Quinta</strong><span>Monte uma mini topologia no Packet Tracer ou abra um lab base. Teste ping e documente origem/destino.</span><a class="button" href="projetos/CCNA-Labs/labs/StaticRoute.pkt">Abrir lab</a></article>
           <article class="day-card"><strong>Sexta</strong><span>Transforme tudo em README/ticket: problema, comandos, resultado, conclusao e proximo estudo.</span><button data-template="readme">Carregar README</button></article>
           <article class="day-card"><strong>Fim de semana</strong><span>Revisao leve: explique em voz alta IP, DNS, DHCP, gateway e ping. Se travar, repita segunda e terca.</span><a class="button" href="#tarefas">Voltar tarefas</a></article>
+        </div>
+      </section>
+
+      <section id="academia-pratica">
+        <div class="section-head">
+          <div>
+            <h3>Academia Pratica</h3>
+            <p>Treino profundo com evidencias, outputs realistas, rubricas e criterios de saida. Aqui, marcar uma caixa nao basta para comprovar competencia.</p>
+          </div>
+        </div>
+
+        <div class="depth-principles" aria-label="Regras da academia">
+          <div><strong>Investigue</strong><span>Escolha evidencias e explique o que cada uma prova.</span></div>
+          <div><strong>Valide</strong><span>Registre teste antes, correcao, teste depois e rollback.</span></div>
+          <div><strong>Comprove</strong><span>Competencia exige nota minima e artefato de portfolio.</span></div>
+        </div>
+
+        <div class="depth-tabs" role="tablist" aria-label="Areas da academia pratica">
+          <button role="tab" aria-selected="true" aria-controls="depth-journey" id="depth-tab-journey" data-depth-tab="journey">Semanas 1-6</button>
+          <button role="tab" aria-selected="false" aria-controls="depth-incidents" id="depth-tab-incidents" data-depth-tab="incidents">Help Desk / NOC</button>
+          <button role="tab" aria-selected="false" aria-controls="depth-soc" id="depth-tab-soc" data-depth-tab="soc">SOC</button>
+          <button role="tab" aria-selected="false" aria-controls="depth-cloud" id="depth-tab-cloud" data-depth-tab="cloud">AWS / Azure</button>
+          <button role="tab" aria-selected="false" aria-controls="depth-terminal" id="depth-tab-terminal" data-depth-tab="terminal">Linux / Git</button>
+          <button role="tab" aria-selected="false" aria-controls="depth-certs" id="depth-tab-certs" data-depth-tab="certs">Certificacoes</button>
+        </div>
+
+        <div class="depth-panel" id="depth-journey" role="tabpanel" aria-labelledby="depth-tab-journey">
+          <div class="depth-toolbar">
+            <label for="deepJourneySelect">Missao aprofundada
+              <select id="deepJourneySelect"></select>
+            </label>
+            <div class="depth-score" id="deepJourneyScore"></div>
+          </div>
+          <div id="deepJourneyContent"></div>
+        </div>
+
+        <div class="depth-panel" id="depth-incidents" role="tabpanel" aria-labelledby="depth-tab-incidents" hidden>
+          <div class="depth-toolbar">
+            <label for="deepIncidentSelect">Fila de incidentes
+              <select id="deepIncidentSelect"></select>
+            </label>
+            <div class="depth-score" id="deepIncidentScore"></div>
+          </div>
+          <div class="depth-two-column">
+            <div class="depth-block">
+              <div id="deepIncidentBrief"></div>
+              <h4>Escolha sua investigacao</h4>
+              <div class="evidence-actions" id="deepEvidenceActions"></div>
+            </div>
+            <div class="depth-block evidence-console">
+              <div class="block-head">
+                <h4>Mesa de evidencias</h4>
+                <span id="deepEvidenceCount"></span>
+              </div>
+              <div id="deepEvidenceDesk"></div>
+            </div>
+          </div>
+          <form class="depth-block depth-form" id="deepIncidentForm">
+            <div class="depth-three-column">
+              <label for="deepIncidentCause">Causa raiz
+                <select id="deepIncidentCause"></select>
+              </label>
+              <label for="deepIncidentResolution">Acao corretiva
+                <select id="deepIncidentResolution"></select>
+              </label>
+              <label for="deepIncidentEscalation">Decisao de escalonamento
+                <select id="deepIncidentEscalation"></select>
+              </label>
+            </div>
+            <label for="deepIncidentReport">Ticket tecnico
+              <textarea id="deepIncidentReport" required placeholder="Impacto, hipotese, evidencias, causa, correcao, teste depois e rollback."></textarea>
+            </label>
+            <button class="primary" type="submit">Encerrar e avaliar incidente</button>
+            <div class="depth-feedback" id="deepIncidentFeedback" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <div class="depth-panel" id="depth-soc" role="tabpanel" aria-labelledby="depth-tab-soc" hidden>
+          <div class="depth-toolbar">
+            <label for="deepSocSelect">Caso SOC
+              <select id="deepSocSelect"></select>
+            </label>
+            <div class="depth-score" id="deepSocScore"></div>
+          </div>
+          <div class="depth-two-column">
+            <div class="depth-block">
+              <div id="deepSocBrief"></div>
+              <h4>Eventos e telemetria sintetica</h4>
+              <pre class="log-console" id="deepSocLogs"></pre>
+            </div>
+            <form class="depth-block depth-form" id="deepSocForm">
+              <div class="depth-two-column compact">
+                <label for="deepSocClassification">Classificacao
+                  <select id="deepSocClassification"></select>
+                </label>
+                <label for="deepSocSeverity">Severidade
+                  <select id="deepSocSeverity"></select>
+                </label>
+              </div>
+              <label for="deepSocIocs">IOCs e entidades relevantes
+                <input id="deepSocIocs" type="text" required placeholder="IPs, usuarios, hosts ou hashes separados por virgula">
+              </label>
+              <label for="deepSocTimeline">Linha do tempo
+                <textarea id="deepSocTimeline" required placeholder="Organize os eventos e destaque mudancas de comportamento."></textarea>
+              </label>
+              <label for="deepSocAction">Contencao e proximo passo
+                <textarea id="deepSocAction" required placeholder="Diga o que faria agora, o que preservaria e para quem escalaria."></textarea>
+              </label>
+              <button class="primary" type="submit">Avaliar investigacao SOC</button>
+              <div class="depth-feedback" id="deepSocFeedback" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="depth-panel" id="depth-cloud" role="tabpanel" aria-labelledby="depth-tab-cloud" hidden>
+          <div class="depth-toolbar">
+            <label for="deepCloudSelect">Laboratorio cloud
+              <select id="deepCloudSelect"></select>
+            </label>
+            <div class="depth-score" id="deepCloudScore"></div>
+          </div>
+          <div class="depth-two-column">
+            <div class="depth-block">
+              <div id="deepCloudBrief"></div>
+              <pre class="log-console" id="deepCloudArtifact"></pre>
+              <div class="source-actions" id="deepCloudSources"></div>
+            </div>
+            <form class="depth-block depth-form" id="deepCloudForm">
+              <div id="deepCloudQuestions"></div>
+              <label for="deepCloudRationale">Justificativa tecnica
+                <textarea id="deepCloudRationale" required placeholder="Explique risco, menor privilegio, custo, monitoramento e como validaria."></textarea>
+              </label>
+              <button class="primary" type="submit">Avaliar arquitetura</button>
+              <div class="depth-feedback" id="deepCloudFeedback" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="depth-panel" id="depth-terminal" role="tabpanel" aria-labelledby="depth-tab-terminal" hidden>
+          <div class="depth-toolbar">
+            <label for="deepTerminalSelect">Desafio de terminal
+              <select id="deepTerminalSelect"></select>
+            </label>
+            <div class="depth-score" id="deepTerminalScore"></div>
+          </div>
+          <div class="depth-two-column terminal-layout">
+            <div class="depth-block">
+              <div id="deepTerminalBrief"></div>
+              <ol class="terminal-objectives" id="deepTerminalObjectives"></ol>
+              <div class="terminal-note">Ambiente simulado: depois de passar, repita os comandos no WSL ou em uma VM Linux e guarde o output real.</div>
+            </div>
+            <div class="depth-block">
+              <pre class="terminal-console" id="deepTerminalConsole"></pre>
+              <form class="terminal-command" id="deepTerminalForm">
+                <label for="deepTerminalCommand">Comando
+                  <input id="deepTerminalCommand" type="text" autocomplete="off" spellcheck="false">
+                </label>
+                <button class="primary" type="submit">Executar</button>
+              </form>
+              <div class="depth-feedback" id="deepTerminalFeedback" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="depth-panel" id="depth-certs" role="tabpanel" aria-labelledby="depth-tab-certs" hidden>
+          <div class="depth-toolbar">
+            <label for="deepCertSelect">Plano por certificacao
+              <select id="deepCertSelect"></select>
+            </label>
+            <div class="depth-score" id="deepCertScore"></div>
+          </div>
+          <div id="deepCertOverview"></div>
+          <div class="cert-domain-list" id="deepCertDomains"></div>
+          <div class="depth-block certification-gate">
+            <label for="deepCertPracticeScore">Melhor simulado limpo (%)
+              <input id="deepCertPracticeScore" type="number" min="0" max="100" inputmode="numeric">
+            </label>
+            <button class="primary" type="button" id="saveDeepCert">Salvar progresso e avaliar</button>
+            <div class="depth-feedback" id="deepCertFeedback" aria-live="polite"></div>
+          </div>
         </div>
       </section>
 
@@ -995,8 +1177,8 @@
         <div class="career-panel" id="career-readiness" role="tabpanel" aria-labelledby="tab-readiness" hidden>
           <div class="readiness-head">
             <div>
-              <h4>Estou pronto para vaga?</h4>
-              <p>O calculo usa tarefas feitas, labs validados, chamados resolvidos e entregaveis salvos neste navegador.</p>
+              <h4>Prontidao por evidencias</h4>
+              <p>Cada cargo possui portoes objetivos. Um item critico ausente limita a nota, mesmo que voce tenha muitos cliques ou entregaveis.</p>
             </div>
             <button type="button" id="refreshReadiness">Atualizar matriz</button>
           </div>
@@ -1272,7 +1454,7 @@
               <div><dt>Serve para</dt><dd>NOC, redes, infra</dd></div>
             </dl>
             <div class="tools">
-              <a class="button" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-0.pdf" target="_blank">PDF oficial</a>
+              <a class="button" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-1.pdf" target="_blank">PDF oficial v1.1</a>
               <a class="button" href="projetos/CCNA-1-Study-Hub/quiz.html" target="_blank">Quiz local</a>
             </div>
           </article>
@@ -1423,7 +1605,7 @@
           <article class="library-card" data-library="oficial">
             <h4>Cisco CCNA Exam Topics</h4>
             <p>PDF oficial Cisco Public. Use como checklist de conteudo, nao como livro.</p>
-            <a class="button" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-0.pdf" target="_blank">Abrir PDF local</a>
+            <a class="button" href="biblioteca/cisco-ccna-200-301-exam-topics-v1-1.pdf" target="_blank">Abrir PDF local v1.1</a>
             <a class="button" href="https://learningnetwork.cisco.com/s/ccna-exam-topics" target="_blank" rel="noreferrer">Topicos atuais</a>
           </article>
           <article class="library-card" data-library="oficial">
@@ -2013,6 +2195,7 @@ Testes:
     });
   </script>
   <script src="hub-modulos.js"></script>
+  <script src="hub-aprofundamento.js"></script>
 </body>
 </html>
 

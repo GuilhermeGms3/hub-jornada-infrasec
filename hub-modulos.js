@@ -625,52 +625,112 @@ ${item.body}
   });
   renderValidatedLab();
 
-  const roleRequirements = [
-    { role: 'Help Desk', maxWeek: 2, taskGoal: 4, labGoal: 1, deliverableGoal: 2, practice: () => ticketAttempts.some((item) => item.area === 'Help Desk'), practiceGap: 'Resolver um chamado Help Desk', cert: 'Google IT Support ou ITF+ (opcional)' },
-    { role: 'Suporte N2', maxWeek: 4, taskGoal: 8, labGoal: 2, deliverableGoal: 4, practice: () => ticketAttempts.length >= 2, practiceGap: 'Resolver dois chamados completos', cert: 'Linux Essentials ou CCNA em andamento' },
-    { role: 'NOC', maxWeek: 7, taskGoal: 12, labGoal: 3, deliverableGoal: 5, practice: () => ticketAttempts.some((item) => item.area === 'NOC'), practiceGap: 'Resolver um incidente NOC', cert: 'CCNA ou Fortinet Fundamentals' },
-    { role: 'SOC', maxWeek: 8, taskGoal: 14, labGoal: 2, deliverableGoal: 5, practice: () => ticketAttempts.some((item) => item.area === 'SOC'), practiceGap: 'Investigar um alerta SOC', cert: 'SC-900 ou Fortinet Fundamentals' },
-    { role: 'Cloud junior', maxWeek: 10, taskGoal: 16, labGoal: 2, deliverableGoal: 5, practice: () => examHistory.some((item) => item.score >= 70), practiceGap: 'Registrar simulado com 70%+', cert: 'AZ-900 ou AWS Cloud Practitioner' }
-  ];
-
   function renderReadiness() {
+    deliverables = readState(storageKeys.deliverables, []);
+    const deepJourney = readState('infrasec-deep-journey', {});
+    const deepIncidents = readState('infrasec-deep-incidents', []);
+    const deepSoc = readState('infrasec-deep-soc', []);
+    const deepCloud = readState('infrasec-deep-cloud', []);
+    const deepTerminal = readState('infrasec-deep-terminal', {});
+    const deepCerts = readState('infrasec-deep-certs', {});
     const completedLabs = labs.filter((lab) => labProgress[lab.id]?.completed);
     const labCount = completedLabs.length;
     const deliverableCount = deliverables.filter((item) => item.status === 'concluido').length;
-    const taskState = getTaskProgress();
-    document.getElementById('readinessBody').innerHTML = roleRequirements.map((requirement) => {
-      const taskCount = getCompletedTaskCount(requirement.maxWeek);
-      const acquired = Object.entries(taskState)
-        .filter(([key, value]) => Number(key.split('-')[0]) < requirement.maxWeek && value === 'feito')
-        .map(([key]) => {
-          const [weekIndex, taskIndex] = key.split('-').map(Number);
-          return weeks[weekIndex]?.tasks?.[taskIndex]?.[0];
-        })
-        .filter(Boolean);
-      const knowledgeRatio = Math.min(1, taskCount / requirement.taskGoal);
-      const labRatio = Math.min(1, labCount / requirement.labGoal);
-      const deliverableRatio = Math.min(1, deliverableCount / requirement.deliverableGoal);
-      const practiceReady = requirement.practice();
-      const score = Math.round((knowledgeRatio + labRatio + deliverableRatio + (practiceReady ? 1 : 0)) * 25);
-      let gap = 'Praticar entrevista e candidatar-se';
-      if (knowledgeRatio < 1) gap = `Concluir ${requirement.taskGoal - taskCount} tarefas-base`;
-      else if (labRatio < 1) gap = `Validar ${requirement.labGoal - labCount} lab(s)`;
-      else if (deliverableRatio < 1) gap = `Finalizar ${requirement.deliverableGoal - deliverableCount} entregavel(is)`;
-      else if (!practiceReady) gap = requirement.practiceGap;
+    const uniquePassed = (items, predicate = () => true) => new Set(items.filter((item) => item.passed && predicate(item)).map((item) => item.id)).size;
+    const journeyPassed = (ids) => ids.every((id) => deepJourney[id]?.passed);
+    const terminalPassed = (ids) => ids.every((id) => deepTerminal[id]?.passed);
+    const certScore = (ids) => Math.max(0, ...ids.map((id) => Number(deepCerts[id]?.score || 0)));
+    const interviewScores = interviewHistory.map((item) => Number(item.score || 0)).filter(Boolean);
+    const interviewAverage = interviewScores.length ? Math.round(interviewScores.reduce((sum, value) => sum + value, 0) / interviewScores.length) : 0;
+    const gate = (label, passed, critical = false) => ({ label, passed, critical });
+    const roles = [
+      {
+        role: 'Help Desk',
+        cert: 'ITF+ opcional; Linux Essentials agrega mais',
+        gates: [
+          gate('Semanas 1 e 2 aprovadas', journeyPassed(['w1', 'w2']), true),
+          gate('2 incidentes Help Desk com 80%+', uniquePassed(deepIncidents, (item) => item.area === 'Help Desk') >= 2, true),
+          gate('2 desafios Linux aprovados', Object.values(deepTerminal).filter((item) => item.passed).length >= 2),
+          gate('2 entregaveis concluidos', deliverableCount >= 2),
+          gate('Entrevista tecnica media 70%+', interviewAverage >= 70)
+        ]
+      },
+      {
+        role: 'Suporte N2',
+        cert: 'Linux Essentials; CCNA em andamento',
+        gates: [
+          gate('Semanas 1 a 4 aprovadas', journeyPassed(['w1', 'w2', 'w3', 'w4']), true),
+          gate('4 incidentes com 80%+', uniquePassed(deepIncidents) >= 4, true),
+          gate('2 labs Packet Tracer validados', labCount >= 2),
+          gate('4 desafios Linux/Git aprovados', Object.values(deepTerminal).filter((item) => item.passed).length >= 4),
+          gate('4 entregaveis concluidos', deliverableCount >= 4),
+          gate('Entrevista tecnica media 70%+', interviewAverage >= 70)
+        ]
+      },
+      {
+        role: 'NOC',
+        cert: 'CCNA; Fortinet NSE 1-3 complementa',
+        gates: [
+          gate('Semanas 1 a 6 aprovadas', journeyPassed(['w1', 'w2', 'w3', 'w4', 'w5', 'w6']), true),
+          gate('3 incidentes NOC com 80%+', uniquePassed(deepIncidents, (item) => item.area === 'NOC') >= 3, true),
+          gate('Labs VLAN, OSPF e ACL validados', ['vlan', 'ospf', 'acl'].every((id) => labProgress[id]?.completed), true),
+          gate('Desafio Linux de rede aprovado', terminalPassed(['linux-network'])),
+          gate('Plano CCNA em 60%+', certScore(['ccna']) >= 60),
+          gate('5 entregaveis concluidos', deliverableCount >= 5)
+        ]
+      },
+      {
+        role: 'SOC',
+        cert: 'SC-900 ou Fortinet NSE 1-3',
+        gates: [
+          gate('3 casos SOC distintos com 80%+', uniquePassed(deepSoc) >= 3, true),
+          gate('Casos de spray e comprometimento aprovados', ['spray', 'bruteforce'].every((id) => deepSoc.some((item) => item.id === id && item.passed)), true),
+          gate('Linux logs e services aprovados', terminalPassed(['linux-logs', 'linux-service'])),
+          gate('Plano SC-900/Fortinet em 60%+', certScore(['sc900', 'fortinet']) >= 60),
+          gate('5 entregaveis concluidos', deliverableCount >= 5),
+          gate('Entrevista tecnica media 70%+', interviewAverage >= 70)
+        ]
+      },
+      {
+        role: 'Cloud junior',
+        cert: 'AZ-900 ou AWS CLF-C02',
+        gates: [
+          gate('3 labs cloud distintos com 80%+', uniquePassed(deepCloud) >= 3, true),
+          gate('IAM/RBAC e rede cloud aprovados', deepCloud.some((item) => ['aws-iam', 'azure-rbac'].includes(item.id) && item.passed) && deepCloud.some((item) => ['aws-vpc', 'azure-nsg'].includes(item.id) && item.passed), true),
+          gate('4 desafios Linux/Git aprovados', Object.values(deepTerminal).filter((item) => item.passed).length >= 4),
+          gate('Plano AWS/Azure em 60%+', certScore(['clf02', 'az900']) >= 60),
+          gate('5 entregaveis concluidos', deliverableCount >= 5),
+          gate('Entrevista tecnica media 70%+', interviewAverage >= 70)
+        ]
+      }
+    ];
+    document.getElementById('readinessBody').innerHTML = roles.map((requirement) => {
+      const passedCount = requirement.gates.filter((item) => item.passed).length;
+      const criticalMissing = requirement.gates.some((item) => item.critical && !item.passed);
+      const rawScore = Math.round(passedCount / requirement.gates.length * 100);
+      const score = criticalMissing ? Math.min(69, rawScore) : rawScore;
+      const missing = requirement.gates.filter((item) => !item.passed);
+      const gateList = requirement.gates.map((item) => `${item.passed ? 'OK' : 'FALTA'}: ${item.label}${item.critical ? ' *' : ''}`).join('<br>');
       return `
         <tr>
           <td><strong>${requirement.role}</strong></td>
           <td class="readiness-score"><strong>${score}%</strong><progress max="100" value="${score}">${score}%</progress></td>
-          <td>${taskCount}/${requirement.taskGoal}${acquired.length ? `<br><small>${acquired.slice(0, 2).map(escapeHtml).join(', ')}${acquired.length > 2 ? ` +${acquired.length - 2}` : ''}</small>` : ''}</td>
-          <td>${labCount}/${requirement.labGoal}${completedLabs.length ? `<br><small>${completedLabs.slice(0, 2).map((lab) => escapeHtml(lab.title)).join(', ')}</small>` : ''}</td>
-          <td>${deliverableCount}/${requirement.deliverableGoal}</td>
-          <td>${gap}</td>
+          <td><details><summary>${passedCount}/${requirement.gates.length} portoes</summary><small>${gateList}</small></details></td>
+          <td>${labCount} Packet Tracer<br><small>${uniquePassed(deepIncidents)} incidentes, ${uniquePassed(deepSoc)} SOC, ${uniquePassed(deepCloud)} cloud</small></td>
+          <td>${deliverableCount}<br><small>Entrevista: ${interviewAverage || 0}%</small></td>
+          <td>${missing.length ? `${missing[0].critical ? '<strong>Critica:</strong> ' : ''}${escapeHtml(missing[0].label)}` : 'Revisar portfolio e candidatar-se'}</td>
           <td>${requirement.cert}</td>
         </tr>
       `;
     }).join('');
   }
   document.getElementById('refreshReadiness').addEventListener('click', renderReadiness);
+  window.addEventListener('infrasec:competency-changed', renderReadiness);
+  window.addEventListener('infrasec:deliverables-changed', () => {
+    deliverables = readState(storageKeys.deliverables, []);
+    renderDeliverables();
+    renderReadiness();
+  });
 
   const examTopics = [
     ['IP, DNS e DHCP', 1],
@@ -856,8 +916,24 @@ ${item.body}
     { week: 11, topic: 'Automacao', question: 'Quando vale automatizar uma tarefa de rede?', exercise: 'Mencione repeticao, risco e validacao.', answer: 'Quando a tarefa e repetitiva, padronizavel e testavel. Automatizar reduz erro manual, mas exige validacao, controle de versao e plano de rollback.' },
     { week: 12, topic: 'Comunicacao', question: 'Conte sobre um incidente tecnico que voce resolveu.', exercise: 'Use situacao, acao, resultado e aprendizado.', answer: 'Estruture em contexto, impacto, hipoteses, testes, causa, correcao, resultado mensuravel e o que documentou para evitar recorrencia.' }
   ];
+  const interviewRubrics = {
+    'Redes basicas': { terms: ['nome', 'ip', 'consulta', 'dns', 'falha'], followUp: 'Como voce provaria que a falha e DNS e nao conectividade IP?' },
+    'Diagnostico': { terms: ['ip', 'mascara', 'gateway', '1.1.1.1', 'dns'], followUp: 'Em qual resultado voce escalaria ao time de redes?' },
+    'Subnetting': { terms: ['mascara', 'bits', 'rede', 'host'], followUp: 'Demonstre com dois enderecos e uma mascara /26.' },
+    'VLAN': { terms: ['broadcast', 'camada 2', 'segment', 'roteamento'], followUp: 'Quais comandos provariam uma VLAN ausente no trunk?' },
+    'Roteamento': { terms: ['tabela', 'prefixo', 'especific', 'next hop'], followUp: 'O que muda se faltar rota de retorno?' },
+    'OSPF': { terms: ['full', 'neighbor', 'route', 'ping'], followUp: 'Que incompatibilidades impedem a adjacencia?' },
+    'ACL e NAT': { terms: ['permit', 'deny', 'traduz', 'endereco'], followUp: 'Como faria testes positivo e negativo sem derrubar o servico?' },
+    'Monitoramento': { terms: ['ntp', 'correl', 'linha do tempo', 'timestamp'], followUp: 'Como horario errado afeta a causa raiz?' },
+    'SOC': { terms: ['origem', 'contas', 'sucesso', 'evidencia', 'conten'], followUp: 'O que diferencia brute force de password spray?' },
+    'Wireless': { terms: ['sinal', 'interferencia', 'canal', 'clientes', 'uplink'], followUp: 'Que medicao separa interferencia de saturacao?' },
+    'Cloud': { terms: ['responsabilidade', 'provedor', 'cliente', 'configur'], followUp: 'Quem responde por IAM mal configurado em IaaS?' },
+    'Automacao': { terms: ['repet', 'valid', 'versao', 'rollback'], followUp: 'Qual seria seu teste antes de aplicar em massa?' },
+    'Comunicacao': { terms: ['impacto', 'evidencia', 'causa', 'resultado', 'aprend'], followUp: 'Qual foi o resultado mensuravel e como evitou recorrencia?' }
+  };
   let interviewHistory = readState(storageKeys.interviewHistory, []);
   let currentInterview = null;
+  let currentInterviewScore = 0;
 
   function nextInterviewQuestion() {
     const unlockedWeek = getHighestStudiedWeek();
@@ -871,6 +947,7 @@ ${item.body}
     document.getElementById('interviewResponse').value = '';
     document.getElementById('interviewAnswer').innerHTML = '';
     document.getElementById('interviewRating').hidden = true;
+    currentInterviewScore = 0;
     document.getElementById('interviewStatus').textContent = `${interviewHistory.length} pratica(s) registrada(s).`;
   }
 
@@ -881,7 +958,18 @@ ${item.body}
       document.getElementById('interviewStatus').textContent = 'Escreva uma resposta antes de comparar.';
       return;
     }
-    document.getElementById('interviewAnswer').innerHTML = `<strong>Resposta esperada</strong><p>${currentInterview.answer}</p>`;
+    const rubric = interviewRubrics[currentInterview.topic];
+    const normalized = response.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const hits = rubric.terms.filter((term) => normalized.includes(term));
+    const missing = rubric.terms.filter((term) => !hits.includes(term));
+    const structure = ['primeiro', 'depois', 'entao', 'por fim', 'valid'].some((term) => normalized.includes(term));
+    currentInterviewScore = Math.min(100, Math.round(hits.length / rubric.terms.length * 70 + (response.length >= 180 ? 20 : response.length >= 90 ? 10 : 5) + (structure ? 10 : 0)));
+    document.getElementById('interviewAnswer').innerHTML = `
+      <strong>Avaliacao tecnica: ${currentInterviewScore}%</strong>
+      <p><strong>Conceitos presentes:</strong> ${hits.length ? hits.map(escapeHtml).join(', ') : 'nenhum dos essenciais'}.</p>
+      <p><strong>Faltou demonstrar:</strong> ${missing.length ? missing.map(escapeHtml).join(', ') : 'nenhum conceito essencial'}.</p>
+      <strong>Resposta esperada</strong><p>${currentInterview.answer}</p>
+      <p><strong>Pergunta de aprofundamento:</strong> ${rubric.followUp}</p>`;
     document.getElementById('interviewRating').hidden = false;
   });
 
@@ -894,11 +982,13 @@ ${item.body}
       topic: currentInterview.topic,
       question: currentInterview.question,
       response: document.getElementById('interviewResponse').value.trim(),
+      score: currentInterviewScore,
       rating: button.dataset.interviewRating,
       createdAt: new Date().toISOString()
     });
     saveState(storageKeys.interviewHistory, interviewHistory);
-    document.getElementById('interviewStatus').textContent = 'Pratica salva. A proxima pergunta continuara respeitando o conteudo estudado.';
+    document.getElementById('interviewStatus').textContent = `Pratica salva com ${currentInterviewScore}%. A proxima pergunta continuara respeitando o conteudo estudado.`;
+    renderReadiness();
   });
   nextInterviewQuestion();
 
@@ -977,15 +1067,31 @@ Document any preventive action.
 
   document.getElementById('saveEnglishPractice').addEventListener('click', () => {
     const weekNumber = getCurrentWeekNumber();
+    const content = englishWeeks[weekNumber - 1];
     const response = document.getElementById('englishInterviewResponse').value.trim();
+    const translation = document.getElementById('englishTranslation').value.trim();
+    const ticket = document.getElementById('englishTicket').value;
+    const normalized = response.toLowerCase();
+    const requiredTerms = content.terms.map(([term]) => term);
+    const usedTerms = requiredTerms.filter((term) => normalized.includes(term));
+    const ticketSections = ['## Summary', '## Impact', '## Investigation', '## Root Cause', '## Resolution', '## Follow-up'];
+    const completedSections = ticketSections.filter((section) => ticket.includes(section) && ticket.split(section)[1]?.trim().length > 20);
+    const responseScore = Math.round(usedTerms.length / requiredTerms.length * 45 + (response.length >= 160 ? 15 : response.length >= 80 ? 8 : 0));
+    const translationScore = translation.length >= Math.round(content.translation.length * .65) ? 15 : translation.length >= 40 ? 8 : 0;
+    const ticketScore = Math.round(completedSections.length / ticketSections.length * 25);
+    const score = Math.min(100, responseScore + translationScore + ticketScore);
     englishPractice[weekNumber] = {
-      translation: document.getElementById('englishTranslation').value.trim(),
-      ticket: document.getElementById('englishTicket').value,
+      translation,
+      ticket,
       interview: response,
+      score,
       updatedAt: new Date().toISOString()
     };
     saveState(storageKeys.englishPractice, englishPractice);
     document.getElementById('englishInterviewSample').innerHTML = `
+      <strong>Avaliacao: ${score}%</strong>
+      <p>Termos usados: ${usedTerms.length}/${requiredTerms.length}. Secoes de ticket preenchidas: ${completedSections.length}/${ticketSections.length}. Meta: 80%.</p>
+      ${usedTerms.length < requiredTerms.length ? `<p><strong>Pratique:</strong> ${requiredTerms.filter((term) => !usedTerms.includes(term)).map(escapeHtml).join(', ')}.</p>` : ''}
       <strong>Resposta de referencia</strong>
       <p>${englishWeeks[weekNumber - 1].sample}</p>
       <p>Sua pratica foi salva neste navegador.</p>

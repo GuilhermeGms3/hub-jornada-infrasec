@@ -43,19 +43,33 @@ Comece pela Semana 1 e siga a ordem:
 - Modo entrevista limitado aos assuntos ja estudados.
 - Ingles tecnico semanal com termos, leitura, traducao, ticket e resposta de entrevista.
 - Labs e simuladores plugados localmente.
+- Academia Pratica com avaliacao por competencia, nota minima de 80% e geracao de artefato.
+
+## Academia Pratica
+
+A Academia Pratica aprofunda as partes que antes funcionavam apenas como introducao:
+
+- seis missoes fechadas para as Semanas 1-6, com pre-requisitos, modelo mental, construcao, falha induzida, checkpoint, rubrica e criterio de saida;
+- seis incidentes Help Desk/NOC com SLA, escolha de evidencias, outputs realistas, causa raiz, acao, escalonamento e ticket avaliado;
+- quatro casos SOC com logs sinteticos, classificacao, severidade, IOCs, linha do tempo, contencao e mapeamento MITRE ATT&CK;
+- quatro analises AWS/Azure sobre IAM, RBAC, VPC/VNet, SG/NSG, auditoria, custo e menor privilegio;
+- oito desafios sequenciais de terminal para arquivos, permissoes, services, logs, rede, Git, branches e reversao;
+- planos por dominio para CCNA v1.1, AWS CLF-C02, AZ-900, SC-900, Fortinet NSE 1-3 e Linux Essentials.
+
+Uma atividade aprovada gera um entregavel na Central de Evidencias. Os desafios de terminal sao simulados e devem ser repetidos em WSL ou VM antes de o output ser usado como evidencia real de portfolio.
 
 ## Central de Carreira
 
 A Central de Carreira concentra oito modulos em abas para nao sobrecarregar a navegacao principal:
 
 1. `Portfolio`: tarefas marcadas como `feito` geram rascunhos de README, ticket, relatorio, print ou diagrama. Tambem permite criar, editar, concluir e baixar entregaveis em Markdown.
-2. `Chamados`: quatro incidentes guiados cobrem usuario sem internet, DNS, VLAN e tentativas suspeitas de login.
+2. `Chamados`: quatro incidentes introdutorios; a Academia Pratica adiciona seis casos completos de Help Desk/NOC.
 3. `Labs`: quatro laboratorios Packet Tracer possuem topologia real, comandos esperados e testes manuais de validacao.
-4. `Pronto para vaga?`: calcula prontidao usando tarefas, labs, chamados e entregaveis.
+4. `Prontidao por evidencias`: exige portoes especificos por cargo e limita a nota quando uma competencia critica esta ausente.
 5. `Simulados`: guarda pontuacoes, exibe evolucao e identifica o assunto que precisa voltar para a jornada.
 6. `Fila Kindle`: acompanha materiais nos estados `quero ler`, `enviado`, `lendo` e `finalizado`.
-7. `Entrevista`: libera perguntas conforme as semanas estudadas em sequencia.
-8. `English`: oferece cinco termos por semana, documentacao curta, traducao, ticket e resposta de entrevista.
+7. `Entrevista`: libera perguntas conforme o estudo, pontua conceitos e estrutura e faz uma pergunta de aprofundamento.
+8. `English`: oferece cinco termos por semana, documentacao curta, traducao, ticket e resposta de entrevista com rubrica.
 
 Os dados ficam no `localStorage` do navegador e sobrevivem a recarregamentos.
 
@@ -93,7 +107,7 @@ Quem estiver usando apenas o GitHub Pages deve baixar o projeto completo, extrai
 
 Materiais incluidos ou referenciados:
 
-- Cisco CCNA 200-301 Exam Topics PDF, documento Cisco Public.
+- Cisco CCNA 200-301 v1.1 Exam Topics PDF, documento Cisco Public.
 - Amostra oficial gratuita do Cisco Press Official Cert Guide.
 - CCNA Simplified, guia online gratuito.
 - Notas comunitarias baseadas no curso gratuito Jeremy's IT Lab.
@@ -150,6 +164,8 @@ O hub salva algumas preferencias no `localStorage` do navegador, como a semana a
 |-- hub-estudos-infrasec.html
 |-- hub-modulos.css
 |-- hub-modulos.js
+|-- hub-aprofundamento.css
+|-- hub-aprofundamento.js
 |-- scripts/
 |-- biblioteca/
 `-- projetos/
