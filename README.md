@@ -33,7 +33,37 @@ Comece pela Semana 1 e siga a ordem:
 - Biblioteca categorizada em oficial, comunidade, simulados, labs e cuidado anti-dumps.
 - Estante dinamica sincronizada com a semana atual e materiais separados por certificacao.
 - Integracao local com Calibre para gerar EPUB ou AZW3 a partir das notas.
+- Central de entregaveis com criacao automatica de rascunhos a partir das tarefas concluidas.
+- Gerador de portfolio HTML independente e pronto para GitHub Pages.
+- Simulador de chamados Help Desk, NOC e SOC com avaliacao e correcao comentada.
+- Laboratorios Packet Tracer com objetivo, topologia, comandos, checklist e validacao.
+- Matriz de prontidao para Help Desk, N2, NOC, SOC e Cloud junior.
+- Historico de simulados com grafico de evolucao e retorno do assunto fraco para a jornada.
+- Fila Kindle com estados de leitura e pacote automatico da semana.
+- Modo entrevista limitado aos assuntos ja estudados.
+- Ingles tecnico semanal com termos, leitura, traducao, ticket e resposta de entrevista.
 - Labs e simuladores plugados localmente.
+
+## Central de Carreira
+
+A Central de Carreira concentra oito modulos em abas para nao sobrecarregar a navegacao principal:
+
+1. `Portfolio`: tarefas marcadas como `feito` geram rascunhos de README, ticket, relatorio, print ou diagrama. Tambem permite criar, editar, concluir e baixar entregaveis em Markdown.
+2. `Chamados`: quatro incidentes guiados cobrem usuario sem internet, DNS, VLAN e tentativas suspeitas de login.
+3. `Labs`: quatro laboratorios Packet Tracer possuem topologia real, comandos esperados e testes manuais de validacao.
+4. `Pronto para vaga?`: calcula prontidao usando tarefas, labs, chamados e entregaveis.
+5. `Simulados`: guarda pontuacoes, exibe evolucao e identifica o assunto que precisa voltar para a jornada.
+6. `Fila Kindle`: acompanha materiais nos estados `quero ler`, `enviado`, `lendo` e `finalizado`.
+7. `Entrevista`: libera perguntas conforme as semanas estudadas em sequencia.
+8. `English`: oferece cinco termos por semana, documentacao curta, traducao, ticket e resposta de entrevista.
+
+Os dados ficam no `localStorage` do navegador e sobrevivem a recarregamentos.
+
+### Publicar o portfolio
+
+Na aba `Portfolio`, clique em `Gerar meu portfolio`. O hub baixa um arquivo independente chamado `portfolio-infrasec.html`.
+
+Esse arquivo pode ser colocado em qualquer repositorio publicado pelo GitHub Pages. Ele ja inclui os entregaveis, quantidade de tarefas feitas, labs validados e media dos simulados existentes no momento da exportacao.
 
 ## Estante Kindle e Calibre
 
@@ -116,10 +146,13 @@ O hub salva algumas preferencias no `localStorage` do navegador, como a semana a
 
 ```text
 .
-├── index.html
-├── hub-estudos-infrasec.html
-├── biblioteca/
-└── projetos/
+|-- index.html
+|-- hub-estudos-infrasec.html
+|-- hub-modulos.css
+|-- hub-modulos.js
+|-- scripts/
+|-- biblioteca/
+`-- projetos/
 ```
 
 ## Licenca

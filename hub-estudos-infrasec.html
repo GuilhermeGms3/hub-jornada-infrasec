@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hub Jornada InfraSec</title>
+  <link rel="stylesheet" href="hub-modulos.css">
   <style>
     :root {
       --bg: #f5f7f8;
@@ -743,6 +744,7 @@
         <a href="#semana1">Semana 1 detalhada</a>
         <a href="#arvore">Arvore clicavel</a>
         <a href="#templates">Templates</a>
+        <a href="#central-carreira">Central de carreira</a>
         <a href="#linux-git">Linux e Git</a>
         <a href="#nao-estudar">Nao estudar ainda</a>
         <a href="#certificacoes">Certificacoes</a>
@@ -866,6 +868,257 @@
             <button id="copyTemplate" class="primary">Copiar template</button>
             <button id="downloadTemplate">Baixar .md</button>
             <span class="tag" id="copyStatus">Escolha um modelo acima.</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="central-carreira">
+        <div class="section-head">
+          <div>
+            <h3>Central de Carreira</h3>
+            <p>Transforme estudo em evidencia: registre entregaveis, resolva chamados, valide labs e acompanhe sua preparacao para vagas.</p>
+          </div>
+        </div>
+
+        <div class="career-tabs" role="tablist" aria-label="Modulos da central de carreira">
+          <button role="tab" aria-selected="true" aria-controls="career-portfolio" id="tab-portfolio" data-career-tab="portfolio">Portfolio</button>
+          <button role="tab" aria-selected="false" aria-controls="career-tickets" id="tab-tickets" data-career-tab="tickets">Chamados</button>
+          <button role="tab" aria-selected="false" aria-controls="career-labs" id="tab-labs" data-career-tab="labs">Labs</button>
+          <button role="tab" aria-selected="false" aria-controls="career-readiness" id="tab-readiness" data-career-tab="readiness">Pronto para vaga?</button>
+          <button role="tab" aria-selected="false" aria-controls="career-exams" id="tab-exams" data-career-tab="exams">Simulados</button>
+          <button role="tab" aria-selected="false" aria-controls="career-reading" id="tab-reading" data-career-tab="reading">Fila Kindle</button>
+          <button role="tab" aria-selected="false" aria-controls="career-interview" id="tab-interview" data-career-tab="interview">Entrevista</button>
+          <button role="tab" aria-selected="false" aria-controls="career-english" id="tab-english" data-career-tab="english">English</button>
+        </div>
+
+        <div class="career-panel" id="career-portfolio" role="tabpanel" aria-labelledby="tab-portfolio">
+          <div class="career-summary" id="deliverableSummary" aria-live="polite"></div>
+          <div class="module-layout">
+            <form class="module-block module-form" id="deliverableForm">
+              <div>
+                <h4>Novo entregavel</h4>
+                <p>Tarefas marcadas como feitas entram aqui automaticamente como rascunho.</p>
+              </div>
+              <div class="field-grid">
+                <label for="deliverableType">Tipo
+                  <select id="deliverableType" required>
+                    <option value="README de lab">README de lab</option>
+                    <option value="Ticket">Ticket</option>
+                    <option value="Relatorio">Relatorio</option>
+                    <option value="Print">Print</option>
+                    <option value="Diagrama">Diagrama</option>
+                  </select>
+                </label>
+                <label for="deliverableWeek">Semana
+                  <select id="deliverableWeek"></select>
+                </label>
+              </div>
+              <label for="deliverableTitle">Titulo
+                <input id="deliverableTitle" type="text" required maxlength="90" placeholder="Ex.: Diagnostico de DNS">
+              </label>
+              <label for="deliverableEvidence">Link ou caminho da evidencia
+                <input id="deliverableEvidence" type="text" maxlength="240" placeholder="Ex.: evidencias/dns-lab.png">
+              </label>
+              <label for="deliverableBody">O que foi feito
+                <textarea id="deliverableBody" required placeholder="Problema, comandos, resultado e conclusao."></textarea>
+              </label>
+              <div class="action-row">
+                <button class="primary" type="submit" id="saveDeliverable">Salvar entregavel</button>
+                <button type="button" id="clearDeliverable">Limpar</button>
+              </div>
+              <p class="module-status" id="deliverableStatus" aria-live="polite"></p>
+            </form>
+
+            <div class="module-block">
+              <div class="block-head">
+                <div>
+                  <h4>Central de evidencias</h4>
+                  <p>Edite, baixe em Markdown ou remova seus artefatos.</p>
+                </div>
+                <button class="primary" type="button" id="generatePortfolio">Gerar meu portfolio</button>
+              </div>
+              <div class="record-list" id="deliverableList"></div>
+              <p class="module-status" id="portfolioStatus" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="career-panel" id="career-tickets" role="tabpanel" aria-labelledby="tab-tickets" hidden>
+          <div class="module-layout">
+            <div class="module-block">
+              <label for="incidentSelect">Cenario
+                <select id="incidentSelect"></select>
+              </label>
+              <div class="scenario-box" id="incidentScenario"></div>
+              <fieldset class="choice-list" id="incidentCommands">
+                <legend>Quais comandos ou verificacoes voce faria?</legend>
+              </fieldset>
+            </div>
+            <form class="module-block module-form" id="ticketSimulatorForm">
+              <label for="incidentCause">Causa mais provavel
+                <select id="incidentCause"></select>
+              </label>
+              <label for="incidentTicket">Registro do ticket
+                <textarea id="incidentTicket" required placeholder="Sintoma, impacto, testes realizados, causa e solucao."></textarea>
+              </label>
+              <button class="primary" type="submit">Avaliar investigacao</button>
+              <div class="feedback-box" id="incidentFeedback" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="career-panel" id="career-labs" role="tabpanel" aria-labelledby="tab-labs" hidden>
+          <div class="module-layout lab-layout">
+            <div class="module-block">
+              <label for="validatedLabSelect">Laboratorio
+                <select id="validatedLabSelect"></select>
+              </label>
+              <img class="lab-topology" id="validatedLabImage" alt="">
+              <div class="lab-actions">
+                <a class="button primary" id="validatedLabFile" href="#">Abrir no Packet Tracer</a>
+              </div>
+            </div>
+            <div class="module-block">
+              <div id="validatedLabDetails"></div>
+              <fieldset class="validation-list" id="validatedLabChecks">
+                <legend>Checklist e testes de validacao</legend>
+              </fieldset>
+              <div class="action-row">
+                <button class="primary" type="button" id="validateLab">Validar laboratorio</button>
+                <button type="button" id="labDeliverable">Gerar entregavel</button>
+              </div>
+              <p class="module-status" id="labStatus" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="career-panel" id="career-readiness" role="tabpanel" aria-labelledby="tab-readiness" hidden>
+          <div class="readiness-head">
+            <div>
+              <h4>Estou pronto para vaga?</h4>
+              <p>O calculo usa tarefas feitas, labs validados, chamados resolvidos e entregaveis salvos neste navegador.</p>
+            </div>
+            <button type="button" id="refreshReadiness">Atualizar matriz</button>
+          </div>
+          <div class="table-wrap">
+            <table class="readiness-table">
+              <thead>
+                <tr>
+                  <th>Vaga</th>
+                  <th>Prontidao</th>
+                  <th>Conhecimentos</th>
+                  <th>Labs</th>
+                  <th>Entregaveis</th>
+                  <th>Principal lacuna</th>
+                  <th>Certificacao</th>
+                </tr>
+              </thead>
+              <tbody id="readinessBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="career-panel" id="career-exams" role="tabpanel" aria-labelledby="tab-exams" hidden>
+          <div class="module-layout">
+            <form class="module-block module-form" id="examHistoryForm">
+              <div>
+                <h4>Registrar simulado</h4>
+                <p>Registre tambem simulados feitos nas ferramentas plugadas.</p>
+              </div>
+              <div class="field-grid">
+                <label for="examScore">Pontuacao (%)
+                  <input id="examScore" type="number" required min="0" max="100" inputmode="numeric">
+                </label>
+                <label for="examTopic">Assunto com mais erros
+                  <select id="examTopic"></select>
+                </label>
+              </div>
+              <label for="examSource">Simulado
+                <input id="examSource" type="text" required maxlength="80" placeholder="Ex.: CCNA 1 Study Hub">
+              </label>
+              <label for="examNotes">O que revisar
+                <textarea id="examNotes" placeholder="Anote os erros mais importantes."></textarea>
+              </label>
+              <button class="primary" type="submit">Salvar resultado</button>
+            </form>
+            <div class="module-block">
+              <div class="weak-topic" id="weakTopic"></div>
+              <div class="score-chart" id="scoreChart" aria-label="Evolucao das pontuacoes"></div>
+              <div class="record-list" id="examHistoryList"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="career-panel" id="career-reading" role="tabpanel" aria-labelledby="tab-reading" hidden>
+          <div class="readiness-head">
+            <div>
+              <h4>Fila de leitura Kindle</h4>
+              <p>Controle o que quer ler, o que ja enviou e o que terminou.</p>
+            </div>
+            <div class="action-row">
+              <button class="primary" type="button" id="queueCurrentWeek">Adicionar semana atual</button>
+              <a class="button" href="#estante">Preparar pacote</a>
+            </div>
+          </div>
+          <div class="reading-board" id="readingQueue"></div>
+        </div>
+
+        <div class="career-panel" id="career-interview" role="tabpanel" aria-labelledby="tab-interview" hidden>
+          <div class="module-layout">
+            <div class="module-block interview-question">
+              <div class="block-head">
+                <span class="module-kicker" id="interviewLevel"></span>
+                <button type="button" id="nextInterviewQuestion">Nova pergunta</button>
+              </div>
+              <h4 id="interviewQuestion"></h4>
+              <p id="interviewExercise"></p>
+              <label for="interviewResponse">Sua resposta
+                <textarea id="interviewResponse" placeholder="Responda como se estivesse em uma entrevista."></textarea>
+              </label>
+              <button class="primary" type="button" id="showInterviewAnswer">Comparar resposta</button>
+            </div>
+            <div class="module-block">
+              <div class="feedback-box" id="interviewAnswer"></div>
+              <div class="self-rating" id="interviewRating" hidden>
+                <span>Como voce se saiu?</span>
+                <button type="button" data-interview-rating="revisar">Preciso revisar</button>
+                <button class="primary" type="button" data-interview-rating="dominei">Consegui explicar</button>
+              </div>
+              <p class="module-status" id="interviewStatus" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="career-panel" id="career-english" role="tabpanel" aria-labelledby="tab-english" hidden>
+          <div class="english-grid">
+            <div class="module-block">
+              <span class="module-kicker" id="englishWeek"></span>
+              <h4>Cinco termos da semana</h4>
+              <div class="term-list" id="englishTerms"></div>
+            </div>
+            <div class="module-block">
+              <h4>Documentacao curta</h4>
+              <p class="english-document" id="englishDocument"></p>
+              <label for="englishTranslation">Traduza com suas palavras
+                <textarea id="englishTranslation" placeholder="Nao precisa traduzir palavra por palavra."></textarea>
+              </label>
+              <button type="button" id="checkTranslation">Ver traducao sugerida</button>
+              <div class="feedback-box" id="translationFeedback"></div>
+            </div>
+            <div class="module-block">
+              <h4>Ticket em ingles</h4>
+              <textarea id="englishTicket" aria-label="Modelo de ticket em ingles"></textarea>
+              <button type="button" id="downloadEnglishTicket">Baixar ticket .md</button>
+            </div>
+            <div class="module-block">
+              <h4>Resposta de entrevista</h4>
+              <p id="englishInterviewPrompt"></p>
+              <label for="englishInterviewResponse">Sua resposta em ingles
+                <textarea id="englishInterviewResponse"></textarea>
+              </label>
+              <button class="primary" type="button" id="saveEnglishPractice">Salvar pratica</button>
+              <div class="feedback-box" id="englishInterviewSample"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -1759,6 +2012,7 @@ Testes:
       });
     });
   </script>
+  <script src="hub-modulos.js"></script>
 </body>
 </html>
 
