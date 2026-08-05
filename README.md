@@ -10,18 +10,35 @@ Versao publicada: [Hub Jornada InfraSec no GitHub Pages](https://guilhermegms3.g
 
 Abra `index.html` ou `hub-estudos-infrasec.html` no navegador.
 
-Comece pela Semana 1 e siga a ordem:
+O hub abre em `Hoje`, mostrando somente a missao atual. Comece pela Semana 1 e siga este ciclo:
 
-1. Leia a missao do dia.
-2. Execute as tarefas da semana.
-3. Use a ferramenta indicada pela tarefa.
-4. Preencha um template de entregavel.
-5. So avance quando conseguir explicar o que fez.
+1. Leia o objetivo, os tres passos e a evidencia exigida.
+2. Clique em `Abrir atividade` para ir diretamente ao lab, chamado, terminal ou material correto.
+3. Produza a evidencia e marque `Concluir hoje`; use `Nao entendi` quando precisar de uma rota de recuperacao.
+4. Avance para a proxima missao somente quando a atual estiver concluida.
+5. Abra `Minha jornada` para enxergar a semana inteira e os criterios que liberam a proxima.
+
+A navegacao principal possui cinco areas: `Hoje`, `Minha jornada`, `Praticar`, `Carreira` e `Biblioteca`. O conteudo antigo continua no projeto, mas aparece apenas dentro da area em que ele serve ao estudo. Em `Minha jornada`, o botao `Ver tarefas e planos complementares` reabre os planos detalhados anteriores.
+
+## Jornada guiada
+
+A rota principal possui 12 semanas, 60 missoes diarias e uma progressao do zero ao intermediario:
+
+1. Fundamentos de rede: conectividade, IPv4, subnetting, switching, VLAN, roteamento, OSPF, ACL e NAT.
+2. Operacao: Linux, troubleshooting, monitoramento, tickets, SLA e comunicacao de incidentes.
+3. Seguranca: identidade, menor privilegio, logs, triagem SOC, IOCs e contencao inicial.
+4. Cloud: responsabilidade compartilhada, VPC/VNet, security groups/NSG, IAM/RBAC e custos basicos.
+5. Integracao profissional: arquitetura operacional, Git, automacao segura, portfolio e entrevista.
+
+Cada semana declara pre-requisitos, resultado esperado, ferramentas, criterio de saida e assuntos que ainda nao devem ser estudados. Cada dia termina em uma evidencia concreta, como diagnostico, tabela, configuracao, ticket, runbook, diagrama ou README.
+
+A ordem foi alinhada a objetivos publicados pela [Cisco Networking Academy](https://www.netacad.com/sites/default/files/course-catalog.pdf), [LPI Linux Essentials](https://www.lpi.org/our-certifications/linux-essentials-overview/), [AWS Cloud Practitioner](https://docs.aws.amazon.com/pt_br/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html), [Microsoft AZ-900](https://learn.microsoft.com/pt-br/credentials/certifications/resources/study-guides/az-900) e [Microsoft SC-900](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-900). A interface segue principios de visibilidade de estado, reconhecimento em vez de memorizacao, prevencao de erro e ajuda contextual das [heuristicas de Nielsen](https://www.nngroup.com/articles/ten-usability-heuristics/).
 
 ## O que tem no hub
 
-- Jornada de 12 semanas.
-- Semana 1 detalhada por dia: segunda a fim de semana.
+- Jornada guiada de 12 semanas e 60 missoes diarias.
+- Tela `O que estudar hoje` com uma unica missao, passos, evidencia, progresso e rota de recuperacao.
+- Mapa completo por fases, dependencias e criterios de saida.
 - Sistema de progresso por tarefa com estados `feito`, `revisar` e `nao entendi`, salvo no navegador.
 - Arvore clicavel por dependencia: IP/DNS/DHCP, VLAN, Inter-VLAN, OSPF, ACL/NAT e cloud/firewall.
 - Templates de README de lab, ticket NOC, investigacao SOC e relatorio cloud.
@@ -176,6 +193,8 @@ O hub salva algumas preferencias no `localStorage` do navegador, como a semana a
 |-- hub-aprofundamento.js
 |-- hub-arquitetura.css
 |-- hub-arquitetura.js
+|-- hub-jornada-guiada.css
+|-- hub-jornada-guiada.js
 |-- scripts/
 |-- biblioteca/
 `-- projetos/

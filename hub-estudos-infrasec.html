@@ -733,6 +733,7 @@
       .builder-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <link rel="stylesheet" href="hub-jornada-guiada.css">
 </head>
 <body>
   <div class="app">
@@ -742,25 +743,98 @@
         <p>Redes primeiro. SOC/NOC depois. Cloud quando fizer sentido.</p>
       </div>
       <nav aria-label="Navegacao">
-        <a href="#jornada">Jornada atual</a>
-        <a href="#semana1">Semana 1 detalhada</a>
-        <a href="#academia-pratica">Academia pratica</a>
-        <a href="#arvore">Arvore clicavel</a>
-        <a href="#templates">Templates</a>
-        <a href="#central-carreira">Central de carreira</a>
-        <a href="#linux-git">Linux e Git</a>
-        <a href="#nao-estudar">Nao estudar ainda</a>
-        <a href="#certificacoes">Certificacoes</a>
-        <a href="#estante">Estante Kindle</a>
-        <a href="#biblioteca">Biblioteca</a>
-        <a href="#laboratorio">Laboratorio</a>
+        <a href="#inicio" data-hub-view="home">Hoje</a>
+        <a href="#plano-estudos" data-hub-view="journey">Minha jornada</a>
+        <a href="#academia-pratica" data-hub-view="practice">Praticar</a>
+        <a href="#central-carreira" data-hub-view="career">Carreira</a>
+        <a href="#biblioteca" data-hub-view="library">Biblioteca</a>
       </nav>
       <div class="side-note">
-        Regra do hub: se uma ferramenta nao estiver ligada a uma tarefa, ela fica na biblioteca.
+        <strong id="sidebarWeekStatus">Semana 1 de 12</strong>
+        <span id="sidebarNextAction">Abra Hoje e execute apenas a missao indicada.</span>
       </div>
     </aside>
 
     <main>
+      <section id="inicio" data-workspace="home">
+        <div class="guided-header">
+          <div>
+            <span class="guided-eyebrow" id="todayPhase">Fase 1 · Fundamentos de rede</span>
+            <h2>O que estudar hoje</h2>
+            <p>Uma sessao, uma evidencia. O resto do hub fica fora do caminho ate voce precisar.</p>
+          </div>
+          <div class="guided-selectors">
+            <label for="guidedWeekSelect">Semana
+              <select id="guidedWeekSelect"></select>
+            </label>
+            <label for="guidedDaySelect">Missao do dia
+              <select id="guidedDaySelect"></select>
+            </label>
+          </div>
+        </div>
+
+        <div class="today-workspace">
+          <article class="today-mission" aria-labelledby="todayMissionTitle">
+            <div class="mission-status-line">
+              <span id="todayMissionNumber">Missao 1 de 5</span>
+              <span id="todayMissionDuration">90 minutos</span>
+            </div>
+            <h3 id="todayMissionTitle"></h3>
+            <p class="today-objective" id="todayMissionObjective"></p>
+            <ol class="today-steps" id="todayMissionSteps"></ol>
+            <div class="today-output">
+              <strong>Evidencia para encerrar o dia</strong>
+              <p id="todayMissionEvidence"></p>
+            </div>
+            <div class="today-actions">
+              <a class="button primary" id="todayPrimaryAction" href="#">Comecar sessao</a>
+              <button type="button" id="completeToday">Concluir hoje</button>
+              <button type="button" id="blockedToday">Nao entendi</button>
+            </div>
+            <div class="guided-feedback" id="todayFeedback" aria-live="polite"></div>
+          </article>
+
+          <aside class="week-context" aria-label="Contexto da semana">
+            <div>
+              <span class="context-label">Objetivo da semana</span>
+              <h3 id="guidedWeekTitle"></h3>
+              <p id="guidedWeekOutcome"></p>
+            </div>
+            <div class="week-progress-block">
+              <div><strong id="guidedProgressText">0 de 5 missoes</strong><span id="guidedProgressPercent">0%</span></div>
+              <progress id="guidedProgress" max="5" value="0">0 de 5</progress>
+            </div>
+            <div>
+              <span class="context-label">Criterio para avancar</span>
+              <p id="guidedExitCriteria"></p>
+            </div>
+            <div>
+              <span class="context-label">Nao estudar agora</span>
+              <p id="guidedNotYet"></p>
+            </div>
+            <button type="button" id="nextMission" disabled>Ir para a proxima missao</button>
+          </aside>
+        </div>
+      </section>
+
+      <section id="plano-estudos" data-workspace="journey" hidden>
+        <div class="section-head guided-plan-head">
+          <div>
+            <h2>Jornada do zero ao intermediario</h2>
+            <p>Doze semanas em ordem de dependencia. Se uma semana estiver dificil, repita as missoes antes de avancar.</p>
+          </div>
+          <button type="button" id="toggleLegacyJourney" aria-expanded="false">Ver tarefas e planos complementares</button>
+        </div>
+        <div class="phase-rail" id="phaseRail" aria-label="Fases da jornada"></div>
+        <div class="guided-plan-layout">
+          <nav class="week-roadmap" id="guidedWeekRoadmap" aria-label="Semanas de estudo"></nav>
+          <article class="week-syllabus" id="guidedWeekSyllabus"></article>
+        </div>
+        <div class="curriculum-sources">
+          <strong>Base curricular</strong>
+          <span>Cisco Networking Basics e CCNA, LPI Linux Essentials, AWS CLF-C02, Microsoft AZ-900/SC-900 e pratica operacional do proprio hub.</span>
+        </div>
+      </section>
       <section class="hero" id="jornada">
         <div class="panel">
           <h2>Voce esta na Semana <span id="weekTitle">1</span>.</h2>
@@ -2258,6 +2332,7 @@ Testes:
   <script src="hub-modulos.js"></script>
   <script src="hub-aprofundamento.js"></script>
   <script src="hub-arquitetura.js"></script>
+  <script src="hub-jornada-guiada.js"></script>
 </body>
 </html>
 
