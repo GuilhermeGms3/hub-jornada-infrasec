@@ -18,9 +18,21 @@ O hub abre em `Hoje`, mostrando somente a missao atual. Comece pela Semana 1 e s
 4. Avance para a proxima missao somente quando a atual estiver concluida.
 5. Abra `Minha jornada` para enxergar a semana inteira e os criterios que liberam a proxima.
 
-A navegacao principal possui 28 paginas internas agrupadas em `Comecar`, `Redes`, `Operacao e seguranca`, `Cloud e arquitetura`, `Carreira` e `Recursos`. Cada rota mostra somente um modulo; os botoes de seta percorrem o curso na ordem. O conteudo antigo continua no projeto em paginas proprias, incluindo visao semanal, tarefas da jornada e Semana 1 detalhada.
+A navegacao principal possui 29 paginas internas agrupadas em `Comecar`, `Redes`, `Operacao e seguranca`, `Cloud e arquitetura`, `Carreira` e `Recursos`. Cada rota mostra somente um modulo; os botoes de seta percorrem o curso na ordem. O conteudo antigo continua no projeto em paginas proprias, incluindo visao semanal, tarefas da jornada e Semana 1 detalhada.
 
 As paginas usam hashes compartilháveis, como `#hoje`, `#soc`, `#cloud`, `#portfolio` e `#biblioteca`. Links antigos como `#semana1`, `#academia-pratica` e `#central-carreira` continuam funcionando por meio de aliases.
+
+## Nivel adaptativo
+
+A pagina `Meu nivel` mede oito competencias separadamente: Redes, Help Desk/NOC, Linux/Git, Seguranca/SOC, Cloud, Arquitetura, Carreira/portfolio e Ingles tecnico.
+
+- O diagnostico possui 16 perguntas basicas e aceita `Nao sei ainda` sem penalidade artificial.
+- Os niveis sao `Comecando`, `Base em formacao`, `Pratica guiada` e `Competencia demonstrada`.
+- O diagnostico libera no maximo o nivel 2; o nivel 3 exige evidencia pratica aprovada no hub.
+- Labs, incidentes, entregaveis e atividades com nota atualizam a competencia correspondente.
+- O recomendador escolhe tres areas mais fracas e respeita a ordem de pre-requisitos em caso de empate.
+- Telas acima do nivel atual mostram preparacao, glossario e rota anterior antes do conteudo tecnico.
+- Nenhum conteudo e removido: o aluno pode liberar a pagina atual ou ativar `Sempre mostrar o conteudo completo`.
 
 ## Jornada guiada
 
@@ -41,7 +53,7 @@ A ordem foi alinhada a objetivos publicados pela [Cisco Networking Academy](http
 - Jornada guiada de 12 semanas e 60 missoes diarias.
 - Tela `O que estudar hoje` com uma unica missao, passos, evidencia, progresso e rota de recuperacao.
 - Mapa completo por fases, dependencias e criterios de saida.
-- 28 paginas internas com um unico modulo visivel por rota e navegacao anterior/proximo.
+- 29 paginas internas com um unico modulo visivel por rota e navegacao anterior/proximo.
 - Menu lateral agrupado por etapa, sem paineis agregadores expostos durante o estudo.
 - Sistema de progresso por tarefa com estados `feito`, `revisar` e `nao entendi`, salvo no navegador.
 - Arvore clicavel por dependencia: IP/DNS/DHCP, VLAN, Inter-VLAN, OSPF, ACL/NAT e cloud/firewall.
@@ -199,6 +211,7 @@ O hub salva algumas preferencias no `localStorage` do navegador, como a semana a
 |-- hub-arquitetura.js
 |-- hub-jornada-guiada.css
 |-- hub-jornada-guiada.js
+|-- hub-nivel-adaptativo.js
 |-- scripts/
 |-- biblioteca/
 `-- projetos/

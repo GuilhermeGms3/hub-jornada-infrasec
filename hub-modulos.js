@@ -1108,6 +1108,7 @@ Document any preventive action.
       updatedAt: new Date().toISOString()
     };
     saveState(storageKeys.englishPractice, englishPractice);
+    window.dispatchEvent(new CustomEvent('infrasec:competency-changed'));
     document.getElementById('englishInterviewSample').innerHTML = `
       <strong>Avaliacao: ${score}%</strong>
       <p>Termos usados: ${usedTerms.length}/${requiredTerms.length}. Secoes de ticket preenchidas: ${completedSections.length}/${ticketSections.length}. Meta: 80%.</p>

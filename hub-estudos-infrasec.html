@@ -746,6 +746,7 @@
         <div class="nav-group">
           <span class="nav-group-title">Comecar</span>
           <a href="#hoje" data-hub-page="today">Hoje</a>
+          <a href="#meu-nivel" data-hub-page="level">Meu nivel</a>
           <a href="#jornada" data-hub-page="journey">Plano de 12 semanas</a>
           <a href="#visao-semanal" data-hub-page="weekly-overview">Visao semanal</a>
           <a href="#tarefas-jornada" data-hub-page="weekly-tasks">Tarefas da jornada</a>
@@ -801,13 +802,14 @@
         <div>
           <span id="hubPageGroup">Comecar</span>
           <strong id="hubPageTitle">Hoje</strong>
-          <small id="hubPagePosition">Modulo 1 de 28</small>
+          <small id="hubPagePosition">Modulo 1 de 29</small>
         </div>
         <div class="hub-page-controls">
           <button type="button" id="previousHubPage" aria-label="Abrir modulo anterior" title="Modulo anterior">&#8592;</button>
           <button type="button" id="nextHubPage" aria-label="Abrir proximo modulo" title="Proximo modulo">&#8594;</button>
         </div>
       </header>
+      <div class="adaptive-support" id="adaptiveSupport" hidden></div>
       <section id="inicio" data-workspace="home">
         <div class="guided-header">
           <div>
@@ -867,6 +869,53 @@
             <button type="button" id="nextMission" disabled>Ir para a proxima missao</button>
           </aside>
         </div>
+      </section>
+
+      <section id="nivel" hidden>
+        <div class="level-header">
+          <div>
+            <span class="guided-eyebrow">Aprendizado adaptativo</span>
+            <h2>Seu nivel por competencia</h2>
+            <p>Voce nao precisa saber tudo para comecar. O hub mede cada area separadamente e prepara a tela antes de apresentar termos mais avancados.</p>
+          </div>
+          <label class="adaptive-setting" for="alwaysShowFullContent">
+            <input type="checkbox" id="alwaysShowFullContent">
+            Sempre mostrar o conteudo completo
+          </label>
+        </div>
+
+        <div class="level-summary" id="levelOverview"></div>
+        <div class="level-domain-grid" id="levelDomainGrid"></div>
+
+        <section class="balanced-study" aria-labelledby="balancedStudyTitle">
+          <div class="section-head">
+            <div>
+              <h3 id="balancedStudyTitle">Proximos estudos equilibrados</h3>
+              <p>O hub prioriza as menores competencias e evita estudar apenas a area mais confortavel.</p>
+            </div>
+          </div>
+          <div class="balanced-recommendations" id="balancedRecommendations"></div>
+        </section>
+
+        <section class="diagnostic-section" aria-labelledby="diagnosticTitle">
+          <div class="diagnostic-intro" id="diagnosticIntro">
+            <span class="guided-eyebrow">Ponto de partida</span>
+            <h3 id="diagnosticTitle">Diagnostico basico</h3>
+            <p>Sao 16 perguntas curtas, duas por competencia. Responder "nao sei" e uma resposta valida: ela faz o hub ensinar antes de cobrar.</p>
+            <button class="primary" type="button" id="startDiagnostic">Iniciar diagnostico</button>
+          </div>
+          <div class="diagnostic-runner" id="diagnosticRunner" hidden>
+            <div class="diagnostic-progress"><strong id="diagnosticDomain"></strong><span id="diagnosticPosition"></span></div>
+            <progress id="diagnosticProgress" max="16" value="0">0 de 16</progress>
+            <h3 id="diagnosticQuestion"></h3>
+            <div class="diagnostic-options" id="diagnosticOptions"></div>
+            <div class="diagnostic-actions">
+              <button type="button" id="diagnosticBack">Voltar</button>
+              <button class="primary" type="button" id="diagnosticNext" disabled>Proxima pergunta</button>
+            </div>
+          </div>
+          <div class="diagnostic-result" id="diagnosticResult" aria-live="polite"></div>
+        </section>
       </section>
 
       <section id="plano-estudos" data-workspace="journey" hidden>
@@ -2385,6 +2434,7 @@ Testes:
   <script src="hub-aprofundamento.js"></script>
   <script src="hub-arquitetura.js"></script>
   <script src="hub-jornada-guiada.js"></script>
+  <script src="hub-nivel-adaptativo.js"></script>
 </body>
 </html>
 

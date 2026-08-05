@@ -123,6 +123,290 @@ body.route-focused #central-carreira > .career-tabs {
   display: none;
 }
 
+.adaptive-support {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  margin: 0 0 18px;
+  padding: 16px 18px;
+  align-items: center;
+  border: 1px solid #bfd8dc;
+  border-left: 4px solid var(--primary);
+  border-radius: 6px;
+  background: #edf6f7;
+}
+
+.adaptive-support[hidden] {
+  display: none;
+}
+
+.adaptive-support.is-gate {
+  padding: 22px;
+  border-color: #d7c38e;
+  border-left-color: var(--warn);
+  background: #fff9e9;
+}
+
+.adaptive-support h2,
+.adaptive-support h3 {
+  margin: 3px 0 5px;
+  letter-spacing: 0;
+}
+
+.adaptive-support p {
+  max-width: 82ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.adaptive-support .adaptive-glossary {
+  display: flex;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.adaptive-support .adaptive-glossary span {
+  padding: 4px 7px;
+  border: 1px solid rgba(13,107,117,.2);
+  border-radius: 4px;
+  background: rgba(255,255,255,.7);
+  font-size: 12px;
+}
+
+.adaptive-support-actions {
+  display: flex;
+  min-width: 190px;
+  flex-direction: column;
+  gap: 7px;
+}
+
+body.adaptive-content-locked main > section:not(#nivel) {
+  display: none !important;
+}
+
+.level-header {
+  display: flex;
+  gap: 30px;
+  padding: 10px 0 22px;
+  align-items: end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+
+.level-header h2 {
+  margin: 4px 0 6px;
+  font-size: 30px;
+  letter-spacing: 0;
+}
+
+.level-header p {
+  max-width: 76ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.adaptive-setting {
+  display: flex;
+  max-width: 270px;
+  padding: 10px 12px;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.level-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 22px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.level-summary > div {
+  padding: 16px 18px;
+  border-right: 1px solid var(--line);
+}
+
+.level-summary > div:last-child {
+  border-right: 0;
+}
+
+.level-summary strong,
+.level-summary span {
+  display: block;
+}
+
+.level-summary strong {
+  margin-top: 3px;
+  font-size: 22px;
+}
+
+.level-summary span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.level-domain-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.level-domain-card {
+  display: grid;
+  min-height: 170px;
+  padding: 15px;
+  align-content: start;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.level-domain-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.level-domain-card h3,
+.level-domain-card p {
+  margin: 0;
+}
+
+.level-domain-card h3 {
+  font-size: 16px;
+}
+
+.level-domain-card p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.level-badge {
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #fff;
+  background: var(--primary-2);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.level-domain-card progress {
+  width: 100%;
+  height: 7px;
+}
+
+.level-evidence {
+  margin-top: auto;
+  font-size: 11px;
+}
+
+.balanced-study,
+.diagnostic-section {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.balanced-recommendations {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.balanced-card {
+  padding: 16px;
+  border-left: 3px solid var(--primary);
+  background: #fff;
+}
+
+.balanced-card span,
+.balanced-card strong,
+.balanced-card p {
+  display: block;
+}
+
+.balanced-card span {
+  color: var(--primary-2);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.balanced-card strong {
+  margin: 4px 0;
+}
+
+.balanced-card p {
+  min-height: 42px;
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.diagnostic-section {
+  max-width: 900px;
+}
+
+.diagnostic-intro h3,
+.diagnostic-intro p {
+  margin-top: 5px;
+}
+
+.diagnostic-intro p {
+  max-width: 72ch;
+  color: var(--muted);
+}
+
+.diagnostic-runner {
+  display: grid;
+  gap: 16px;
+}
+
+.diagnostic-runner[hidden] {
+  display: none;
+}
+
+.diagnostic-progress,
+.diagnostic-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.diagnostic-runner progress {
+  width: 100%;
+}
+
+.diagnostic-options {
+  display: grid;
+  gap: 7px;
+}
+
+.diagnostic-options label {
+  display: flex;
+  padding: 11px 12px;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.diagnostic-result {
+  margin-top: 16px;
+  color: var(--ok);
+  font-weight: 700;
+}
+
 #inicio,
 #plano-estudos {
   margin-top: 0;

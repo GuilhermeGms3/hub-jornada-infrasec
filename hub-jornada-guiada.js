@@ -209,6 +209,7 @@
   const guidedDaySelect = document.getElementById('guidedDaySelect');
   const hubPages = [
     { id: 'today', hash: 'hoje', group: 'Comecar', title: 'O que estudar hoje', section: 'inicio' },
+    { id: 'level', hash: 'meu-nivel', group: 'Comecar', title: 'Meu nivel', section: 'nivel' },
     { id: 'journey', hash: 'jornada', group: 'Comecar', title: 'Plano de 12 semanas', section: 'plano-estudos' },
     { id: 'weekly-overview', hash: 'visao-semanal', group: 'Comecar', title: 'Visao semanal', section: 'jornada' },
     { id: 'weekly-tasks', hash: 'tarefas-jornada', group: 'Comecar', title: 'Tarefas da jornada', section: 'tarefas' },
@@ -272,7 +273,9 @@
     document.getElementById('hubPagePosition').textContent = `Modulo ${pageIndex + 1} de ${hubPages.length}`;
     document.getElementById('previousHubPage').disabled = pageIndex === 0;
     document.getElementById('nextHubPage').disabled = pageIndex === hubPages.length - 1;
+    document.body.dataset.hubPage = page.id;
     localStorage.setItem(viewKey, page.id);
+    window.dispatchEvent(new CustomEvent('infrasec:page-changed', { detail: { pageId: page.id } }));
     if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -287,6 +290,12 @@
     const page = pageByHash[hash] || pageById[legacyHashAliases[hash]] || pageById[localStorage.getItem(viewKey)] || pageById.today;
     activatePage(page.id, scroll);
   }
+
+  window.InfraSecHub = {
+    navigateToPage,
+    getActivePage: () => activePageId,
+    pages: hubPages.map(({ id, hash, group, title }) => ({ id, hash, group, title }))
+  };
 
   function setPractice(tab, value) {
     const pageMap = {
@@ -463,6 +472,7 @@
     const dayIndex = Number(guidedDaySelect.value);
     if (missionState(weekIndex, dayIndex) !== 'done') progress[`${weekIndex}-${dayIndex}`] = 'doing';
     save(progressKey, progress);
+    window.dispatchEvent(new CustomEvent('infrasec:competency-changed'));
     renderToday();
     openGuidedTarget(event.currentTarget.dataset.guidedTarget);
   });
@@ -471,6 +481,7 @@
     const dayIndex = Number(guidedDaySelect.value);
     progress[`${weekIndex}-${dayIndex}`] = 'done';
     save(progressKey, progress);
+    window.dispatchEvent(new CustomEvent('infrasec:competency-changed'));
     renderToday();
   });
   document.getElementById('blockedToday').addEventListener('click', () => {
@@ -478,6 +489,7 @@
     const dayIndex = Number(guidedDaySelect.value);
     progress[`${weekIndex}-${dayIndex}`] = 'blocked';
     save(progressKey, progress);
+    window.dispatchEvent(new CustomEvent('infrasec:competency-changed'));
     renderToday();
   });
   document.getElementById('nextMission').addEventListener('click', () => {
