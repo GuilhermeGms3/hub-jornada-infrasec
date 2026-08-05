@@ -2,6 +2,7 @@
   'use strict';
 
   const profileKey = 'infrasec-learner-profile';
+  const masteryKey = 'infrasec-mastery-exams';
   const alwaysFullKey = 'infrasec-always-show-full-content';
   const onboardingKey = 'infrasec-level-onboarding-shown';
   const levelLabels = ['Comecando', 'Base em formacao', 'Pratica guiada', 'Competencia demonstrada'];
@@ -149,7 +150,14 @@
   function competency(domain) {
     const diagnosis = Number(diagnosticLevels()[domain] || 0);
     const evidence = evidenceLevel(domain);
-    return { level: Math.max(diagnosis, evidence[0]), evidence: evidence[1], diagnosis, evidenceLevel: evidence[0] };
+    const mastery = read(masteryKey, {})[domain] || {};
+    let level = mastery.foundation?.passed ? 1 : 0;
+    if (level >= 1 && mastery.applied?.passed) level = 2;
+    if (level >= 2 && evidence[0] >= 3) level = 3;
+    const nextGate = level === 0 ? 'Passe na prova de fundamentos.'
+      : level === 1 ? 'Passe na prova aplicada.'
+        : level === 2 ? 'Aprove uma atividade pratica com evidencia.' : 'Nivel verificado por prova e pratica.';
+    return { level, evidence: `${nextGate} ${evidence[1]}`, diagnosis, evidenceLevel: evidence[0], mastery };
   }
 
   function renderProfile() {
@@ -168,6 +176,8 @@
         <progress max="3" value="${item.level}">${item.level} de 3</progress>
         <p>${item.domain.next}</p>
         <span class="level-evidence">${item.evidence}</span>
+        ${item.level < 2 ? `<button type="button" data-start-mastery="${item.id}">Fazer prova N${item.level} para N${item.level + 1}</button>` : ''}
+        ${item.level === 2 ? `<button type="button" data-adaptive-page="${item.domain.page}">Fazer atividade pratica</button>` : ''}
       </article>`).join('');
     renderBalanced(entries);
   }
@@ -247,7 +257,7 @@
     document.getElementById('diagnosticRunner').hidden = true;
     document.getElementById('diagnosticIntro').hidden = false;
     document.getElementById('startDiagnostic').textContent = 'Refazer diagnostico';
-    document.getElementById('diagnosticResult').textContent = 'Diagnostico salvo. O nivel 3 continuara reservado para atividades praticas aprovadas.';
+    document.getElementById('diagnosticResult').textContent = 'Diagnostico salvo. Ele ajusta as recomendacoes, mas os niveis sobem somente por provas e evidencias praticas.';
     renderProfile();
     renderSupport();
   }
@@ -306,4 +316,14 @@
     localStorage.setItem(onboardingKey, 'true');
     window.InfraSecHub?.navigateToPage('level', true);
   }
+
+  window.InfraSecAdaptive = {
+    domains,
+    competency,
+    evidenceLevel,
+    renderProfile,
+    renderSupport,
+    masteryKey,
+    levelLabels
+  };
 })();

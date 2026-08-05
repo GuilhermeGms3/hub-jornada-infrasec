@@ -309,7 +309,8 @@ body.adaptive-content-locked main > section:not(#nivel) {
 }
 
 .balanced-study,
-.diagnostic-section {
+.diagnostic-section,
+.mastery-section {
   margin-top: 28px;
   padding-top: 22px;
   border-top: 1px solid var(--line);
@@ -405,6 +406,157 @@ body.adaptive-content-locked main > section:not(#nivel) {
   margin-top: 16px;
   color: var(--ok);
   font-weight: 700;
+}
+
+.mastery-toolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, .7fr) minmax(320px, 1.3fr) auto;
+  gap: 14px;
+  padding: 16px;
+  align-items: end;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.mastery-toolbar[hidden],
+.mastery-runner[hidden] {
+  display: none;
+}
+
+.mastery-toolbar label,
+.mastery-status {
+  display: grid;
+  gap: 4px;
+}
+
+.mastery-toolbar label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.mastery-status strong,
+.mastery-status span,
+.mastery-status small,
+.mastery-status a {
+  display: block;
+}
+
+.mastery-status span,
+.mastery-status small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.mastery-status a {
+  width: fit-content;
+  color: var(--primary-2);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.mastery-runner {
+  display: grid;
+  max-width: 900px;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.mastery-runner progress {
+  width: 100%;
+}
+
+.mastery-result {
+  margin-top: 14px;
+}
+
+.mastery-score {
+  display: flex;
+  padding: 14px 16px;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 4px solid var(--warn);
+  background: #fff7e3;
+}
+
+.mastery-score.pass {
+  border-left-color: var(--ok);
+  background: #edf8f2;
+}
+
+.mastery-score strong,
+.mastery-score span {
+  display: block;
+}
+
+.mastery-score span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.mastery-corrections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.mastery-corrections article {
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--ok);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.mastery-corrections article.wrong {
+  border-left-color: var(--warn);
+}
+
+.mastery-corrections p,
+.mastery-corrections span,
+.mastery-corrections small {
+  display: block;
+  margin: 4px 0 0;
+}
+
+.mastery-corrections p {
+  color: var(--ink);
+}
+
+.mastery-corrections span {
+  font-weight: 700;
+}
+
+.mastery-corrections small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.mastery-history {
+  margin-top: 14px;
+}
+
+.mastery-history h4 {
+  margin: 0 0 7px;
+}
+
+.mastery-history > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.mastery-history > div span {
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
 }
 
 #inicio,

@@ -28,11 +28,17 @@ A pagina `Meu nivel` mede oito competencias separadamente: Redes, Help Desk/NOC,
 
 - O diagnostico possui 16 perguntas basicas e aceita `Nao sei ainda` sem penalidade artificial.
 - Os niveis sao `Comecando`, `Base em formacao`, `Pratica guiada` e `Competencia demonstrada`.
-- O diagnostico libera no maximo o nivel 2; o nivel 3 exige evidencia pratica aprovada no hub.
+- O diagnostico estima lacunas, mas nao aumenta sozinho um nivel verificado.
+- A passagem de N0 para N1 exige prova de fundamentos com pelo menos 75%.
+- A passagem de N1 para N2 exige prova aplicada com cenarios e pelo menos 75%.
+- A passagem de N2 para N3 exige as duas provas e uma atividade pratica aprovada com evidencia.
+- O banco possui 64 questoes autorais, com correcao comentada, melhor nota e historico de tentativas.
 - Labs, incidentes, entregaveis e atividades com nota atualizam a competencia correspondente.
 - O recomendador escolhe tres areas mais fracas e respeita a ordem de pre-requisitos em caso de empate.
 - Telas acima do nivel atual mostram preparacao, glossario e rota anterior antes do conteudo tecnico.
 - Nenhum conteudo e removido: o aluno pode liberar a pagina atual ou ativar `Sempre mostrar o conteudo completo`.
+
+As questoes nao sao dumps nem copias de itens sigilosos. O estilo e o escopo foram alinhados a referencias publicas como [CCNA 200-301 v1.1](https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf), [LPI Linux Essentials](https://www.lpi.org/our-certifications/linux-essentials-overview/), [AWS CLF-C02](https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html) e [Microsoft Practice Assessments](https://learn.microsoft.com/en-us/credentials/certifications/practice-assessments-for-microsoft-certifications). Os links oficiais aparecem tambem na prova da competencia correspondente.
 
 ## Jornada guiada
 
@@ -212,6 +218,7 @@ O hub salva algumas preferencias no `localStorage` do navegador, como a semana a
 |-- hub-jornada-guiada.css
 |-- hub-jornada-guiada.js
 |-- hub-nivel-adaptativo.js
+|-- hub-provas-nivel.js
 |-- scripts/
 |-- biblioteca/
 `-- projetos/

@@ -897,6 +897,35 @@
           <div class="balanced-recommendations" id="balancedRecommendations"></div>
         </section>
 
+        <section class="mastery-section" aria-labelledby="masteryTitle">
+          <div class="section-head">
+            <div>
+              <span class="guided-eyebrow">Evolucao verificada</span>
+              <h3 id="masteryTitle">Prova para subir de nivel</h3>
+              <p>Questoes autorais no estilo de prova, adequadas ao seu nivel atual. Nao sao dumps nem questoes sigilosas.</p>
+            </div>
+          </div>
+          <div class="mastery-toolbar" id="masteryToolbar">
+            <label for="masteryDomain">Competencia
+              <select id="masteryDomain"></select>
+            </label>
+            <div class="mastery-status" id="masteryStatus"></div>
+            <button class="primary" type="button" id="startMasteryExam">Iniciar prova atual</button>
+          </div>
+          <div class="mastery-runner" id="masteryRunner" hidden>
+            <div class="diagnostic-progress"><strong id="masteryStage"></strong><span id="masteryPosition"></span></div>
+            <progress id="masteryProgress" max="4" value="0">0 de 4</progress>
+            <h3 id="masteryQuestion"></h3>
+            <div class="diagnostic-options" id="masteryOptions"></div>
+            <div class="diagnostic-actions">
+              <button type="button" id="masteryQuit">Sair da prova</button>
+              <button class="primary" type="button" id="masteryNext" disabled>Proxima pergunta</button>
+            </div>
+          </div>
+          <div class="mastery-result" id="masteryResult" aria-live="polite"></div>
+          <div class="mastery-history" id="masteryHistory"></div>
+        </section>
+
         <section class="diagnostic-section" aria-labelledby="diagnosticTitle">
           <div class="diagnostic-intro" id="diagnosticIntro">
             <span class="guided-eyebrow">Ponto de partida</span>
@@ -2435,6 +2464,7 @@ Testes:
   <script src="hub-arquitetura.js"></script>
   <script src="hub-jornada-guiada.js"></script>
   <script src="hub-nivel-adaptativo.js"></script>
+  <script src="hub-provas-nivel.js"></script>
 </body>
 </html>
 
