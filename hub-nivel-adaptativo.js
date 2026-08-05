@@ -60,6 +60,9 @@
     portfolio: ['career', 0], readiness: ['career', 0], simulations: ['career', 0], interview: ['career', 1],
     english: ['english', 0]
   };
+  let activeLevelView = 'overview';
+  let activeDomainDetail = 'network';
+  let balancedDomainIds = ['network', 'operations', 'linux'];
 
   const questions = [
     ['network', 'Para que serve um endereco IP?', ['Nao sei ainda', 'Identificar um dispositivo em uma rede IP', 'Guardar a senha do Wi-Fi', 'Traduzir nomes de sites'], 1],
@@ -160,6 +163,65 @@
     return { level, evidence: `${nextGate} ${evidence[1]}`, diagnosis, evidenceLevel: evidence[0], mastery };
   }
 
+  function showLevelView(view, scroll = true) {
+    activeLevelView = view;
+    document.querySelectorAll('[data-level-view]').forEach((element) => { element.hidden = element.dataset.levelView !== view; });
+    document.body.classList.toggle('level-focus-mode', view === 'mastery' || view === 'diagnostic');
+    if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function levelMeaning(level) {
+    return [
+      'Voce esta formando o vocabulario e o modelo mental desta area.',
+      'Voce reconhece os fundamentos e esta pronto para cenarios guiados.',
+      'Voce resolve cenarios com orientacao e precisa comprovar pratica real.',
+      'Voce passou pelas provas e demonstrou a competencia em uma atividade pratica.'
+    ][level];
+  }
+
+  function renderDomainDetail(domainId = activeDomainDetail) {
+    activeDomainDetail = domainId;
+    const domain = domains[domainId];
+    const current = competency(domainId);
+    const practical = evidenceLevel(domainId);
+    const nextAction = current.level < 2
+      ? `<button class="primary" type="button" data-start-mastery="${domainId}">Fazer prova N${current.level} para N${current.level + 1}</button>`
+      : current.level === 2
+        ? `<button class="primary" type="button" data-adaptive-page="${domain.page}">Fazer atividade pratica</button>`
+        : `<button class="primary" type="button" data-adaptive-page="${domain.page}">Continuar praticando</button>`;
+    document.getElementById('levelDomainDetail').innerHTML = `
+      <header>
+        <span class="guided-eyebrow">Competencia</span>
+        <h2>${domain.title}</h2>
+        <p>${domain.next}</p>
+      </header>
+      <div class="domain-current-level">
+        <span>Seu nivel verificado</span>
+        <strong>N${current.level}</strong>
+        <div><b>${levelLabels[current.level]}</b><p>${levelMeaning(current.level)}</p></div>
+      </div>
+      <ol class="domain-level-path" aria-label="Caminho de niveis">
+        ${levelLabels.map((label, index) => `<li class="${index < current.level ? 'complete' : index === current.level ? 'current' : 'future'}"><span>N${index}</span><div><strong>${label}</strong><small>${index === 0 ? 'Ponto inicial' : index === 1 ? 'Prova de fundamentos' : index === 2 ? 'Prova aplicada' : 'Evidencia pratica'}</small></div></li>`).join('')}
+      </ol>
+      <div class="domain-next-gate">
+        <span class="guided-eyebrow">Para avancar agora</span>
+        <h3>${current.level === 0 ? 'Comprove os fundamentos' : current.level === 1 ? 'Resolva cenarios aplicados' : current.level === 2 ? 'Produza uma evidencia real' : 'Mantenha a competencia ativa'}</h3>
+        <p>${current.evidence}</p>
+        ${nextAction}
+      </div>
+      <details class="domain-evidence-detail">
+        <summary>Como o hub chegou a este nivel</summary>
+        <p><strong>Diagnostico:</strong> ${current.diagnosis}/2 acertos de referencia.</p>
+        <p><strong>Pratica encontrada:</strong> ${practical[1]}</p>
+        <p><strong>Regra:</strong> N1 exige prova basica; N2 exige prova aplicada; N3 exige prova e pratica aprovada.</p>
+      </details>`;
+  }
+
+  function openDomain(domainId) {
+    renderDomainDetail(domainId);
+    showLevelView('domain');
+  }
+
   function renderProfile() {
     const entries = Object.entries(domains).map(([id, domain]) => ({ id, domain, ...competency(id) }));
     const total = entries.reduce((sum, item) => sum + item.level, 0);
@@ -170,27 +232,30 @@
       <div><span>Competencias demonstradas</span><strong>${demonstrated} de ${entries.length}</strong></div>
       <div><span>Prioridade atual</span><strong>Nivel ${weakest}</strong></div>`;
     document.getElementById('levelDomainGrid').innerHTML = entries.map((item) => `
-      <article class="level-domain-card">
-        <header><h3>${item.domain.title}</h3><span class="level-badge">N${item.level}</span></header>
-        <strong>${levelLabels[item.level]}</strong>
-        <progress max="3" value="${item.level}">${item.level} de 3</progress>
-        <p>${item.domain.next}</p>
-        <span class="level-evidence">${item.evidence}</span>
-        ${item.level < 2 ? `<button type="button" data-start-mastery="${item.id}">Fazer prova N${item.level} para N${item.level + 1}</button>` : ''}
-        ${item.level === 2 ? `<button type="button" data-adaptive-page="${item.domain.page}">Fazer atividade pratica</button>` : ''}
-      </article>`).join('');
+      <button class="competency-row" type="button" data-open-domain="${item.id}">
+        <span class="competency-name"><strong>${item.domain.title}</strong><small>${levelLabels[item.level]}</small></span>
+        <span class="competency-track" aria-label="Nivel ${item.level} de 3">${levelLabels.map((_, index) => `<i class="${index <= item.level ? 'filled' : ''}"></i>`).join('')}</span>
+        <span class="level-badge">N${item.level}</span>
+        <span class="competency-next">${item.level < 2 ? `Proxima prova: N${item.level + 1}` : item.level === 2 ? 'Falta pratica aprovada' : 'Competencia demonstrada'}</span>
+        <span class="competency-arrow" aria-hidden="true">&#8594;</span>
+      </button>`).join('');
     renderBalanced(entries);
+    renderDomainDetail();
   }
 
   function renderBalanced(entries) {
     const recommendations = [...entries].sort((a, b) => a.level - b.level).slice(0, 3);
-    document.getElementById('balancedRecommendations').innerHTML = recommendations.map((item, index) => `
-      <article class="balanced-card">
-        <span>Prioridade ${index + 1} · Nivel ${item.level}</span>
-        <strong>${item.domain.title}</strong>
-        <p>${item.domain.next}</p>
-        <button type="button" data-adaptive-page="${item.domain.page}">Abrir estudo recomendado</button>
-      </article>`).join('');
+    balancedDomainIds = recommendations.map((item) => item.id);
+    const [focus, ...queue] = recommendations;
+    document.getElementById('balancedRecommendations').innerHTML = `
+      <article class="next-study-focus">
+        <div><span>Prioridade atual · N${focus.level}</span><h4>${focus.domain.title}</h4><p>${focus.domain.next}</p></div>
+        <button class="primary" type="button" data-open-domain="${focus.id}">Entender o proximo passo</button>
+      </article>
+      <details class="balanced-queue">
+        <summary>Ver as proximas ${queue.length} areas da fila</summary>
+        ${queue.map((item, index) => `<button type="button" data-open-domain="${item.id}"><span>${index + 2}</span><strong>${item.domain.title}</strong><small>N${item.level} · ${levelLabels[item.level]}</small></button>`).join('')}
+      </details>`;
   }
 
   function renderSupport(pageId = document.body.dataset.hubPage) {
@@ -257,7 +322,7 @@
     document.getElementById('diagnosticRunner').hidden = true;
     document.getElementById('diagnosticIntro').hidden = false;
     document.getElementById('startDiagnostic').textContent = 'Refazer diagnostico';
-    document.getElementById('diagnosticResult').textContent = 'Diagnostico salvo. Ele ajusta as recomendacoes, mas os niveis sobem somente por provas e evidencias praticas.';
+    document.getElementById('diagnosticResult').innerHTML = '<strong>Diagnostico salvo</strong><p>Ele ajusta as recomendacoes, mas os niveis sobem somente por provas e evidencias praticas.</p><button class="primary" type="button" data-show-level-overview>Ver Meu nivel atualizado</button>';
     renderProfile();
     renderSupport();
   }
@@ -288,6 +353,9 @@
     renderSupport();
   });
   document.addEventListener('click', (event) => {
+    if (event.target.closest('[data-show-level-overview]')) showLevelView('overview');
+    const domainButton = event.target.closest('[data-open-domain]');
+    if (domainButton) openDomain(domainButton.dataset.openDomain);
     const pageButton = event.target.closest('[data-adaptive-page]');
     if (pageButton) window.InfraSecHub?.navigateToPage(pageButton.dataset.adaptivePage);
     const unlockButton = event.target.closest('[data-unlock-page]');
@@ -297,7 +365,15 @@
     }
   });
 
-  window.addEventListener('infrasec:page-changed', (event) => renderSupport(event.detail.pageId));
+  document.getElementById('continueLearning').addEventListener('click', () => openDomain(balancedDomainIds[0]));
+  document.getElementById('openDiagnostic').addEventListener('click', () => showLevelView('diagnostic'));
+  document.getElementById('backToLevelOverview').addEventListener('click', () => showLevelView('overview'));
+  document.getElementById('backFromDiagnostic').addEventListener('click', () => showLevelView('overview'));
+
+  window.addEventListener('infrasec:page-changed', (event) => {
+    renderSupport(event.detail.pageId);
+    if (event.detail.pageId === 'level') showLevelView('overview', false);
+  });
   window.addEventListener('infrasec:competency-changed', () => {
     renderProfile();
     renderSupport();
@@ -312,6 +388,7 @@
   if (profile.completedAt) document.getElementById('startDiagnostic').textContent = 'Refazer diagnostico';
   renderProfile();
   renderSupport();
+  showLevelView('overview', false);
   if (!profile.completedAt && localStorage.getItem(onboardingKey) !== 'true') {
     localStorage.setItem(onboardingKey, 'true');
     window.InfraSecHub?.navigateToPage('level', true);
@@ -324,6 +401,10 @@
     renderProfile,
     renderSupport,
     masteryKey,
-    levelLabels
+    levelLabels,
+    showLevelView,
+    openDomain,
+    getActiveDomain: () => activeDomainDetail,
+    getActiveView: () => activeLevelView
   };
 })();

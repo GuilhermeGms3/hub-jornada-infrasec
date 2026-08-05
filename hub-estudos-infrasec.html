@@ -872,38 +872,61 @@
       </section>
 
       <section id="nivel" hidden>
-        <div class="level-header">
-          <div>
-            <span class="guided-eyebrow">Aprendizado adaptativo</span>
-            <h2>Seu nivel por competencia</h2>
-            <p>Voce nao precisa saber tudo para comecar. O hub mede cada area separadamente e prepara a tela antes de apresentar termos mais avancados.</p>
+        <div id="levelOverviewView" data-level-view="overview">
+          <div class="level-header">
+            <div>
+              <span class="guided-eyebrow">Seu ponto de partida</span>
+              <h2>Uma competencia de cada vez</h2>
+              <p>O hub equilibra as areas, mas mostra somente a proxima decisao. Seus niveis N0, N1, N2 e N3 continuam independentes.</p>
+            </div>
+            <button class="primary" type="button" id="continueLearning">Continuar evolucao</button>
           </div>
-          <label class="adaptive-setting" for="alwaysShowFullContent">
-            <input type="checkbox" id="alwaysShowFullContent">
-            Sempre mostrar o conteudo completo
-          </label>
+
+          <div class="level-summary" id="levelOverview"></div>
+
+          <section class="balanced-study" aria-labelledby="balancedStudyTitle">
+            <div class="section-head">
+              <div>
+                <span class="guided-eyebrow">Agora</span>
+                <h3 id="balancedStudyTitle">Proximo passo recomendado</h3>
+              </div>
+            </div>
+            <div class="balanced-recommendations" id="balancedRecommendations"></div>
+          </section>
+
+          <section class="competency-overview" aria-labelledby="competencyOverviewTitle">
+            <div class="section-head">
+              <div>
+                <h3 id="competencyOverviewTitle">Suas competencias</h3>
+                <p>Abra uma area para entender o que ja conta e o que falta para o proximo nivel.</p>
+              </div>
+            </div>
+            <div class="level-domain-grid" id="levelDomainGrid"></div>
+          </section>
+
+          <div class="level-utility-row">
+            <button type="button" id="openDiagnostic">Fazer ou refazer diagnostico</button>
+            <details class="level-preferences">
+              <summary>Preferencias de exibicao</summary>
+              <label class="adaptive-setting" for="alwaysShowFullContent">
+                <input type="checkbox" id="alwaysShowFullContent">
+                Sempre mostrar o conteudo completo
+              </label>
+            </details>
+          </div>
         </div>
 
-        <div class="level-summary" id="levelOverview"></div>
-        <div class="level-domain-grid" id="levelDomainGrid"></div>
+        <div class="level-domain-view" id="levelDomainView" data-level-view="domain" hidden>
+          <button class="level-back" type="button" id="backToLevelOverview">&#8592; Voltar para Meu nivel</button>
+          <div class="level-domain-detail" id="levelDomainDetail"></div>
+        </div>
 
-        <section class="balanced-study" aria-labelledby="balancedStudyTitle">
-          <div class="section-head">
-            <div>
-              <h3 id="balancedStudyTitle">Proximos estudos equilibrados</h3>
-              <p>O hub prioriza as menores competencias e evita estudar apenas a area mais confortavel.</p>
-            </div>
-          </div>
-          <div class="balanced-recommendations" id="balancedRecommendations"></div>
-        </section>
-
-        <section class="mastery-section" aria-labelledby="masteryTitle">
-          <div class="section-head">
-            <div>
-              <span class="guided-eyebrow">Evolucao verificada</span>
-              <h3 id="masteryTitle">Prova para subir de nivel</h3>
-              <p>Questoes autorais no estilo de prova, adequadas ao seu nivel atual. Nao sao dumps nem questoes sigilosas.</p>
-            </div>
+        <section class="mastery-section" aria-labelledby="masteryTitle" data-level-view="mastery" hidden>
+          <button class="level-back" type="button" id="backFromMastery">&#8592; Voltar para a competencia</button>
+          <div class="focus-header">
+            <span class="guided-eyebrow">Evolucao verificada</span>
+            <h2 id="masteryTitle">Prova para subir de nivel</h2>
+            <p>Quatro questoes no seu nivel atual. A correcao aparece somente ao final.</p>
           </div>
           <div class="mastery-toolbar" id="masteryToolbar">
             <label for="masteryDomain">Competencia
@@ -926,10 +949,11 @@
           <div class="mastery-history" id="masteryHistory"></div>
         </section>
 
-        <section class="diagnostic-section" aria-labelledby="diagnosticTitle">
+        <section class="diagnostic-section" aria-labelledby="diagnosticTitle" data-level-view="diagnostic" hidden>
+          <button class="level-back" type="button" id="backFromDiagnostic">&#8592; Voltar para Meu nivel</button>
           <div class="diagnostic-intro" id="diagnosticIntro">
             <span class="guided-eyebrow">Ponto de partida</span>
-            <h3 id="diagnosticTitle">Diagnostico basico</h3>
+            <h2 id="diagnosticTitle">Diagnostico basico</h2>
             <p>Sao 16 perguntas curtas, duas por competencia. Responder "nao sei" e uma resposta valida: ela faz o hub ensinar antes de cobrar.</p>
             <button class="primary" type="button" id="startDiagnostic">Iniciar diagnostico</button>
           </div>

@@ -180,9 +180,11 @@
     activeStage = stageFor(domainId);
     questionIndex = 0;
     answers = [];
+    adaptive.showLevelView('mastery');
     document.getElementById('masteryToolbar').hidden = true;
     document.getElementById('masteryRunner').hidden = false;
     document.getElementById('masteryResult').innerHTML = '';
+    document.getElementById('masteryHistory').innerHTML = '';
     renderQuestion();
   }
 
@@ -217,22 +219,38 @@
     state[activeDomain] = domainState;
     save(state);
     document.getElementById('masteryRunner').hidden = true;
-    document.getElementById('masteryToolbar').hidden = false;
+    document.getElementById('masteryToolbar').hidden = true;
+    const currentLevelAfter = adaptive.competency(activeDomain).level;
     document.getElementById('masteryResult').innerHTML = `
-      <div class="mastery-score ${passed ? 'pass' : 'fail'}"><strong>${score}% · ${passed ? 'Nivel liberado' : 'Ainda nao passou'}</strong><span>${correct}/4 respostas corretas. Meta: 75%.</span></div>
+      <div class="result-hero ${passed ? 'pass' : 'fail'}">
+        <span>${passed ? 'Etapa concluida' : 'Revisao necessaria'}</span>
+        <strong>${score}%</strong>
+        <div><h2>${passed ? 'Nivel liberado' : 'Ainda nao passou'}</h2><p>${correct}/4 respostas corretas. A meta e 75%.</p></div>
+      </div>
+      <div class="result-next-action">
+        <div><span class="guided-eyebrow">O que fazer agora</span><h3>${passed ? (currentLevelAfter === 2 ? 'Prepare a atividade pratica' : 'Continue para a proxima prova') : 'Revise somente os pontos abaixo'}</h3><p>${passed ? 'Seu progresso foi salvo. O proximo requisito ja esta disponivel.' : 'Leia as justificativas, volte ao resumo da competencia e tente novamente quando conseguir explicar os conceitos.'}</p></div>
+        <button class="primary" type="button" id="masteryResultPrimary">${passed ? (currentLevelAfter === 2 ? 'Ver requisito pratico' : 'Fazer proxima prova') : 'Voltar para a competencia'}</button>
+      </div>
+      <div class="result-corrections-head"><h3>Correcao comentada</h3><p>Erros ficam abertos. Acertos permanecem recolhidos para reduzir ruido.</p></div>
       <div class="mastery-corrections">${questions.map((item, index) => {
         const isCorrect = answers[index] === item.correct;
-        return `<article class="${isCorrect ? 'correct' : 'wrong'}"><strong>${index + 1}. ${isCorrect ? 'Correta' : 'Revisar'}</strong><p>${escapeHtml(item.prompt)}</p><span>Resposta: ${escapeHtml(item.options[item.correct])}</span><small>${escapeHtml(item.explanation)}</small></article>`;
+        return `<details class="${isCorrect ? 'correct' : 'wrong'}" ${isCorrect ? '' : 'open'}><summary><span>${index + 1}</span><strong>${isCorrect ? 'Resposta correta' : 'Precisa revisar'}</strong><small>${escapeHtml(item.prompt)}</small></summary><div><p><b>Resposta:</b> ${escapeHtml(item.options[item.correct])}</p><p>${escapeHtml(item.explanation)}</p></div></details>`;
       }).join('')}</div>`;
     window.dispatchEvent(new CustomEvent('infrasec:competency-changed'));
     renderStatus();
+    document.getElementById('masteryResultPrimary').addEventListener('click', () => {
+      const current = adaptive.competency(activeDomain);
+      if (!passed) adaptive.openDomain(activeDomain);
+      else if (current.level === 1) startExam(activeDomain);
+      else adaptive.openDomain(activeDomain);
+    });
   }
 
   function renderHistory() {
     const history = read()[activeDomain]?.history || [];
     document.getElementById('masteryHistory').innerHTML = history.length ? `
-      <h4>Ultimas tentativas</h4>
-      <div>${history.slice(0, 5).map((attempt) => `<span><strong>${attempt.score}%</strong> ${attempt.stage === 'foundation' ? 'Fundamentos' : 'Aplicacao'} · ${attempt.passed ? 'aprovado' : 'revisar'}</span>`).join('')}</div>` : '';
+      <details><summary>Historico de tentativas</summary>
+      <div>${history.slice(0, 5).map((attempt) => `<span><strong>${attempt.score}%</strong> ${attempt.stage === 'foundation' ? 'Fundamentos' : 'Aplicacao'} · ${attempt.passed ? 'aprovado' : 'revisar'}</span>`).join('')}</div></details>` : '';
   }
 
   domainSelect.addEventListener('change', renderStatus);
@@ -249,12 +267,13 @@
   document.getElementById('masteryQuit').addEventListener('click', () => {
     document.getElementById('masteryRunner').hidden = true;
     document.getElementById('masteryToolbar').hidden = false;
+    adaptive.openDomain(activeDomain);
   });
+  document.getElementById('backFromMastery').addEventListener('click', () => adaptive.openDomain(activeDomain));
   document.addEventListener('click', (event) => {
     const button = event.target.closest('[data-start-mastery]');
     if (!button) return;
     document.getElementById('masteryDomain').value = button.dataset.startMastery;
-    document.getElementById('masteryTitle').scrollIntoView({ block: 'start' });
     startExam(button.dataset.startMastery);
   });
   window.addEventListener('infrasec:competency-changed', renderStatus);

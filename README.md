@@ -26,6 +26,15 @@ As paginas usam hashes compartilháveis, como `#hoje`, `#soc`, `#cloud`, `#portf
 
 A pagina `Meu nivel` mede oito competencias separadamente: Redes, Help Desk/NOC, Linux/Git, Seguranca/SOC, Cloud, Arquitetura, Carreira/portfolio e Ingles tecnico.
 
+A experiencia usa quatro estados separados para reduzir carga cognitiva:
+
+1. `Visao geral`: uma recomendacao principal e as oito competencias em uma lista comparavel.
+2. `Competencia`: nivel atual, caminho N0-N3, requisito seguinte e evidencia encontrada.
+3. `Prova`: uma pergunta por vez, sem sidebar ou correcao antecipada.
+4. `Resultado`: nota, uma proxima acao, erros abertos e acertos recolhidos.
+
+Diagnostico, preferencias, fila equilibrada e historico continuam disponiveis por divulgacao progressiva, sem competir com a tarefa principal.
+
 - O diagnostico possui 16 perguntas basicas e aceita `Nao sei ainda` sem penalidade artificial.
 - Os niveis sao `Comecando`, `Base em formacao`, `Pratica guiada` e `Competencia demonstrada`.
 - O diagnostico estima lacunas, mas nao aumenta sozinho um nivel verificado.
