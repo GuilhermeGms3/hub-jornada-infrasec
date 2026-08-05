@@ -1,0 +1,221 @@
+#depth-architecture {
+  --architecture-network: #176b73;
+  --architecture-app: #365d9d;
+  --architecture-data: #7a4f91;
+  --architecture-security: #9a4c34;
+  --architecture-observe: #5c6b35;
+}
+
+.architecture-intro {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.architecture-intro h4 {
+  margin: 0 0 5px;
+  font-size: 21px;
+}
+
+.architecture-intro p {
+  max-width: 76ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.architecture-map {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(132px, 1fr);
+  gap: 26px;
+  align-items: stretch;
+  margin: 18px 0 12px;
+  padding: 16px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #f7fafb;
+}
+
+.architecture-node {
+  position: relative;
+  display: grid;
+  min-width: 132px;
+  min-height: 88px;
+  padding: 12px;
+  text-align: left;
+  align-content: center;
+  border-width: 2px;
+  background: #fff;
+}
+
+.architecture-node:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 4px);
+  width: 18px;
+  height: 2px;
+  background: var(--line);
+  content: '';
+}
+
+.architecture-node:not(:last-child)::before {
+  position: absolute;
+  z-index: 1;
+  top: calc(50% - 4px);
+  left: calc(100% + 18px);
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid var(--line);
+  border-right: 2px solid var(--line);
+  content: '';
+  transform: rotate(45deg);
+}
+
+.architecture-node[data-kind="network"] { border-color: var(--architecture-network); }
+.architecture-node[data-kind="app"] { border-color: var(--architecture-app); }
+.architecture-node[data-kind="data"] { border-color: var(--architecture-data); }
+.architecture-node[data-kind="security"] { border-color: var(--architecture-security); }
+.architecture-node[data-kind="observe"] { border-color: var(--architecture-observe); }
+
+.architecture-node[aria-pressed="true"] {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.architecture-node small {
+  margin-top: 5px;
+  color: inherit;
+  opacity: .76;
+}
+
+.architecture-detail {
+  min-height: 154px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.architecture-detail h4 {
+  margin: 0 0 6px;
+}
+
+.architecture-component-grid,
+.architecture-reference-grid,
+.architecture-workbench {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.architecture-component-grid {
+  margin-top: 12px;
+}
+
+.architecture-component-grid div {
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+}
+
+.architecture-component-grid strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.architecture-component-grid span,
+.architecture-reference p,
+.architecture-reference li {
+  color: var(--muted);
+}
+
+.architecture-reference-grid {
+  margin: 14px 0;
+}
+
+.architecture-reference {
+  padding: 15px 0;
+  border-top: 2px solid var(--line);
+}
+
+.architecture-reference h4 {
+  margin: 0 0 10px;
+}
+
+.architecture-reference ol,
+.architecture-reference ul {
+  padding-left: 22px;
+}
+
+.architecture-reference li {
+  margin: 7px 0;
+}
+
+.architecture-runbook-row {
+  display: grid;
+  grid-template-columns: minmax(90px, .4fr) minmax(0, 1.6fr);
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.architecture-workbench {
+  margin-top: 14px;
+}
+
+.architecture-assessment {
+  margin-top: 14px;
+}
+
+.architecture-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.architecture-progress span {
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.architecture-progress span.done {
+  color: #174b30;
+  border-color: #8fc5a5;
+  background: #edf8f1;
+}
+
+@media (max-width: 900px) {
+  .architecture-map {
+    grid-auto-columns: minmax(150px, 42vw);
+  }
+}
+
+@media (max-width: 720px) {
+  .architecture-intro,
+  .architecture-reference-grid,
+  .architecture-workbench,
+  .architecture-component-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .architecture-intro {
+    display: grid;
+  }
+
+  .architecture-map {
+    grid-auto-columns: minmax(148px, 72vw);
+    padding: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .architecture-node {
+    scroll-behavior: auto;
+  }
+}

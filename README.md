@@ -44,6 +44,7 @@ Comece pela Semana 1 e siga a ordem:
 - Ingles tecnico semanal com termos, leitura, traducao, ticket e resposta de entrevista.
 - Labs e simuladores plugados localmente.
 - Academia Pratica com avaliacao por competencia, nota minima de 80% e geracao de artefato.
+- Arquitetura de Sistemas na Pratica com mapas operacionais clicaveis e troubleshooting avaliado.
 
 ## Academia Pratica
 
@@ -55,8 +56,15 @@ A Academia Pratica aprofunda as partes que antes funcionavam apenas como introdu
 - quatro analises AWS/Azure sobre IAM, RBAC, VPC/VNet, SG/NSG, auditoria, custo e menor privilegio;
 - oito desafios sequenciais de terminal para arquivos, permissoes, services, logs, rede, Git, branches e reversao;
 - planos por dominio para CCNA v1.1, AWS CLF-C02, AZ-900, SC-900, Fortinet NSE 1-3 e Linux Essentials.
+- seis mapas de arquitetura: cliente-servidor, camadas, monolito/microsservicos, sistemas distribuidos, cloud e Zero Trust.
 
 Uma atividade aprovada gera um entregavel na Central de Evidencias. Os desafios de terminal sao simulados e devem ser repetidos em WSL ou VM antes de o output ser usado como evidencia real de portfolio.
+
+### Arquitetura de Sistemas na Pratica
+
+Cada mapa apresenta os componentes na ordem do fluxo. Ao selecionar um componente, o hub mostra responsabilidade, entradas e saidas, dependencias, telemetria e pontos de falha. O exercicio associado exige escolher evidencias, localizar o dominio da falha, responder checkpoints e produzir um relatorio com diagrama textual.
+
+Uma nota de pelo menos 80% gera automaticamente um artefato Markdown com diagrama Mermaid para o portfolio. O progresso tambem alimenta os portoes de prontidao de N2, NOC, SOC, Cloud e DevSecOps junior.
 
 ## Central de Carreira
 
@@ -166,6 +174,8 @@ O hub salva algumas preferencias no `localStorage` do navegador, como a semana a
 |-- hub-modulos.js
 |-- hub-aprofundamento.css
 |-- hub-aprofundamento.js
+|-- hub-arquitetura.css
+|-- hub-arquitetura.js
 |-- scripts/
 |-- biblioteca/
 `-- projetos/

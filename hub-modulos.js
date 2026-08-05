@@ -633,12 +633,14 @@ ${item.body}
     const deepCloud = readState('infrasec-deep-cloud', []);
     const deepTerminal = readState('infrasec-deep-terminal', {});
     const deepCerts = readState('infrasec-deep-certs', {});
+    const deepArchitecture = readState('infrasec-deep-architecture', {});
     const completedLabs = labs.filter((lab) => labProgress[lab.id]?.completed);
     const labCount = completedLabs.length;
     const deliverableCount = deliverables.filter((item) => item.status === 'concluido').length;
     const uniquePassed = (items, predicate = () => true) => new Set(items.filter((item) => item.passed && predicate(item)).map((item) => item.id)).size;
     const journeyPassed = (ids) => ids.every((id) => deepJourney[id]?.passed);
     const terminalPassed = (ids) => ids.every((id) => deepTerminal[id]?.passed);
+    const architecturePassed = (ids) => ids.every((id) => deepArchitecture[id]?.passed);
     const certScore = (ids) => Math.max(0, ...ids.map((id) => Number(deepCerts[id]?.score || 0)));
     const interviewScores = interviewHistory.map((item) => Number(item.score || 0)).filter(Boolean);
     const interviewAverage = interviewScores.length ? Math.round(interviewScores.reduce((sum, value) => sum + value, 0) / interviewScores.length) : 0;
@@ -663,6 +665,7 @@ ${item.body}
           gate('4 incidentes com 80%+', uniquePassed(deepIncidents) >= 4, true),
           gate('2 labs Packet Tracer validados', labCount >= 2),
           gate('4 desafios Linux/Git aprovados', Object.values(deepTerminal).filter((item) => item.passed).length >= 4),
+          gate('Cliente-servidor e camadas aprovados', architecturePassed(['client-server', 'layered'])),
           gate('4 entregaveis concluidos', deliverableCount >= 4),
           gate('Entrevista tecnica media 70%+', interviewAverage >= 70)
         ]
@@ -675,6 +678,7 @@ ${item.body}
           gate('3 incidentes NOC com 80%+', uniquePassed(deepIncidents, (item) => item.area === 'NOC') >= 3, true),
           gate('Labs VLAN, OSPF e ACL validados', ['vlan', 'ospf', 'acl'].every((id) => labProgress[id]?.completed), true),
           gate('Desafio Linux de rede aprovado', terminalPassed(['linux-network'])),
+          gate('Arquitetura distribuida aprovada', architecturePassed(['distributed'])),
           gate('Plano CCNA em 60%+', certScore(['ccna']) >= 60),
           gate('5 entregaveis concluidos', deliverableCount >= 5)
         ]
@@ -686,6 +690,7 @@ ${item.body}
           gate('3 casos SOC distintos com 80%+', uniquePassed(deepSoc) >= 3, true),
           gate('Casos de spray e comprometimento aprovados', ['spray', 'bruteforce'].every((id) => deepSoc.some((item) => item.id === id && item.passed)), true),
           gate('Linux logs e services aprovados', terminalPassed(['linux-logs', 'linux-service'])),
+          gate('Arquitetura Zero Trust aprovada', architecturePassed(['security'])),
           gate('Plano SC-900/Fortinet em 60%+', certScore(['sc900', 'fortinet']) >= 60),
           gate('5 entregaveis concluidos', deliverableCount >= 5),
           gate('Entrevista tecnica media 70%+', interviewAverage >= 70)
@@ -698,8 +703,23 @@ ${item.body}
           gate('3 labs cloud distintos com 80%+', uniquePassed(deepCloud) >= 3, true),
           gate('IAM/RBAC e rede cloud aprovados', deepCloud.some((item) => ['aws-iam', 'azure-rbac'].includes(item.id) && item.passed) && deepCloud.some((item) => ['aws-vpc', 'azure-nsg'].includes(item.id) && item.passed), true),
           gate('4 desafios Linux/Git aprovados', Object.values(deepTerminal).filter((item) => item.passed).length >= 4),
+          gate('Cloud e sistemas distribuidos aprovados', architecturePassed(['cloud', 'distributed'])),
           gate('Plano AWS/Azure em 60%+', certScore(['clf02', 'az900']) >= 60),
           gate('5 entregaveis concluidos', deliverableCount >= 5),
+          gate('Entrevista tecnica media 70%+', interviewAverage >= 70)
+        ]
+      },
+      {
+        role: 'DevSecOps junior',
+        cert: 'Linux Essentials + SC-900; cloud fundamentals agrega',
+        gates: [
+          gate('Servicos, cloud e Zero Trust aprovados', architecturePassed(['services', 'cloud', 'security']), true),
+          gate('2 labs cloud distintos com 80%+', uniquePassed(deepCloud) >= 2, true),
+          gate('2 casos SOC distintos com 80%+', uniquePassed(deepSoc) >= 2, true),
+          gate('Git branch e recovery aprovados', terminalPassed(['git-branch', 'git-recovery']), true),
+          gate('6 desafios Linux/Git aprovados', Object.values(deepTerminal).filter((item) => item.passed).length >= 6),
+          gate('Plano SC-900/cloud em 60%+', certScore(['sc900', 'clf02', 'az900']) >= 60),
+          gate('7 entregaveis concluidos', deliverableCount >= 7),
           gate('Entrevista tecnica media 70%+', interviewAverage >= 70)
         ]
       }

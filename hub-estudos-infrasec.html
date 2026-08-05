@@ -6,6 +6,7 @@
   <title>Hub Jornada InfraSec</title>
   <link rel="stylesheet" href="hub-modulos.css">
   <link rel="stylesheet" href="hub-aprofundamento.css">
+  <link rel="stylesheet" href="hub-arquitetura.css">
   <style>
     :root {
       --bg: #f5f7f8;
@@ -835,6 +836,7 @@
           <button role="tab" aria-selected="false" aria-controls="depth-cloud" id="depth-tab-cloud" data-depth-tab="cloud">AWS / Azure</button>
           <button role="tab" aria-selected="false" aria-controls="depth-terminal" id="depth-tab-terminal" data-depth-tab="terminal">Linux / Git</button>
           <button role="tab" aria-selected="false" aria-controls="depth-certs" id="depth-tab-certs" data-depth-tab="certs">Certificacoes</button>
+          <button role="tab" aria-selected="false" aria-controls="depth-architecture" id="depth-tab-architecture" data-depth-tab="architecture">Arquitetura</button>
         </div>
 
         <div class="depth-panel" id="depth-journey" role="tabpanel" aria-labelledby="depth-tab-journey">
@@ -991,6 +993,65 @@
             <button class="primary" type="button" id="saveDeepCert">Salvar progresso e avaliar</button>
             <div class="depth-feedback" id="deepCertFeedback" aria-live="polite"></div>
           </div>
+        </div>
+
+        <div class="depth-panel" id="depth-architecture" role="tabpanel" aria-labelledby="depth-tab-architecture" hidden>
+          <div class="depth-toolbar">
+            <label for="architectureSelect">Mapa operacional
+              <select id="architectureSelect"></select>
+            </label>
+            <div class="depth-score" id="architectureScore"></div>
+          </div>
+
+          <div class="architecture-intro" id="architectureIntro"></div>
+          <div class="architecture-map" id="architectureMap" aria-label="Diagrama clicavel da arquitetura"></div>
+
+          <div class="architecture-detail" id="architectureDetail" aria-live="polite">
+            <p>Selecione um componente do diagrama para inspecionar responsabilidade, dependencias, telemetria e falhas.</p>
+          </div>
+
+          <div class="architecture-reference-grid">
+            <section class="architecture-reference" aria-labelledby="architecture-flow-title">
+              <h4 id="architecture-flow-title">Fluxo da requisicao</h4>
+              <ol id="architectureFlow"></ol>
+            </section>
+            <section class="architecture-reference" aria-labelledby="architecture-runbook-title">
+              <h4 id="architecture-runbook-title">Runbook de observacao</h4>
+              <div id="architectureRunbook"></div>
+            </section>
+          </div>
+
+          <div class="architecture-workbench">
+            <section class="depth-block">
+              <div id="architectureScenario"></div>
+              <h4>Escolha as evidencias</h4>
+              <div class="evidence-actions" id="architectureEvidenceActions"></div>
+            </section>
+            <section class="depth-block evidence-console" aria-labelledby="architecture-evidence-title">
+              <div class="block-head">
+                <h4 id="architecture-evidence-title">Evidencias coletadas</h4>
+                <span id="architectureEvidenceCount">0 coletadas</span>
+              </div>
+              <div id="architectureEvidenceDesk"><p>Colete somente o necessario para confirmar ou eliminar hipoteses.</p></div>
+            </section>
+          </div>
+
+          <form class="depth-block depth-form architecture-assessment" id="architectureAssessment">
+            <div class="depth-two-column compact">
+              <label for="architectureHypothesis">Causa mais provavel
+                <select id="architectureHypothesis"></select>
+              </label>
+              <label for="architectureFailureDomain">Dominio da falha
+                <select id="architectureFailureDomain"></select>
+              </label>
+            </div>
+            <div id="architectureQuestions"></div>
+            <label for="architectureReport">Relatorio e diagrama textual
+              <textarea id="architectureReport" required placeholder="Descreva fluxo, impacto, hipotese, evidencias, causa, correcao, validacao, telemetria e rollback."></textarea>
+            </label>
+            <button class="primary" type="submit">Avaliar arquitetura e gerar artefato</button>
+            <div class="depth-feedback" id="architectureFeedback" aria-live="polite"></div>
+          </form>
         </div>
       </section>
 
@@ -2196,6 +2257,7 @@ Testes:
   </script>
   <script src="hub-modulos.js"></script>
   <script src="hub-aprofundamento.js"></script>
+  <script src="hub-arquitetura.js"></script>
 </body>
 </html>
 
