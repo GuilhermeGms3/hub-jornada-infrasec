@@ -742,12 +742,53 @@
         <h1>Hub Jornada InfraSec</h1>
         <p>Redes primeiro. SOC/NOC depois. Cloud quando fizer sentido.</p>
       </div>
-      <nav aria-label="Navegacao">
-        <a href="#inicio" data-hub-view="home">Hoje</a>
-        <a href="#plano-estudos" data-hub-view="journey">Minha jornada</a>
-        <a href="#academia-pratica" data-hub-view="practice">Praticar</a>
-        <a href="#central-carreira" data-hub-view="career">Carreira</a>
-        <a href="#biblioteca" data-hub-view="library">Biblioteca</a>
+      <nav class="module-nav" aria-label="Modulos do hub">
+        <div class="nav-group">
+          <span class="nav-group-title">Comecar</span>
+          <a href="#hoje" data-hub-page="today">Hoje</a>
+          <a href="#jornada" data-hub-page="journey">Plano de 12 semanas</a>
+          <a href="#visao-semanal" data-hub-page="weekly-overview">Visao semanal</a>
+          <a href="#tarefas-jornada" data-hub-page="weekly-tasks">Tarefas da jornada</a>
+          <a href="#semana-1" data-hub-page="week-one">Semana 1 detalhada</a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-group-title">Redes</span>
+          <a href="#dependencias" data-hub-page="dependencies">Mapa de dependencias</a>
+          <a href="#redes-pratica" data-hub-page="network-practice">Missoes de redes</a>
+          <a href="#packet-tracer" data-hub-page="packet-tracer">Labs Packet Tracer</a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-group-title">Operacao e seguranca</span>
+          <a href="#helpdesk-noc" data-hub-page="helpdesk-noc">Help Desk e NOC</a>
+          <a href="#simulador-chamados" data-hub-page="ticket-simulator">Simulador introdutorio</a>
+          <a href="#linux-git" data-hub-page="linux-guide">Guia Linux e Git</a>
+          <a href="#terminal" data-hub-page="terminal">Terminal pratico</a>
+          <a href="#soc" data-hub-page="soc">SOC pratico</a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-group-title">Cloud e arquitetura</span>
+          <a href="#cloud" data-hub-page="cloud">AWS e Azure</a>
+          <a href="#arquitetura" data-hub-page="architecture">Arquitetura de sistemas</a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-group-title">Carreira</span>
+          <a href="#certificacoes" data-hub-page="certifications">Guia de certificacoes</a>
+          <a href="#certificacoes-pratica" data-hub-page="cert-practice">Pratica de certificacoes</a>
+          <a href="#portfolio" data-hub-page="portfolio">Portfolio e entregaveis</a>
+          <a href="#labs-validados" data-hub-page="validated-labs">Labs com validacao</a>
+          <a href="#prontidao" data-hub-page="readiness">Pronto para vaga?</a>
+          <a href="#simulados" data-hub-page="simulations">Historico de simulados</a>
+          <a href="#entrevista" data-hub-page="interview">Modo entrevista</a>
+          <a href="#ingles" data-hub-page="english">Ingles tecnico</a>
+        </div>
+        <div class="nav-group">
+          <span class="nav-group-title">Recursos</span>
+          <a href="#templates" data-hub-page="templates">Templates</a>
+          <a href="#fila-leitura" data-hub-page="reading-queue">Fila de leitura</a>
+          <a href="#estante" data-hub-page="kindle">Estante Kindle</a>
+          <a href="#biblioteca" data-hub-page="library">Biblioteca</a>
+          <a href="#nao-estudar" data-hub-page="not-yet">Nao estudar agora</a>
+        </div>
       </nav>
       <div class="side-note">
         <strong id="sidebarWeekStatus">Semana 1 de 12</strong>
@@ -756,6 +797,17 @@
     </aside>
 
     <main>
+      <header class="hub-page-bar" aria-label="Localizacao no curso">
+        <div>
+          <span id="hubPageGroup">Comecar</span>
+          <strong id="hubPageTitle">Hoje</strong>
+          <small id="hubPagePosition">Modulo 1 de 28</small>
+        </div>
+        <div class="hub-page-controls">
+          <button type="button" id="previousHubPage" aria-label="Abrir modulo anterior" title="Modulo anterior">&#8592;</button>
+          <button type="button" id="nextHubPage" aria-label="Abrir proximo modulo" title="Proximo modulo">&#8594;</button>
+        </div>
+      </header>
       <section id="inicio" data-workspace="home">
         <div class="guided-header">
           <div>
@@ -823,7 +875,7 @@
             <h2>Jornada do zero ao intermediario</h2>
             <p>Doze semanas em ordem de dependencia. Se uma semana estiver dificil, repita as missoes antes de avancar.</p>
           </div>
-          <button type="button" id="toggleLegacyJourney" aria-expanded="false">Ver tarefas e planos complementares</button>
+          <button type="button" id="toggleLegacyJourney" aria-expanded="false">Abrir visao semanal complementar</button>
         </div>
         <div class="phase-rail" id="phaseRail" aria-label="Fases da jornada"></div>
         <div class="guided-plan-layout">

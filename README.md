@@ -18,7 +18,9 @@ O hub abre em `Hoje`, mostrando somente a missao atual. Comece pela Semana 1 e s
 4. Avance para a proxima missao somente quando a atual estiver concluida.
 5. Abra `Minha jornada` para enxergar a semana inteira e os criterios que liberam a proxima.
 
-A navegacao principal possui cinco areas: `Hoje`, `Minha jornada`, `Praticar`, `Carreira` e `Biblioteca`. O conteudo antigo continua no projeto, mas aparece apenas dentro da area em que ele serve ao estudo. Em `Minha jornada`, o botao `Ver tarefas e planos complementares` reabre os planos detalhados anteriores.
+A navegacao principal possui 28 paginas internas agrupadas em `Comecar`, `Redes`, `Operacao e seguranca`, `Cloud e arquitetura`, `Carreira` e `Recursos`. Cada rota mostra somente um modulo; os botoes de seta percorrem o curso na ordem. O conteudo antigo continua no projeto em paginas proprias, incluindo visao semanal, tarefas da jornada e Semana 1 detalhada.
+
+As paginas usam hashes compartilháveis, como `#hoje`, `#soc`, `#cloud`, `#portfolio` e `#biblioteca`. Links antigos como `#semana1`, `#academia-pratica` e `#central-carreira` continuam funcionando por meio de aliases.
 
 ## Jornada guiada
 
@@ -39,6 +41,8 @@ A ordem foi alinhada a objetivos publicados pela [Cisco Networking Academy](http
 - Jornada guiada de 12 semanas e 60 missoes diarias.
 - Tela `O que estudar hoje` com uma unica missao, passos, evidencia, progresso e rota de recuperacao.
 - Mapa completo por fases, dependencias e criterios de saida.
+- 28 paginas internas com um unico modulo visivel por rota e navegacao anterior/proximo.
+- Menu lateral agrupado por etapa, sem paineis agregadores expostos durante o estudo.
 - Sistema de progresso por tarefa com estados `feito`, `revisar` e `nao entendi`, salvo no navegador.
 - Arvore clicavel por dependencia: IP/DNS/DHCP, VLAN, Inter-VLAN, OSPF, ACL/NAT e cloud/firewall.
 - Templates de README de lab, ticket NOC, investigacao SOC e relatorio cloud.

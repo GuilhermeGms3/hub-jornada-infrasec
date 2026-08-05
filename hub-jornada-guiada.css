@@ -12,21 +12,40 @@ main > section[hidden] {
   display: none !important;
 }
 
-aside nav a[data-hub-view] {
+.module-nav {
+  gap: 20px;
+}
+
+.nav-group {
+  display: grid;
+  gap: 3px;
+}
+
+.nav-group-title {
+  padding: 0 8px 5px;
+  color: #86a0aa;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+aside nav a[data-hub-page] {
   position: relative;
-  min-height: 48px;
-  padding: 12px 14px 12px 18px;
+  min-height: 38px;
+  padding: 8px 10px 8px 18px;
   border-color: transparent;
+  font-size: 14px;
   font-weight: 600;
 }
 
-aside nav a[data-hub-view][aria-current="page"] {
+aside nav a[data-hub-page][aria-current="page"] {
   color: #fff;
   border-color: rgba(255,255,255,.2);
   background: rgba(255,255,255,.1);
 }
 
-aside nav a[data-hub-view][aria-current="page"]::before {
+aside nav a[data-hub-page][aria-current="page"]::before {
   position: absolute;
   top: 10px;
   bottom: 10px;
@@ -44,6 +63,64 @@ aside nav a[data-hub-view][aria-current="page"]::before {
 
 .side-note strong {
   color: #fff;
+}
+
+.hub-page-bar {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  display: flex;
+  min-height: 54px;
+  margin: -26px -26px 18px;
+  padding: 9px 26px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: rgba(243,246,247,.96);
+}
+
+.hub-page-bar > div:first-child {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.hub-page-bar span,
+.hub-page-bar small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.hub-page-bar strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hub-page-controls {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.hub-page-controls button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  place-items: center;
+  border-radius: 6px;
+  font-size: 18px;
+}
+
+.hub-page-controls button:disabled {
+  opacity: .35;
+}
+
+body.route-focused #academia-pratica > .depth-tabs,
+body.route-focused #central-carreira > .career-tabs {
+  display: none;
 }
 
 #inicio,

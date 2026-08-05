@@ -197,7 +197,7 @@
   ];
 
   const progressKey = 'infrasec-guided-progress';
-  const viewKey = 'infrasec-active-workspace';
+  const viewKey = 'infrasec-active-page';
   const dayKey = 'infrasec-guided-current-day';
   const read = (key, fallback) => {
     try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
@@ -207,51 +207,94 @@
   const savedDays = read(dayKey, {});
   const guidedWeekSelect = document.getElementById('guidedWeekSelect');
   const guidedDaySelect = document.getElementById('guidedDaySelect');
-  const legacySections = ['jornada', 'tarefas', 'semana1'].map((id) => document.getElementById(id));
-  let legacyExpanded = false;
-
-  const workspaces = {
-    home: ['inicio'],
-    journey: ['plano-estudos', 'jornada', 'tarefas', 'semana1'],
-    practice: ['academia-pratica', 'arvore', 'laboratorio'],
-    career: ['central-carreira', 'linux-git', 'certificacoes'],
-    library: ['templates', 'nao-estudar', 'estante', 'biblioteca']
+  const hubPages = [
+    { id: 'today', hash: 'hoje', group: 'Comecar', title: 'O que estudar hoje', section: 'inicio' },
+    { id: 'journey', hash: 'jornada', group: 'Comecar', title: 'Plano de 12 semanas', section: 'plano-estudos' },
+    { id: 'weekly-overview', hash: 'visao-semanal', group: 'Comecar', title: 'Visao semanal', section: 'jornada' },
+    { id: 'weekly-tasks', hash: 'tarefas-jornada', group: 'Comecar', title: 'Tarefas da jornada', section: 'tarefas' },
+    { id: 'week-one', hash: 'semana-1', group: 'Comecar', title: 'Semana 1 detalhada', section: 'semana1' },
+    { id: 'dependencies', hash: 'dependencias', group: 'Redes', title: 'Mapa de dependencias', section: 'arvore' },
+    { id: 'network-practice', hash: 'redes-pratica', group: 'Redes', title: 'Missoes praticas de redes', section: 'academia-pratica', depthTab: 'journey' },
+    { id: 'packet-tracer', hash: 'packet-tracer', group: 'Redes', title: 'Labs Packet Tracer', section: 'laboratorio' },
+    { id: 'helpdesk-noc', hash: 'helpdesk-noc', group: 'Operacao e seguranca', title: 'Help Desk e NOC', section: 'academia-pratica', depthTab: 'incidents' },
+    { id: 'ticket-simulator', hash: 'simulador-chamados', group: 'Operacao e seguranca', title: 'Simulador introdutorio de chamados', section: 'central-carreira', careerTab: 'tickets' },
+    { id: 'linux-guide', hash: 'linux-git', group: 'Operacao e seguranca', title: 'Guia Linux e Git', section: 'linux-git' },
+    { id: 'terminal', hash: 'terminal', group: 'Operacao e seguranca', title: 'Terminal pratico', section: 'academia-pratica', depthTab: 'terminal' },
+    { id: 'soc', hash: 'soc', group: 'Operacao e seguranca', title: 'SOC pratico', section: 'academia-pratica', depthTab: 'soc' },
+    { id: 'cloud', hash: 'cloud', group: 'Cloud e arquitetura', title: 'AWS e Azure na pratica', section: 'academia-pratica', depthTab: 'cloud' },
+    { id: 'architecture', hash: 'arquitetura', group: 'Cloud e arquitetura', title: 'Arquitetura de sistemas', section: 'academia-pratica', depthTab: 'architecture' },
+    { id: 'certifications', hash: 'certificacoes', group: 'Carreira', title: 'Guia de certificacoes', section: 'certificacoes' },
+    { id: 'cert-practice', hash: 'certificacoes-pratica', group: 'Carreira', title: 'Pratica de certificacoes', section: 'academia-pratica', depthTab: 'certs' },
+    { id: 'portfolio', hash: 'portfolio', group: 'Carreira', title: 'Portfolio e entregaveis', section: 'central-carreira', careerTab: 'portfolio' },
+    { id: 'validated-labs', hash: 'labs-validados', group: 'Carreira', title: 'Labs com validacao', section: 'central-carreira', careerTab: 'labs' },
+    { id: 'readiness', hash: 'prontidao', group: 'Carreira', title: 'Pronto para vaga?', section: 'central-carreira', careerTab: 'readiness' },
+    { id: 'simulations', hash: 'simulados', group: 'Carreira', title: 'Historico de simulados', section: 'central-carreira', careerTab: 'exams' },
+    { id: 'interview', hash: 'entrevista', group: 'Carreira', title: 'Modo entrevista', section: 'central-carreira', careerTab: 'interview' },
+    { id: 'english', hash: 'ingles', group: 'Carreira', title: 'Ingles tecnico', section: 'central-carreira', careerTab: 'english' },
+    { id: 'templates', hash: 'templates', group: 'Recursos', title: 'Templates exportaveis', section: 'templates' },
+    { id: 'reading-queue', hash: 'fila-leitura', group: 'Recursos', title: 'Fila de leitura', section: 'central-carreira', careerTab: 'reading' },
+    { id: 'kindle', hash: 'estante', group: 'Recursos', title: 'Estante Kindle e Calibre', section: 'estante' },
+    { id: 'library', hash: 'biblioteca', group: 'Recursos', title: 'Biblioteca', section: 'biblioteca' },
+    { id: 'not-yet', hash: 'nao-estudar', group: 'Recursos', title: 'Nao estudar agora', section: 'nao-estudar' }
+  ];
+  const pageById = Object.fromEntries(hubPages.map((page) => [page.id, page]));
+  const pageByHash = Object.fromEntries(hubPages.map((page) => [page.hash, page]));
+  const legacyHashAliases = {
+    inicio: 'today', 'plano-estudos': 'journey', tarefas: 'weekly-tasks', semana1: 'week-one',
+    arvore: 'dependencies', 'academia-pratica': 'network-practice', laboratorio: 'packet-tracer',
+    'central-carreira': 'portfolio', estante: 'kindle', biblioteca: 'library', templates: 'templates',
+    certificacoes: 'certifications', 'linux-git': 'linux-guide', 'nao-estudar': 'not-yet'
   };
-  const sectionToWorkspace = Object.entries(workspaces).reduce((result, [view, ids]) => {
-    ids.forEach((id) => { result[id] = view; });
-    return result;
-  }, {});
+  let activePageId = 'today';
 
-  function activateWorkspace(view, targetId, scroll = true) {
-    const safeView = workspaces[view] ? view : 'home';
-    document.querySelectorAll('main > section').forEach((section) => { section.hidden = true; });
-    workspaces[safeView].forEach((id) => {
-      const section = document.getElementById(id);
-      if (!section) return;
-      const isLegacy = legacySections.includes(section);
-      section.hidden = isLegacy ? !legacyExpanded : false;
-    });
-    document.querySelectorAll('[data-hub-view]').forEach((link) => {
-      if (link.dataset.hubView === safeView) link.setAttribute('aria-current', 'page');
+  function selectDepthTab(name) {
+    document.querySelector(`[data-depth-tab="${name}"]`)?.click();
+  }
+
+  function selectCareerTab(name) {
+    document.querySelector(`[data-career-tab="${name}"]`)?.click();
+  }
+
+  function activatePage(pageId, scroll = true) {
+    const page = pageById[pageId] || pageById.today;
+    activePageId = page.id;
+    document.querySelectorAll('main > section').forEach((section) => { section.hidden = section.id !== page.section; });
+    if (page.depthTab) selectDepthTab(page.depthTab);
+    if (page.careerTab) selectCareerTab(page.careerTab);
+    document.body.classList.toggle('route-focused', Boolean(page.depthTab || page.careerTab));
+    document.querySelectorAll('[data-hub-page]').forEach((link) => {
+      if (link.dataset.hubPage === page.id) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    localStorage.setItem(viewKey, safeView);
-    if (scroll) {
-      const target = document.getElementById(targetId) || document.getElementById(workspaces[safeView][0]);
-      target?.scrollIntoView({ block: 'start' });
-    }
+    const pageIndex = hubPages.indexOf(page);
+    document.getElementById('hubPageGroup').textContent = page.group;
+    document.getElementById('hubPageTitle').textContent = page.title;
+    document.getElementById('hubPagePosition').textContent = `Modulo ${pageIndex + 1} de ${hubPages.length}`;
+    document.getElementById('previousHubPage').disabled = pageIndex === 0;
+    document.getElementById('nextHubPage').disabled = pageIndex === hubPages.length - 1;
+    localStorage.setItem(viewKey, page.id);
+    if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function navigateToPage(pageId, replace = false, scroll = true) {
+    const page = pageById[pageId] || pageById.today;
+    history[replace ? 'replaceState' : 'pushState'](null, '', `#${page.hash}`);
+    activatePage(page.id, scroll);
   }
 
   function handleHash(scroll = true) {
-    const id = location.hash.slice(1);
-    const view = sectionToWorkspace[id] || localStorage.getItem(viewKey) || 'home';
-    if (['jornada', 'tarefas', 'semana1'].includes(id)) legacyExpanded = true;
-    activateWorkspace(view, id, scroll);
+    const hash = location.hash.slice(1);
+    const page = pageByHash[hash] || pageById[legacyHashAliases[hash]] || pageById[localStorage.getItem(viewKey)] || pageById.today;
+    activatePage(page.id, scroll);
   }
 
   function setPractice(tab, value) {
-    activateWorkspace('practice', 'academia-pratica');
-    document.querySelector(`[data-depth-tab="${tab}"]`)?.click();
+    const pageMap = {
+      journey: 'network-practice', incidents: 'helpdesk-noc', soc: 'soc', cloud: 'cloud',
+      terminal: 'terminal', certs: 'cert-practice', architecture: 'architecture'
+    };
+    navigateToPage(pageMap[tab] || 'network-practice');
+    selectDepthTab(tab);
     const selectMap = {
       journey: 'deepJourneySelect', incidents: 'deepIncidentSelect', soc: 'deepSocSelect',
       cloud: 'deepCloudSelect', terminal: 'deepTerminalSelect', certs: 'deepCertSelect',
@@ -262,7 +305,6 @@
       select.value = value;
       select.dispatchEvent(new Event('change'));
     }
-    document.getElementById('academia-pratica')?.scrollIntoView({ block: 'start' });
   }
 
   function openGuidedTarget(target) {
@@ -273,15 +315,17 @@
     }
     if (target.startsWith('career:')) {
       const tab = target.split(':')[1];
-      activateWorkspace('career', 'central-carreira');
-      document.querySelector(`[data-career-tab="${tab}"]`)?.click();
-      document.getElementById('central-carreira')?.scrollIntoView({ block: 'start' });
+      const pageMap = {
+        portfolio: 'portfolio', tickets: 'ticket-simulator', labs: 'validated-labs', readiness: 'readiness',
+        exams: 'simulations', reading: 'reading-queue', interview: 'interview', english: 'english'
+      };
+      navigateToPage(pageMap[tab] || 'portfolio');
+      selectCareerTab(tab);
       return;
     }
     if (target.startsWith('template:')) {
-      activateWorkspace('library', 'templates');
+      navigateToPage('templates');
       document.querySelector(`[data-template="${target.split(':')[1]}"]`)?.click();
-      document.getElementById('templates')?.scrollIntoView({ block: 'start' });
       return;
     }
     if (target.startsWith('#')) {
@@ -364,8 +408,7 @@
     }
     renderToday();
     if (switchHome) {
-      history.replaceState(null, '', '#inicio');
-      activateWorkspace('home', 'inicio');
+      navigateToPage('today', true);
     }
   }
 
@@ -463,17 +506,22 @@
     renderPhases();
   });
   document.getElementById('toggleLegacyJourney').addEventListener('click', (event) => {
-    legacyExpanded = !legacyExpanded;
-    event.currentTarget.setAttribute('aria-expanded', String(legacyExpanded));
-    event.currentTarget.textContent = legacyExpanded ? 'Ocultar planos complementares' : 'Ver tarefas e planos complementares';
-    legacySections.forEach((section) => { section.hidden = !legacyExpanded; });
+    event.currentTarget.setAttribute('aria-expanded', 'false');
+    navigateToPage('weekly-overview');
   });
-  document.querySelectorAll('[data-hub-view]').forEach((link) => {
+  document.querySelectorAll('[data-hub-page]').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
-      history.pushState(null, '', link.getAttribute('href'));
-      activateWorkspace(link.dataset.hubView, link.getAttribute('href').slice(1));
+      navigateToPage(link.dataset.hubPage);
     });
+  });
+  document.getElementById('previousHubPage').addEventListener('click', () => {
+    const index = hubPages.findIndex((page) => page.id === activePageId);
+    if (index > 0) navigateToPage(hubPages[index - 1].id);
+  });
+  document.getElementById('nextHubPage').addEventListener('click', () => {
+    const index = hubPages.findIndex((page) => page.id === activePageId);
+    if (index < hubPages.length - 1) navigateToPage(hubPages[index + 1].id);
   });
   window.addEventListener('hashchange', () => handleHash());
 
@@ -491,6 +539,5 @@
   guidedWeekSelect.value = String(initialWeek);
   chooseWeek(initialWeek);
   renderPhases();
-  legacySections.forEach((section) => { section.classList.add('legacy-journey'); section.hidden = true; });
   handleHash(false);
 })();
