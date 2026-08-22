@@ -77,7 +77,7 @@ A ordem foi alinhada a objetivos publicados pela [Cisco Networking Academy](http
 - Mapa rapido de decisao de certificacao por foco: NOC, SOC, Cloud ou DevSecOps.
 - Trilhas de Linux e Git/GitHub para suporte, SOC, DevOps e portfolio.
 - Secao "Nao estudar ainda" para reduzir dispersao.
-- Guia de certificacoes para Fortinet NSE 1-3, AZ-900, AWS Cloud Practitioner, SC-900, CCNA, KCNA, Linux Essentials e Security+.
+- Guia de certificacoes para Fortinet NSE 1-3, AZ-900, AWS Cloud Practitioner, SC-900, SC-200, SC-300, CCNA, KCNA, Linux Essentials e Security+.
 - Biblioteca categorizada em oficial, comunidade, simulados, labs e cuidado anti-dumps.
 - Estante dinamica sincronizada com a semana atual e materiais separados por certificacao.
 - Integracao local com Calibre para gerar EPUB ou AZW3 a partir das notas.
@@ -103,7 +103,7 @@ A Academia Pratica aprofunda as partes que antes funcionavam apenas como introdu
 - quatro casos SOC com logs sinteticos, classificacao, severidade, IOCs, linha do tempo, contencao e mapeamento MITRE ATT&CK;
 - quatro analises AWS/Azure sobre IAM, RBAC, VPC/VNet, SG/NSG, auditoria, custo e menor privilegio;
 - oito desafios sequenciais de terminal para arquivos, permissoes, services, logs, rede, Git, branches e reversao;
-- planos por dominio para CCNA v1.1, AWS CLF-C02, AZ-900, SC-900, Fortinet NSE 1-3 e Linux Essentials.
+- planos por dominio para CCNA v1.1, AWS CLF-C02, AZ-900, SC-900, SC-200, SC-300, Security+, Fortinet NSE 1-3 e Linux Essentials.
 - seis mapas de arquitetura: cliente-servidor, camadas, monolito/microsservicos, sistemas distribuidos, cloud e Zero Trust.
 
 Uma atividade aprovada gera um entregavel na Central de Evidencias. Os desafios de terminal sao simulados e devem ser repetidos em WSL ou VM antes de o output ser usado como evidencia real de portfolio.
@@ -187,6 +187,8 @@ Materiais locais adicionados:
 - AWS Cloud Practitioner Notes e practice exam local.
 - AZ-900 community study guide.
 - SC-900 static study prep.
+- Security+ SY0-701 Exam90 local, com timer, PBQs, questoes autorais e revisao por dominio.
+- SC-200 e SC-300 com blueprint oficial vivo e plano pratico acompanhado pelo hub.
 - Fortinet Certified Fundamentals Cybersecurity learning journey.
 
 ## Projetos e ferramentas locais
@@ -199,6 +201,7 @@ Principais ferramentas:
 - `CCNA-Exam-Simulator`
 - `CCNA-Labs`
 - `CCNA_Course_Notes`
+- `cert-antenas/security-plus-sy0-701`
 - `soc-roadmap-2026`
 - `cybersecurity-career-roadmap`
 - `Cloud-Security-Projects-For-Beginners`

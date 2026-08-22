@@ -1,0 +1,14 @@
+{
+  "name": "hub-jornada-infrasec",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes de caracterizacao do Hub Jornada InfraSec",
+  "scripts": {
+    "serve:test": "node tests/server.cjs",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

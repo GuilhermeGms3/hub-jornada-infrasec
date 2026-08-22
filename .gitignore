@@ -8,3 +8,5 @@ Thumbs.db
 .vscode/
 projetos/certificacoes/
 dist/
+test-results/
+playwright-report/

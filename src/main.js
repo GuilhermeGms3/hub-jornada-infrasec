@@ -1,0 +1,25 @@
+import './core/storage.js';
+import './core/events.js';
+import './practice/scoring.js';
+import './learning/assessment.js';
+import './learning/evidence.js';
+import './learning/progression.js';
+import './learning/recommendations.js';
+import './readiness/rules.js';
+import { loadTemplate, weeks, weekSelect } from './bootstrap/legacy-bootstrap.js';
+import { installLegacyBridges } from './bootstrap/legacy-bridge.js';
+import { initializeFeature } from './bootstrap/feature-initializer.js';
+import { initializeCareer } from './features/career/controller.js';
+import { initializeAcademy } from './features/academy/controller.js';
+import { initializeArchitecture } from './features/architecture/controller.js';
+import { initializeJourney } from './features/journey/controller.js';
+import { adaptiveApi, initializeAdaptive } from './features/adaptive/controller.js';
+import { initializeExams } from './features/exams/controller.js';
+
+initializeFeature('career', () => initializeCareer({ weeks, weekSelect }));
+initializeFeature('academy', initializeAcademy);
+initializeFeature('architecture', initializeArchitecture);
+initializeFeature('journey', () => initializeJourney({ loadTemplate }));
+initializeFeature('adaptive', initializeAdaptive);
+initializeFeature('exams', () => initializeExams(adaptiveApi));
+installLegacyBridges();
