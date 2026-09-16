@@ -4,6 +4,7 @@ const STORAGE_KEYS = [
   'infrasec-task-progress',
   'infrasec-current-week',
   'infrasec-guided-progress',
+  'infrasec-guided-sessions',
   'infrasec-guided-current-day',
   'infrasec-active-page',
   'infrasec-learner-profile',
@@ -24,7 +25,8 @@ const STORAGE_KEYS = [
   'infrasec-deep-cloud',
   'infrasec-deep-terminal',
   'infrasec-deep-certs',
-  'infrasec-deep-architecture'
+  'infrasec-deep-architecture',
+  'ccna1_hub_stats'
 ];
 
 const RAW_KEYS = new Set([
@@ -38,6 +40,7 @@ const defaults = {
   'infrasec-task-progress': {},
   'infrasec-current-week': '0',
   'infrasec-guided-progress': {},
+  'infrasec-guided-sessions': {},
   'infrasec-guided-current-day': {},
   'infrasec-active-page': 'today',
   'infrasec-learner-profile': {},
@@ -58,7 +61,8 @@ const defaults = {
   'infrasec-deep-cloud': [],
   'infrasec-deep-terminal': {},
   'infrasec-deep-certs': {},
-  'infrasec-deep-architecture': {}
+  'infrasec-deep-architecture': {},
+  'ccna1_hub_stats': {}
 };
 
 const raw = (value) => ({ raw: value });

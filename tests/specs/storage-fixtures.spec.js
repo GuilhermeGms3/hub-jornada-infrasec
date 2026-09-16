@@ -13,8 +13,8 @@ const {
 } = require('../fixtures/storage-fixtures');
 const { openWithStorage, storageSnapshot } = require('../helpers/app');
 
-test('fixtures representam as 24 storage keys e valores ausentes', async () => {
-  expect(STORAGE_KEYS).toHaveLength(24);
+test('fixtures representam as 26 storage keys e valores ausentes', async () => {
+  expect(STORAGE_KEYS).toHaveLength(26);
   for (const profile of [emptyProfile, partialProfile, intermediateProfile, completeN3Profile, oldIncompleteProfile, tolerantCorruptProfile]) {
     expect(Object.keys(profile).sort()).toEqual([...STORAGE_KEYS].sort());
   }

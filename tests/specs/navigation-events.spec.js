@@ -57,7 +57,15 @@ test('navegacao publica infrasec:page-changed com pageId', async ({ page }) => {
 
 test('mudanca de missao publica competency-changed e sincroniza semana legada', async ({ page }) => {
   await page.addInitScript(() => { window.open = () => null; });
-  await openWithStorage(page, fixture(), '#hoje');
+  await openWithStorage(page, fixture({
+    'infrasec-guided-sessions': {
+      '0-0': {
+        steps: { 0: { state: 'done' }, 1: { state: 'done' }, 2: { state: 'done' } },
+        evidence: 'Executei todos os passos e documentei resultado, interpretacao, validacao e pontos que ainda preciso revisar.',
+        evidenceSaved: true
+      }
+    }
+  }), '#hoje');
   await page.evaluate(() => {
     window.__competencyEvents = 0;
     window.addEventListener('infrasec:competency-changed', () => { window.__competencyEvents += 1; });

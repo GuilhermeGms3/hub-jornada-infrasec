@@ -1,4 +1,6 @@
-const dayNames = ['Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta'];
+import { enrichMissionSteps } from './step-guidance.js';
+
+const dayNames = ['Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado', 'Domingo'];
 
 const phases = [
   { id: 'network-base', label: 'Base de rede', range: 'Semanas 1-2' },
@@ -8,11 +10,16 @@ const phases = [
   { id: 'cloud-career', label: 'Cloud e carreira', range: 'Semanas 11-12' }
 ];
 
-const mission = (title, objective, steps, evidence, action, target, duration = 90) => ({
-  title, objective, steps, evidence, action, target, duration
+const mission = (title, objective, steps, evidence, action, target, duration = 90) => {
+  const details = { title, objective, evidence, action, target, duration };
+  return { ...details, steps: enrichMissionSteps(steps, details) };
+};
+
+const step = (title, kind, instruction, action, target, options = {}) => ({
+  title, kind, instruction, action, target, ...options
 });
 
-const guidedWeeks = [
+const weekdayWeeks = [
   {
     phase: 'network-base', title: 'Conectividade sem adivinhacao',
     outcome: 'Explicar como um site abre e isolar falhas entre computador, rede local, internet e DNS.',
@@ -21,11 +28,31 @@ const guidedWeeks = [
     notYet: 'Subnetting, VLAN, OSPF, cloud e ferramentas de ataque.',
     tools: 'PowerShell/CMD, quiz CCNA e template de ticket.',
     days: [
-      mission('Entender o caminho de uma requisicao', 'Construir o mapa mental navegador -> DNS -> gateway -> internet -> servidor.', ['Leia o resumo de OSI/TCP-IP sem decorar as sete camadas.', 'Desenhe o caminho de uma requisicao web em cinco blocos.', 'Explique em voz alta o papel de IP, gateway e DNS.'], 'Um desenho simples e dez linhas explicando como um site abre.', 'Abrir notas de rede', 'projetos/CCNA_Course_Notes/Course_Notes/OSI_Model_TCPSuite.md', 75),
-      mission('Ler a configuracao do seu computador', 'Reconhecer IP, mascara, gateway, DHCP e DNS no output real.', ['Execute ipconfig /all.', 'Localize adaptador ativo, IPv4, mascara, gateway, DHCP e DNS.', 'Anote o que mudaria ao trocar de Wi-Fi.'], 'Tabela campo -> valor -> para que serve, usando seu computador.', 'Abrir missao aprofundada', 'practice:journey:w1'),
-      mission('Testar por camadas', 'Usar uma ordem de diagnostico que separa rede local, internet e nomes.', ['Teste 127.0.0.1 e depois seu gateway.', 'Teste 1.1.1.1 para alcance externo.', 'Execute nslookup e tracert e interprete os resultados.'], 'Checklist com comando, resultado e interpretacao.', 'Abrir quiz', 'projetos/CCNA-1-Study-Hub/quiz.html'),
-      mission('Investigar um cliente com APIPA', 'Reconhecer quando o computador nao conseguiu obter configuracao do DHCP.', ['Leia o chamado e colete apenas evidencias uteis.', 'Diferencie 169.254.0.0/16 de um problema de DNS.', 'Escolha causa, correcao e escalonamento.'], 'Ticket avaliado com pelo menos 80%.', 'Abrir incidente APIPA', 'practice:incidents:hd-dhcp'),
-      mission('Fechar a primeira semana com um runbook', 'Transformar comandos soltos em um procedimento repetivel.', ['Ordene testes: local, gateway, IP externo, DNS e rota.', 'Registre teste antes, correcao, teste depois e rollback.', 'Explique o runbook sem consultar.'], 'Runbook “usuario sem internet” em Markdown.', 'Abrir template de ticket', 'template:ticket')
+      mission('Entender o caminho de uma requisicao', 'Construir o mapa mental navegador -> DNS -> gateway -> internet -> servidor.', [
+        step('Ler o caminho sem decorar camadas', 'Leitura dirigida', 'Abra as notas e procure somente cinco ideias: aplicacao, transporte, IP, enlace e meio fisico. Ao terminar, escreva uma frase para cada uma.', 'Abrir trecho de OSI/TCP-IP', 'projetos/CCNA_Course_Notes/Course_Notes/OSI_Model_TCPSuite.md', { checks: ['Consigo dizer onde entram HTTP e DNS.', 'Consigo diferenciar endereco IP de endereco MAC.'] }),
+        step('Desenhar a requisicao em cinco blocos', 'Exercicio no papel', 'Desenhe navegador -> DNS -> gateway -> internet -> servidor. Em cada seta, anote o que o computador precisa descobrir antes de continuar.', 'Abrir bancada da Semana 1', 'practice:journey:w1', { checks: ['O desenho tem exatamente cinco blocos.', 'DNS resolve o nome; gateway leva o trafego para fora da rede local.'] }),
+        step('Explicar IP, gateway e DNS', 'Teste de explicacao', 'Sem consultar as notas, grave ou fale uma explicacao de ate dois minutos. Depois use o checkpoint da Semana 1 para conferir se os tres papeis ficaram corretos.', 'Fazer checkpoint da Semana 1', 'practice:journey:w1', { checks: ['IP identifica a interface na rede.', 'Gateway e a saida para outras redes.', 'DNS traduz nomes em enderecos.'] })
+      ], 'Um desenho simples e dez linhas explicando como um site abre.', 'Abrir notas de rede', 'projetos/CCNA_Course_Notes/Course_Notes/OSI_Model_TCPSuite.md', 75),
+      mission('Ler a configuracao do seu computador', 'Reconhecer IP, mascara, gateway, DHCP e DNS no output real.', [
+        step('Executar ipconfig /all', 'Pratica no Windows', 'Copie o comando, abra PowerShell ou CMD no seu computador e execute. Nao altere nenhuma configuracao; nesta etapa voce apenas coleta evidencia.', 'Abrir bancada para registrar o resultado', 'practice:journey:w1', { commands: ['ipconfig /all'], checks: ['O comando foi executado no Windows real.', 'O output foi guardado para o proximo passo.'] }),
+        step('Encontrar os seis campos importantes', 'Leitura de output', 'No adaptador que esta conectado, marque: DHCP habilitado, IPv4, mascara, gateway padrao, servidor DHCP e servidores DNS. Ignore adaptadores desconectados.', 'Abrir bancada para preencher a evidencia', 'practice:journey:w1', { commands: ['ipconfig /all'], checks: ['Escolhi o adaptador ativo.', 'Encontrei IPv4, mascara, gateway, DHCP e DNS.'] }),
+        step('Comparar com outra rede Wi-Fi', 'Exercicio de hipotese', 'Antes de trocar de rede, preveja quais campos podem mudar. Depois compare com outro Wi-Fi apenas se tiver acesso seguro a ele; nao e obrigatorio trocar de rede.', 'Conferir modelo mental', 'practice:journey:w1', { checks: ['IP e gateway normalmente mudam.', 'Mascara, DHCP e DNS podem mudar conforme a rede.', 'O endereco MAC da interface normalmente permanece.'] })
+      ], 'Tabela campo -> valor -> para que serve, usando seu computador.', 'Abrir missao aprofundada', 'practice:journey:w1'),
+      mission('Testar por camadas', 'Usar uma ordem de diagnostico que separa rede local, internet e nomes.', [
+        step('Testar pilha local e gateway', 'Pratica no Windows', 'Execute primeiro o loopback. Depois substitua <gateway> pelo endereco encontrado no ipconfig. Se o loopback falhar, o problema e local; se o gateway falhar, ainda nao ha prova de falha na internet.', 'Abrir bancada para interpretar', 'practice:journey:w1', { commands: ['ping 127.0.0.1', 'ping <gateway>'], checks: ['Nao digitei literalmente <gateway>.', 'Registrei sucesso, perda ou timeout de cada teste.'] }),
+        step('Testar alcance externo por IP', 'Pratica no Windows', 'Execute o ping para 1.1.1.1. Se responder e um nome nao abrir depois, a conectividade IP externa existe e DNS vira a hipotese principal.', 'Abrir bancada para interpretar', 'practice:journey:w1', { commands: ['ping 1.1.1.1'], checks: ['Comparei este resultado com o ping no gateway.', 'Nao conclui que toda a internet funciona por causa de um unico ping.'] }),
+        step('Testar DNS e caminho', 'Pratica no Windows', 'Use nslookup para testar resolucao de nomes e tracert para observar saltos. Registre o que cada comando prova e tambem o que ele nao prova.', 'Abrir quiz de conectividade', 'projetos/CCNA-1-Study-Hub/quiz.html', { commands: ['nslookup example.com', 'tracert 1.1.1.1'], checks: ['Separei falha de nome de falha de alcance IP.', 'Nao tratei asteriscos isolados no tracert como prova definitiva de queda.'] })
+      ], 'Checklist com comando, resultado e interpretacao.', 'Abrir quiz', 'projetos/CCNA-1-Study-Hub/quiz.html'),
+      mission('Investigar um cliente com APIPA', 'Reconhecer quando o computador nao conseguiu obter configuracao do DHCP.', [
+        step('Abrir o chamado e coletar evidencias', 'Incidente interativo', 'Entre no caso Notebook recebe APIPA. Leia o impacto e escolha somente evidencias que ajudam a confirmar configuracao local, DHCP e escopo do problema.', 'Abrir incidente APIPA', 'practice:incidents:hd-dhcp', { checks: ['Li o chamado antes de escolher comandos.', 'Comparei o notebook com outro usuario da mesma rede.'] }),
+        step('Separar APIPA de falha de DNS', 'Diagnostico guiado', 'No incidente, prove por que um endereco 169.254.x.x com gateway vazio aponta primeiro para DHCP, antes de investigar DNS.', 'Continuar incidente APIPA', 'practice:incidents:hd-dhcp', { commands: ['ipconfig /all', 'ipconfig /renew'], checks: ['Reconheci a faixa 169.254.0.0/16.', 'Usei a renovacao como evidencia, nao como correcao garantida.'] }),
+        step('Decidir causa, correcao e escalonamento', 'Tomada de decisao', 'Conclua o caso escolhendo a causa mais sustentada pelas evidencias, uma correcao proporcional e quando o N1 deve escalar para redes.', 'Concluir incidente APIPA', 'practice:incidents:hd-dhcp', { checks: ['A causa explica todas as evidencias relevantes.', 'A validacao repete os testes depois da correcao.', 'O escalonamento considera se outros clientes tambem falham.'] })
+      ], 'Ticket avaliado com pelo menos 80%.', 'Abrir incidente APIPA', 'practice:incidents:hd-dhcp'),
+      mission('Fechar a primeira semana com um runbook', 'Transformar comandos soltos em um procedimento repetivel.', [
+        step('Ordenar os testes de conectividade', 'Construcao de runbook', 'Crie a sequencia: configuracao local -> loopback -> gateway -> IP externo -> DNS -> rota. Para cada teste, escreva qual hipotese ele elimina.', 'Abrir modelo de ticket', 'template:ticket', { commands: ['ipconfig /all', 'ping 127.0.0.1', 'ping <gateway>', 'ping 1.1.1.1', 'nslookup example.com', 'tracert 1.1.1.1'], checks: ['A ordem vai do mais local ao mais externo.', 'Cada comando tem uma interpretacao.'] }),
+        step('Registrar antes, depois e rollback', 'Evidencia operacional', 'No template, registre sintoma, impacto, teste antes, acao tomada, teste depois e como desfazer uma alteracao. Nao invente uma correcao que voce nao executou.', 'Preencher template de ticket', 'template:ticket', { checks: ['Separei evidencia de hipotese.', 'A validacao repete o teste que falhou.', 'Existe criterio para escalar.'] }),
+        step('Validar a Semana 1', 'Checkpoint final', 'Explique o runbook sem consultar e conclua o checkpoint tecnico. A missao aprofundada gera a evidencia que pode entrar no portfolio quando atingir a rubrica.', 'Fazer avaliacao da Semana 1', 'practice:journey:w1', { checks: ['Consigo explicar a ordem dos testes.', 'Registrei comandos e interpretacoes.', 'Atingi 80% ou anotei exatamente o que revisar.'] })
+      ], 'Runbook “usuario sem internet” em Markdown.', 'Abrir template de ticket', 'template:ticket')
     ]
   },
   {
@@ -194,6 +221,62 @@ const guidedWeeks = [
     ]
   }
 ];
+
+const weekendMissions = [
+  [
+    mission('Montar a primeira LAN no Packet Tracer', 'Consolidar IP, mascara, gateway e testes em uma topologia visual.', ['Abra o lab e identifique PCs, switch e cabos.', 'Configure dois PCs na mesma sub-rede e teste ping.', 'Quebre um endereco, registre o sintoma e restaure a configuracao.'], 'Print da topologia, tabela IP e comparacao antes/depois.', 'Abrir lab introdutorio', 'projetos/CCNA-Labs/labs/SwitchCommands.pkt', 120),
+    mission('Revisar conectividade e planejar a Semana 2', 'Fechar lacunas de IP, gateway, DNS e DHCP antes de subnetting.', ['Refaca somente os testes que ainda nao consegue explicar.', 'Conclua o checkpoint da Semana 1 e registre os erros.', 'Escreva tres metas objetivas para a proxima semana.'], 'Revisao com nota, erros explicados e plano da Semana 2.', 'Abrir checkpoint da Semana 1', 'practice:journey:w1', 60)
+  ],
+  [
+    mission('Consolidar subnetting em uma topologia', 'Aplicar rede, broadcast, hosts e gateway em dois segmentos.', ['Planeje duas sub-redes sem sobreposicao.', 'Configure enderecos e gateways no lab.', 'Teste comunicacao e corrija uma mascara propositalmente errada.'], 'Plano de enderecamento, outputs e arquivo .pkt corrigido.', 'Abrir lab de rotas', 'projetos/CCNA-Labs/labs/StaticRoute.pkt', 120),
+    mission('Revisar subnetting e preparar switching', 'Usar os erros da semana para decidir o que revisar antes de VLAN.', ['Refaca tres calculos que errou durante a semana.', 'Conclua a avaliacao da Semana 2.', 'Planeje a revisao curta de Ethernet, MAC e ARP.'], 'Caderno de erros e plano de entrada na Semana 3.', 'Abrir avaliacao de subnetting', 'practice:journey:w2', 60)
+  ],
+  [
+    mission('Consolidar VLAN, access e trunk', 'Construir e validar segmentacao entre dois switches.', ['Crie VLANs 10 e 20 e associe portas access.', 'Configure o trunk e confira VLANs permitidas.', 'Teste comunicacao correta e simule uma VLAN ausente.'], 'Arquivo .pkt, show vlan brief, show interfaces trunk e pings.', 'Abrir lab VLAN completo', 'projetos/CCNA-Labs/labs/VLAN-2(With Trunk).pkt', 120),
+    mission('Revisar switching pelos erros', 'Transformar erros de switching em explicacoes operacionais.', ['Revise o diagrama e identifique onde ARP e tabela MAC aparecem.', 'Faca uma rodada de questoes de switching.', 'Registre tres erros, a resposta correta e o motivo.'], 'Caderno de erros de switching e meta da Semana 4.', 'Abrir quiz CCNA', 'projetos/CCNA-1-Study-Hub/quiz.html', 75)
+  ],
+  [
+    mission('Consolidar rotas estaticas e default', 'Validar ida, retorno e escolha da rota mais especifica.', ['Monte tres roteadores e registre a tabela inicial.', 'Configure rotas estaticas e uma default.', 'Introduza um next hop incorreto, localize e reverta.'], 'Arquivo .pkt, tabelas de rota, traceroute e rollback.', 'Abrir lab de rotas estaticas', 'projetos/CCNA-Labs/labs/StaticRoute.pkt', 120),
+    mission('Revisar roteamento e preparar OSPF', 'Fechar duvidas de next hop e retorno antes do protocolo dinamico.', ['Explique cinco entradas de show ip route.', 'Conclua o checkpoint da Semana 4.', 'Planeje o lab OSPF da proxima semana.'], 'Revisao de rotas e plano do lab OSPF.', 'Abrir checkpoint de roteamento', 'practice:journey:w4', 60)
+  ],
+  [
+    mission('Consolidar OSPF e troubleshooting', 'Configurar vizinhanca, anunciar redes e recuperar uma adjacencia.', ['Configure tres roteadores na area 0.', 'Valide vizinhos FULL, rotas O e ping fim a fim.', 'Crie um area mismatch e documente a recuperacao.'], 'Arquivo .pkt, outputs OSPF, causa e validacao.', 'Abrir lab OSPF', 'projetos/CCNA-Labs/labs/Routing(OSPF Protocol).pkt', 120),
+    mission('Revisar OSPF por um incidente', 'Fechar a semana com uma investigacao baseada em evidencias.', ['Leia o impacto antes de coletar comandos.', 'Resolva o caso sem trocar varias configuracoes ao mesmo tempo.', 'Registre lacunas e o plano de ACL/NAT.'], 'Incidente OSPF aprovado e lista de revisao.', 'Abrir incidente OSPF', 'practice:incidents:noc-ospf', 75)
+  ],
+  [
+    mission('Consolidar ACL com testes positivos e negativos', 'Provar que a politica permite apenas o fluxo solicitado.', ['Implemente um permit especifico e preserve o implicit deny.', 'Execute um teste permitido e outro negado.', 'Use counters para provar qual regra foi acionada.'], 'Arquivo .pkt, ACL, counters, testes e rollback.', 'Abrir lab ACL', 'projetos/CCNA-Labs/labs/AccessControlList(Standard).pkt', 120),
+    mission('Revisar a base completa de redes', 'Conectar IP, VLAN, rota, OSPF, ACL e NAT antes de Linux.', ['Desenhe o mapa de dependencias da rede.', 'Conclua a avaliacao acumulada da Semana 6.', 'Registre os tres assuntos fracos e um plano de revisao.'], 'Mapa da rede, nota e plano de entrada em Linux.', 'Abrir avaliacao de redes', 'practice:journey:w6', 75)
+  ],
+  [
+    mission('Consolidar Linux em um incidente de SSH', 'Usar arquivos, services, logs e rede numa unica investigacao.', ['Inspecione enderecos, rotas e porta 22.', 'Consulte o service antes de reiniciar.', 'Valide acesso e registre os outputs em ordem.'], 'Transcript do terminal e runbook de SSH indisponivel.', 'Abrir terminal Linux de rede', 'practice:terminal:linux-network', 100),
+    mission('Revisar Linux e preparar operacao NOC', 'Transformar comandos da semana em uma rotina operacional.', ['Liste os comandos que consegue explicar sem consultar.', 'Documente dois erros e como os corrigiu.', 'Monte o plano de triagem, SLA e monitoramento da Semana 8.'], 'Runbook Linux revisado e plano da Semana 8.', 'Abrir template de ticket', 'template:ticket', 60)
+  ],
+  [
+    mission('Consolidar triagem em um chamado DNS', 'Aplicar impacto, horario, evidencia, causa e escalonamento.', ['Defina escopo e prioridade do chamado.', 'Colete testes de IP, DNS e porta 53.', 'Feche ou escale com evidencia suficiente.'], 'Incidente DNS aprovado e ticket operacional.', 'Abrir incidente DNS', 'practice:incidents:hd-dns', 90),
+    mission('Revisar comunicacao operacional', 'Explicar uma investigacao de forma clara para usuario e equipe tecnica.', ['Resuma o incidente em linguagem nao tecnica.', 'Responda uma pergunta de troubleshooting em entrevista.', 'Planeje a entrada em seguranca e identidade.'], 'Resumo executivo, resposta tecnica e plano da Semana 9.', 'Abrir modo entrevista', 'career:interview', 60)
+  ],
+  [
+    mission('Consolidar arquitetura de seguranca', 'Aplicar identidade, segmentacao, menor privilegio e telemetria.', ['Siga uma requisicao protegida pelo mapa Zero Trust.', 'Escolha controles preventivo, detectivo e corretivo.', 'Resolva o incidente e defenda a evidencia usada.'], 'Arquitetura de seguranca aprovada e diagrama.', 'Abrir arquitetura de seguranca', 'practice:architecture:security', 100),
+    mission('Revisar seguranca com SC-900', 'Organizar os conceitos fundamentais antes da pratica SOC.', ['Revise os dominios em que ainda nao consegue ensinar.', 'Registre uma nota de pratica limpa.', 'Planeje os casos de autenticacao da Semana 10.'], 'Plano SC-900 atualizado e lacunas priorizadas.', 'Abrir pratica SC-900', 'practice:certs:sc900', 60)
+  ],
+  [
+    mission('Consolidar investigacao de password spray', 'Executar triagem, timeline, contencao e escalonamento.', ['Classifique o alerta e identifique entidades.', 'Monte a timeline com contas, origem e resultados.', 'Defina contencao e evidencias que devem ser preservadas.'], 'Caso SOC aprovado e relatorio de investigacao.', 'Abrir caso password spray', 'practice:soc:spray', 100),
+    mission('Revisar SOC com um segundo caso', 'Comparar autenticacao suspeita com execucao maliciosa.', ['Resolva o caso PowerShell sem pular a coleta.', 'Compare IOCs, entidades e pontos de contencao dos dois casos.', 'Planeje o estudo de cloud com foco em identidade e logs.'], 'Segundo caso aprovado e comparacao das investigacoes.', 'Abrir caso PowerShell', 'practice:soc:powershell', 90)
+  ],
+  [
+    mission('Consolidar uma arquitetura AWS segura', 'Combinar VPC, subnets, security groups, IAM, auditoria e custo.', ['Separe recursos publicos e privados.', 'Aplique menor privilegio e elimine administracao exposta.', 'Defina logs, validacao, rollback e budget.'], 'Lab AWS aprovado e diagrama com controles.', 'Abrir lab AWS VPC', 'practice:cloud:aws-vpc', 100),
+    mission('Revisar cloud comparando Azure', 'Transferir conceitos entre AWS e Azure sem decorar nomes.', ['Mapeie VPC/VNet, SG/NSG e IAM/Entra-RBAC.', 'Resolva o lab Azure NSG.', 'Registre lacunas e o plano de integracao final.'], 'Lab Azure aprovado e tabela comparativa.', 'Abrir lab Azure NSG', 'practice:cloud:azure-nsg', 90)
+  ],
+  [
+    mission('Consolidar arquitetura e resiliencia', 'Investigar falha distribuida com logs, metricas e rollback.', ['Siga uma requisicao entre gateway, servicos, cache e banco.', 'Localize a replica defeituosa usando evidencias.', 'Defina health check, retry seguro e rollback.'], 'Arquitetura distribuida aprovada e runbook.', 'Abrir sistemas distribuidos', 'practice:architecture:distributed', 100),
+    mission('Fechar a jornada e planejar os proximos 30 dias', 'Reunir evidencias, lacunas e candidatura num plano executavel.', ['Revise e conclua tres entregaveis fortes.', 'Gere o portfolio HTML e confira os links.', 'Escolha uma vaga-alvo, certificacao e rotina de revisao.'], 'Portfolio publicavel e plano profissional de 30 dias.', 'Abrir Central de Portfolio', 'career:portfolio', 90)
+  ]
+];
+
+const guidedWeeks = weekdayWeeks.map((week, index) => ({
+  ...week,
+  days: [...week.days, ...weekendMissions[index]]
+}));
 
 const hubPages = [
   { id: 'today', hash: 'hoje', group: 'Comecar', title: 'O que estudar hoje', section: 'inicio' },

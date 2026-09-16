@@ -39,7 +39,7 @@ test('catalogos extraidos preservam a cardinalidade curricular', async ({ page }
   expect(counts).toEqual({
     legacyWeeks: 12,
     guidedWeeks: 12,
-    missions: 60,
+    missions: 84,
     academyJourney: 6,
     academyIncidents: 6,
     academyCerts: 9,

@@ -830,18 +830,53 @@
         <div class="today-workspace">
           <article class="today-mission" aria-labelledby="todayMissionTitle">
             <div class="mission-status-line">
-              <span id="todayMissionNumber">Missao 1 de 5</span>
+              <span id="todayMissionNumber">Missao 1 de 7</span>
               <span id="todayMissionDuration">90 minutos</span>
             </div>
             <h3 id="todayMissionTitle"></h3>
             <p class="today-objective" id="todayMissionObjective"></p>
             <ol class="today-steps" id="todayMissionSteps"></ol>
+            <section class="today-step-workspace" id="todayStepWorkspace" aria-live="polite">
+              <div class="step-workspace-heading">
+                <span class="guided-eyebrow" id="todayStepKind"></span>
+                <h4 id="todayStepTitle"></h4>
+              </div>
+              <p id="todayStepInstruction"></p>
+              <div class="step-command-block" id="todayStepCommandBlock" hidden>
+                <div><strong>Comandos para executar</strong><span id="todayStepEnvironment"></span></div>
+                <pre id="todayStepCommands"></pre>
+                <button type="button" id="copyStepCommands">Copiar comandos</button>
+              </div>
+              <form class="step-validation" id="todayStepValidation">
+                <label for="todayStepResponse"><strong id="todayStepQuestion"></strong>
+                  <textarea id="todayStepResponse" rows="4" placeholder="Responda com suas palavras e cite a evidencia usada."></textarea>
+                </label>
+                <label for="todayStepOutput" id="todayStepOutputGroup" hidden><strong>Comando, output ou resultado observado</strong>
+                  <textarea id="todayStepOutput" rows="5" placeholder="Cole o comando e a parte importante da saida. Remova IPs publicos, usuarios e outros dados sensiveis."></textarea>
+                </label>
+                <fieldset class="step-checks" id="todayStepChecks"></fieldset>
+                <div class="step-validation-actions">
+                  <button class="primary" type="submit" id="validateTodayStep">Validar este passo</button>
+                  <button type="button" id="reviewTodayStep">Preciso revisar</button>
+                </div>
+              </form>
+              <div class="linked-activity-status" id="todayLinkedActivityStatus" hidden></div>
+              <a class="button primary" id="todayPrimaryAction" href="#">Abrir exercicio</a>
+              <p class="step-action-note" id="todayStepActionNote"></p>
+              <div class="step-validation-feedback" id="todayStepValidationFeedback" aria-live="polite"></div>
+            </section>
             <div class="today-output">
               <strong>Evidencia para encerrar o dia</strong>
               <p id="todayMissionEvidence"></p>
+              <label for="todayMissionEvidenceInput">Seu registro
+                <textarea id="todayMissionEvidenceInput" rows="5" placeholder="Registre contexto, o que fez, resultado, interpretacao e o que precisa revisar."></textarea>
+              </label>
+              <div class="today-evidence-actions">
+                <button type="button" id="saveTodayEvidence">Salvar evidencia</button>
+                <span id="todayEvidenceStatus" aria-live="polite"></span>
+              </div>
             </div>
             <div class="today-actions">
-              <a class="button primary" id="todayPrimaryAction" href="#">Comecar sessao</a>
               <button type="button" id="completeToday">Concluir hoje</button>
               <button type="button" id="blockedToday">Nao entendi</button>
             </div>
@@ -855,8 +890,8 @@
               <p id="guidedWeekOutcome"></p>
             </div>
             <div class="week-progress-block">
-              <div><strong id="guidedProgressText">0 de 5 missoes</strong><span id="guidedProgressPercent">0%</span></div>
-              <progress id="guidedProgress" max="5" value="0">0 de 5</progress>
+              <div><strong id="guidedProgressText">0 de 7 missoes</strong><span id="guidedProgressPercent">0%</span></div>
+              <progress id="guidedProgress" max="7" value="0">0 de 7</progress>
             </div>
             <div>
               <span class="context-label">Criterio para avancar</span>

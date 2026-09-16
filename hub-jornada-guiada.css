@@ -1291,7 +1291,7 @@ body.level-focus-mode main {
 .today-steps li {
   position: relative;
   min-height: 58px;
-  padding: 15px 12px 15px 48px;
+  padding: 0 0 0 44px;
   border-top: 1px solid var(--line);
   counter-increment: guided-step;
 }
@@ -1311,6 +1311,198 @@ body.level-focus-mode main {
   content: counter(guided-step);
   font-size: 13px;
   font-weight: 800;
+  pointer-events: none;
+}
+
+.today-steps button {
+  display: grid;
+  width: 100%;
+  min-height: 62px;
+  gap: 3px;
+  padding: 12px 38px 12px 4px;
+  border: 0;
+  border-radius: 0;
+  color: var(--ink);
+  background: transparent;
+  text-align: left;
+}
+
+.today-steps button::after {
+  position: absolute;
+  top: 21px;
+  right: 10px;
+  color: var(--muted);
+  content: '\2192';
+}
+
+.today-steps button:hover,
+.today-steps button:focus-visible {
+  background: #f4f8f9;
+}
+
+.today-steps button[aria-current="step"] {
+  color: var(--primary-2);
+  background: #edf5f6;
+}
+
+.today-steps button[aria-current="step"]::after {
+  color: var(--primary-2);
+}
+
+.today-steps button span {
+  font-weight: 750;
+}
+
+.today-steps button small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.today-step-workspace {
+  margin-top: 18px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--primary);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.step-workspace-heading h4 {
+  margin: 4px 0 8px;
+  font-size: 19px;
+}
+
+.today-step-workspace > p {
+  max-width: 72ch;
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+
+.step-command-block {
+  margin: 14px 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: #f6f8f9;
+}
+
+.step-command-block > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.step-command-block span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.step-command-block pre {
+  margin: 0 0 10px;
+  padding: 12px;
+  color: #ecf4f5;
+  background: #18343b;
+  overflow: auto;
+}
+
+.step-checks {
+  margin: 14px 0 16px;
+  padding: 0;
+  border: 0;
+}
+
+.step-checks legend {
+  margin-bottom: 8px;
+  font-weight: 750;
+}
+
+.step-checks label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 7px 0;
+  color: var(--muted);
+}
+
+.step-checks input {
+  flex: 0 0 auto;
+  margin-top: 3px;
+}
+
+.step-validation,
+.step-validation > label {
+  display: grid;
+  gap: 8px;
+}
+
+.today-step-workspace [hidden] {
+  display: none !important;
+}
+
+.step-validation textarea,
+.today-output textarea {
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--ink);
+  background: #fff;
+  resize: vertical;
+}
+
+.step-validation-actions,
+.today-evidence-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.linked-activity-status,
+.step-validation-feedback {
+  margin: 12px 0;
+  padding: 11px 13px;
+  border-left: 3px solid var(--line);
+  background: #f6f8f9;
+}
+
+.linked-activity-status p {
+  margin: 4px 0 0;
+}
+
+.linked-activity-status.pass,
+.step-validation-feedback.done {
+  border-left-color: var(--ok);
+  color: #24563e;
+  background: #edf8f1;
+}
+
+.linked-activity-status.fail,
+.step-validation-feedback.error,
+#todayEvidenceStatus.error {
+  color: #7b321f;
+}
+
+.linked-activity-status.fail,
+.step-validation-feedback.error {
+  border-left-color: var(--accent);
+  background: #fff3ef;
+}
+
+.today-steps .step-done::before,
+.today-steps .step-verified::before {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.today-steps .step-blocked::before {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.step-action-note {
+  margin: 9px 0 0 !important;
+  font-size: 12px;
 }
 
 .today-output {
@@ -1323,6 +1515,21 @@ body.level-focus-mode main {
 .today-output p {
   margin: 4px 0 0;
   color: #35484f;
+}
+
+.today-output label {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.today-evidence-actions {
+  margin-top: 8px;
+}
+
+#todayEvidenceStatus.done {
+  color: #24563e;
+  font-weight: 700;
 }
 
 .today-actions {

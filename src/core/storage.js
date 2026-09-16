@@ -2,6 +2,7 @@
     TASK_PROGRESS: 'infrasec-task-progress',
     CURRENT_WEEK: 'infrasec-current-week',
     GUIDED_PROGRESS: 'infrasec-guided-progress',
+    GUIDED_SESSIONS: 'infrasec-guided-sessions',
     GUIDED_CURRENT_DAY: 'infrasec-guided-current-day',
     ACTIVE_PAGE: 'infrasec-active-page',
     LEARNER_PROFILE: 'infrasec-learner-profile',
@@ -22,13 +23,15 @@
     DEEP_CLOUD: 'infrasec-deep-cloud',
     DEEP_TERMINAL: 'infrasec-deep-terminal',
     DEEP_CERTS: 'infrasec-deep-certs',
-    DEEP_ARCHITECTURE: 'infrasec-deep-architecture'
+    DEEP_ARCHITECTURE: 'infrasec-deep-architecture',
+    CCNA_HUB_STATS: 'ccna1_hub_stats'
   });
 
   const codecs = new Map([
     [keys.TASK_PROGRESS, 'json'],
     [keys.CURRENT_WEEK, 'raw'],
     [keys.GUIDED_PROGRESS, 'json'],
+    [keys.GUIDED_SESSIONS, 'json'],
     [keys.GUIDED_CURRENT_DAY, 'json'],
     [keys.ACTIVE_PAGE, 'raw'],
     [keys.LEARNER_PROFILE, 'json'],
@@ -49,7 +52,8 @@
     [keys.DEEP_CLOUD, 'json'],
     [keys.DEEP_TERMINAL, 'json'],
     [keys.DEEP_CERTS, 'json'],
-    [keys.DEEP_ARCHITECTURE, 'json']
+    [keys.DEEP_ARCHITECTURE, 'json'],
+    [keys.CCNA_HUB_STATS, 'json']
   ]);
 
   function assertCodec(key, allowed) {
@@ -115,6 +119,14 @@
     writeJson(keys.GUIDED_PROGRESS, value);
   }
 
+  function getGuidedSessions(fallback = {}) {
+    return readJson(keys.GUIDED_SESSIONS, fallback);
+  }
+
+  function setGuidedSessions(value) {
+    writeJson(keys.GUIDED_SESSIONS, value);
+  }
+
   function getCurrentWeek(fallback = '0') {
     return readRaw(keys.CURRENT_WEEK, fallback);
   }
@@ -147,6 +159,8 @@
     setDeliverables,
     getGuidedProgress,
     setGuidedProgress,
+    getGuidedSessions,
+    setGuidedSessions,
     getCurrentWeek,
     setCurrentWeek,
     getAlwaysShowFullContent,

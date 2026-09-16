@@ -12,8 +12,8 @@ Abra `index.html` ou `hub-estudos-infrasec.html` no navegador.
 
 O hub abre em `Hoje`, mostrando somente a missao atual. Comece pela Semana 1 e siga este ciclo:
 
-1. Leia o objetivo, os tres passos e a evidencia exigida.
-2. Clique em `Abrir atividade` para ir diretamente ao lab, chamado, terminal ou material correto.
+1. Leia o objetivo e selecione um dos tres passos acionaveis.
+2. Siga a instrucao, execute os comandos indicados e abra diretamente o lab, chamado, terminal ou material daquele passo.
 3. Produza a evidencia e marque `Concluir hoje`; use `Nao entendi` quando precisar de uma rota de recuperacao.
 4. Avance para a proxima missao somente quando a atual estiver concluida.
 5. Abra `Minha jornada` para enxergar a semana inteira e os criterios que liberam a proxima.
@@ -51,7 +51,7 @@ As questoes nao sao dumps nem copias de itens sigilosos. O estilo e o escopo for
 
 ## Jornada guiada
 
-A rota principal possui 12 semanas, 60 missoes diarias e uma progressao do zero ao intermediario:
+A rota principal possui 12 semanas, 84 missoes diarias e uma progressao do zero ao intermediario:
 
 1. Fundamentos de rede: conectividade, IPv4, subnetting, switching, VLAN, roteamento, OSPF, ACL e NAT.
 2. Operacao: Linux, troubleshooting, monitoramento, tickets, SLA e comunicacao de incidentes.
@@ -59,14 +59,16 @@ A rota principal possui 12 semanas, 60 missoes diarias e uma progressao do zero 
 4. Cloud: responsabilidade compartilhada, VPC/VNet, security groups/NSG, IAM/RBAC e custos basicos.
 5. Integracao profissional: arquitetura operacional, Git, automacao segura, portfolio e entrevista.
 
-Cada semana declara pre-requisitos, resultado esperado, ferramentas, criterio de saida e assuntos que ainda nao devem ser estudados. Cada dia termina em uma evidencia concreta, como diagnostico, tabela, configuracao, ticket, runbook, diagrama ou README.
+Cada semana declara pre-requisitos, resultado esperado, ferramentas, criterio de saida e assuntos que ainda nao devem ser estudados. De segunda a sexta ocorre a progressao principal; sabado ha um lab de consolidacao e domingo uma revisao dos erros com planejamento. Cada dia termina em uma evidencia concreta, como diagnostico, tabela, configuracao, ticket, runbook, diagrama ou README.
 
 A ordem foi alinhada a objetivos publicados pela [Cisco Networking Academy](https://www.netacad.com/sites/default/files/course-catalog.pdf), [LPI Linux Essentials](https://www.lpi.org/our-certifications/linux-essentials-overview/), [AWS Cloud Practitioner](https://docs.aws.amazon.com/pt_br/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html), [Microsoft AZ-900](https://learn.microsoft.com/pt-br/credentials/certifications/resources/study-guides/az-900) e [Microsoft SC-900](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-900). A interface segue principios de visibilidade de estado, reconhecimento em vez de memorizacao, prevencao de erro e ajuda contextual das [heuristicas de Nielsen](https://www.nngroup.com/articles/ten-usability-heuristics/).
 
 ## O que tem no hub
 
-- Jornada guiada de 12 semanas e 60 missoes diarias.
-- Tela `O que estudar hoje` com uma unica missao, passos, evidencia, progresso e rota de recuperacao.
+- Jornada guiada de 12 semanas, 84 missoes diarias e 252 passos acionaveis.
+- Tela `O que estudar hoje` com uma unica missao, progresso individual dos tres passos, pergunta de compreensao, evidencia e rota de recuperacao.
+- Importacao automatica de notas de quizzes, incidentes, terminal e labs; a nota comprova a execucao, mas a interpretacao continua obrigatoria.
+- `Concluir hoje` liberado somente com os tres passos validados e uma evidencia salva.
 - Mapa completo por fases, dependencias e criterios de saida.
 - 29 paginas internas com um unico modulo visivel por rota e navegacao anterior/proximo.
 - Menu lateral agrupado por etapa, sem paineis agregadores expostos durante o estudo.

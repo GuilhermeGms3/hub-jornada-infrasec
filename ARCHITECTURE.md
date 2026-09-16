@@ -2,10 +2,12 @@
 
 ## Contrato
 
-Aplicacao estatica, sem framework, backend ou bundler. Sao baseline: UX e textos atuais, divulgacao progressiva, 12 semanas/60 missoes, N0-N3, thresholds 70/75/80, provas, readiness, recomendacoes, soft gating, rotas, 14 aliases, foco/ARIA, 24 storage keys e os dois progressos independentes.
+Aplicacao estatica, sem framework, backend ou bundler. Sao baseline: UX e textos atuais, divulgacao progressiva, 12 semanas/84 missoes, N0-N3, thresholds 70/75/80, provas, readiness, recomendacoes, soft gating, rotas, 14 aliases, foco/ARIA, 26 storage keys e os progressos independentes.
 
 - `infrasec-task-progress`: progresso semanal legado.
 - `infrasec-guided-progress`: missoes `not-started`, `doing`, `blocked` e `done`.
+- `infrasec-guided-sessions`: tres passos, respostas, outputs e evidencia verificavel de cada missao.
+- `ccna1_hub_stats`: resultado do quiz CCNA incorporado, lido sem alterar seu formato proprio.
 
 Os bugs de entregavel sem `createdAt` e JSON corrompido em `infrasec-task-progress` permanecem caracterizados e nao foram corrigidos.
 
@@ -30,6 +32,7 @@ src/
     career/catalog.js
     exams/catalog.js
     journey/catalog.js
+    journey/step-guidance.js
     legacy/catalog.js
   features/
     academy/controller.js
@@ -44,6 +47,7 @@ src/
     evidence.js
     progression.js
     recommendations.js
+  journey/session.js
   portfolio/deliverables.js
   practice/scoring.js
   readiness/rules.js
@@ -80,7 +84,7 @@ Fluxo preservado:
 hash/alias -> page -> DOM e storage -> PAGE_CHANGED -> controllers
 ```
 
-O controller da Jornada cuida somente de missoes, semana/dia, roadmap, syllabus, sincronizacao com a semana legada e destinos guiados.
+O controller da Jornada cuida de missoes, semana/dia, roadmap, syllabus, sincronizacao com a semana legada e destinos guiados. `journey/session.js` concentra validacao pura dos passos, importacao de notas e regra para liberar `Concluir hoje`.
 
 ## Adaptive e provas
 
@@ -101,7 +105,7 @@ portfolio ------+
 core -----------+
 ```
 
-`core` nao conhece features; `data` nao acessa DOM/storage; dominio nao conhece controllers. O grafo de 29 modulos e 70 imports foi auditado sem ciclos.
+`core` nao conhece features; `data` nao acessa DOM/storage; dominio nao conhece controllers. O grafo atual de 31 modulos e 72 imports foi auditado sem ciclos.
 
 ## Compatibilidade
 
@@ -131,7 +135,9 @@ Removido anteriormente: click artificial para template; Jornada chama `loadTempl
 
 ## Persistencia e eventos
 
-`core/storage.js` possui as mesmas 24 keys e codecs. Os unicos acessos diretos a `localStorage` estao nele e no bloco deliberadamente legado de `infrasec-task-progress` em `legacy-bootstrap.js`.
+`core/storage.js` possui 26 keys e codecs. Os unicos acessos diretos a `localStorage` estao nele, no quiz CCNA incorporado e no bloco deliberadamente legado de `infrasec-task-progress` em `legacy-bootstrap.js`.
+
+A jornada importa resultados aprovados de incidentes, SOC, cloud, terminal, certificacoes, arquitetura, bancadas e quiz como `verified`. O passo so vira `done` depois da resposta de compreensao, checklist e output quando exigido. A missao so vira `done` com os tres passos concluidos e evidencia salva com pelo menos 80 caracteres. Sabado consolida a pratica; domingo revisa erros e planeja a proxima semana.
 
 Eventos oficiais preservados:
 
@@ -147,7 +153,7 @@ Eventos oficiais preservados:
 | `hub-nivel-adaptativo.js` | 299 | 3 |
 | `hub-provas-nivel.js` | 150 | 4 |
 
-Implementacoes resultantes: Jornada 293 linhas + Navigation 67; Adaptive 318; Provas 146.
+Implementacoes resultantes mantem Navigation, Adaptive e Provas separados; Jornada agora coordena UI enquanto `journey/session.js` preserva as novas regras verificaveis fora do DOM.
 
 ## Divida tecnica
 

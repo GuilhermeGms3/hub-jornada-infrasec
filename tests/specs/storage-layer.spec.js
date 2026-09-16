@@ -2,14 +2,14 @@ const { test, expect } = require('@playwright/test');
 const { fixture, STORAGE_KEYS, raw } = require('../fixtures/storage-fixtures');
 const { openWithStorage } = require('../helpers/app');
 
-test('camada central inventaria as 24 keys com codecs explicitos', async ({ page }) => {
+test('camada central inventaria as 26 keys com codecs explicitos', async ({ page }) => {
   await openWithStorage(page, fixture(), '#meu-nivel');
   const inventory = await page.evaluate(() => ({
     keys: window.InfraSecStorage.listKeys(),
     codecs: window.InfraSecStorage.listKeys().map((key) => window.InfraSecStorage.codecFor(key))
   }));
   expect(inventory.keys.sort()).toEqual([...STORAGE_KEYS].sort());
-  expect(inventory.codecs.filter((codec) => codec === 'json')).toHaveLength(20);
+  expect(inventory.codecs.filter((codec) => codec === 'json')).toHaveLength(22);
   expect(inventory.codecs.filter((codec) => codec === 'raw')).toHaveLength(2);
   expect(inventory.codecs.filter((codec) => codec === 'boolean-string')).toHaveLength(2);
 });

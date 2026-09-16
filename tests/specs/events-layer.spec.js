@@ -100,6 +100,16 @@ test('mudanca de pagina persiste e atualiza o DOM antes de publicar', async ({ p
 
 test('conclusao de missao persiste antes de publicar competencia', async ({ page }) => {
   await page.evaluate(() => {
+    localStorage.setItem('infrasec-guided-sessions', JSON.stringify({
+      '0-0': {
+        steps: { 0: { state: 'done' }, 1: { state: 'done' }, 2: { state: 'done' } },
+        evidence: 'Executei todos os passos e documentei resultado, interpretacao, validacao e pontos que ainda preciso revisar.',
+        evidenceSaved: true
+      }
+    }));
+  });
+  await page.reload();
+  await page.evaluate(() => {
     window.__missionStateAtEvent = null;
     const { events, subscribe } = window.InfraSecEvents;
     subscribe(events.COMPETENCY_CHANGED, () => {
