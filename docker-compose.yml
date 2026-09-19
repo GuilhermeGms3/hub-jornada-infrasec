@@ -1,0 +1,8 @@
+services:
+  hub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${HUB_PORT:-8080}:80"
+    restart: unless-stopped

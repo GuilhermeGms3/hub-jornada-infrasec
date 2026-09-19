@@ -2,7 +2,7 @@
 
 ## Contrato
 
-Aplicacao estatica, sem framework, backend ou bundler. Sao baseline: UX e textos atuais, divulgacao progressiva, 12 semanas/84 missoes, N0-N3, thresholds 70/75/80, provas, readiness, recomendacoes, soft gating, rotas, 14 aliases, foco/ARIA, 26 storage keys e os progressos independentes.
+Aplicacao estatica, sem framework, backend ou bundler. O desenvolvimento local usa o servidor Node em `scripts/static-server.cjs`; a imagem Docker serve os mesmos arquivos estaticos com Nginx. Sao baseline: UX e textos atuais, divulgacao progressiva, 12 semanas/84 missoes, N0-N3, thresholds 70/75/80, provas, readiness, recomendacoes, soft gating, rotas, 14 aliases, foco/ARIA, 26 storage keys e os progressos independentes.
 
 - `infrasec-task-progress`: progresso semanal legado.
 - `infrasec-guided-progress`: missoes `not-started`, `doing`, `blocked` e `done`.
