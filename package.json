@@ -4,7 +4,8 @@
   "private": true,
   "description": "Testes de caracterizacao do Hub Jornada InfraSec",
   "scripts": {
-    "serve:test": "node tests/server.cjs",
+    "dev": "node scripts/static-server.cjs",
+    "serve:test": "node scripts/static-server.cjs",
     "test": "playwright test",
     "test:headed": "playwright test --headed"
   },

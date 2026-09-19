@@ -52,12 +52,13 @@
 - 2026-09-11 - os 180 passos da jornada usam metadados estruturados - cada passo possui tipo, instrucao, acao, destino e validacao sem criar persistencia nova.
 - 2026-09-15 - sessoes guiadas verificaveis usam `infrasec-guided-sessions` - notas importadas geram `verified`; interpretacao e evidencia continuam obrigatorias para concluir.
 - 2026-09-15 - a jornada passa a ter sete dias - sabado consolida em lab e domingo revisa erros e planeja a semana seguinte.
+- 2026-09-19 - ambiente local e Docker servem os mesmos arquivos estaticos - `npm run dev` usa `scripts/static-server.cjs`; Compose usa Nginx e inclui antenas/biblioteca sem artefatos de desenvolvimento.
 
 ## Current state
-- Completed: core/dominio, catalogos, controllers, navigation, composition root, bridge unico, certificacoes e conducao verificavel dos 252 passos da jornada.
+- Completed: core/dominio, catalogos, controllers, navigation, composition root, bridge unico, certificacoes, conducao verificavel dos 252 passos da jornada e execucao local/Docker documentada.
 - In progress: nenhuma fase adicional iniciada.
 - Known issues: `Invalid time value` sem `createdAt`; JSON corrompido de task progress interrompe bootstrap.
-- Verification performed: baseline arquitetural 121/121 em 2026-08-14; expansao de certificacoes 125/125 em 2026-08-20; passos acionaveis 129/129 em 2026-09-11; sessoes verificaveis e auditoria das 12 semanas 147/147, sintaxe e QA visual desktop em 2026-09-15.
+- Verification performed: baseline arquitetural 121/121 em 2026-08-14; expansao de certificacoes 125/125 em 2026-08-20; passos acionaveis 129/129 em 2026-09-11; sessoes verificaveis e auditoria das 12 semanas 147/147, sintaxe e QA visual desktop em 2026-09-15; `npm run dev`, Compose/Nginx healthy, rotas HTTP e 147/147 testes em 2026-09-19.
 
 ## Next safe actions
 - Em fase separada, adicionar CI/lint e migrar testes externos para imports ESM antes de remover as cinco fachadas globais.

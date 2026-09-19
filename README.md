@@ -6,9 +6,33 @@ O projeto organiza o estudo por semana, dependencias e entregaveis. Em vez de mo
 
 Versao publicada: [Hub Jornada InfraSec no GitHub Pages](https://guilhermegms3.github.io/hub-jornada-infrasec/)
 
-## Como usar
+## Como executar
 
-Abra `index.html` ou `hub-estudos-infrasec.html` no navegador.
+Instale as dependencias uma vez e inicie o servidor local:
+
+```powershell
+npm install
+npm run dev
+```
+
+Abra `http://127.0.0.1:4173`. Para usar outra porta no PowerShell:
+
+```powershell
+$env:PORT=3000
+npm run dev
+```
+
+Tambem e possivel subir o hub em Docker:
+
+```powershell
+docker compose up --build -d
+```
+
+Abra `http://127.0.0.1:8080`. Para encerrar, execute `docker compose down`. A porta pode ser alterada definindo `HUB_PORT` antes de subir o Compose.
+
+Como alternativa sem servidor, abra `index.html` ou `hub-estudos-infrasec.html` diretamente no navegador.
+
+## Como usar
 
 O hub abre em `Hoje`, mostrando somente a missao atual. Comece pela Semana 1 e siga este ciclo:
 
