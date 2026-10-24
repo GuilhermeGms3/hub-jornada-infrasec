@@ -1,0 +1,373 @@
+import { question as q } from './authoring';
+export const r02Questions = [
+  q(
+    'net-r02',
+    'c-interface',
+    'interfaces',
+    'NET-CONFIG',
+    'comprehension',
+    'Qual adaptador deve iniciar a análise?',
+    'Relato: portal falha apenas na VPN. Ethernet e Wi-Fi têm endereços; Ethernet está desconectada.',
+    [
+      [
+        'Ethernet, porque aparece primeiro.',
+        'A posição no output não estabelece qual interface transporta o acesso.',
+      ],
+      [
+        'A conexão e rotas usadas pela VPN, comparadas ao Wi-Fi ativo.',
+        'O sintoma depende da VPN; correlacione interfaces e rota efetivamente usada.',
+      ],
+      [
+        'Somente a placa com o maior endereço IPv4.',
+        'O valor numérico não expressa prioridade ou caminho de um serviço.',
+      ],
+    ],
+    'b',
+    'Qual mudança acompanha o sintoma?',
+  ),
+  q(
+    'net-r02',
+    'c-dora',
+    'dora',
+    'NET-DHCP-DORA',
+    'comprehension',
+    'Após selecionar uma oferta, qual mensagem solicita a configuração?',
+    'Aquisição inicial: Discover já foi enviado e uma Offer foi recebida.',
+    [
+      [
+        'DHCPREQUEST.',
+        'Na seleção inicial o cliente solicita a proposta escolhida antes da confirmação.',
+      ],
+      [
+        'DHCPACK enviado pelo cliente.',
+        'ACK é a confirmação do servidor, não a solicitação do cliente.',
+      ],
+      ['Consulta DNS.', 'DNS não negocia a concessão DHCP.'],
+    ],
+    'a',
+    'Diferencie escolher uma proposta de confirmar a concessão.',
+  ),
+  q(
+    'net-r02',
+    'c-lease',
+    'lease',
+    'NET-DHCP-LEASE',
+    'comprehension',
+    'O que a renovação confirma nesse caso?',
+    'Antes: IP 10.3.0.20, expira 14:00. Depois de renovação autorizada: mesmo IP, nova expiração 22:00.',
+    [
+      [
+        'Falhou porque o endereço não mudou.',
+        'Renovar não exige receber outro endereço; o prazo pode ser estendido.',
+      ],
+      ['Todos os serviços estão funcionando.', 'A renovação não testa DNS, porta ou aplicação.'],
+      [
+        'A concessão foi renovada; o serviço ainda precisa ser testado.',
+        'A mudança de prazo sustenta renovação da concessão, não uma conclusão sobre toda a aplicação.',
+      ],
+    ],
+    'c',
+    'Observe o campo temporal, não apenas o endereço.',
+  ),
+  q(
+    'net-r02',
+    'c-apipa',
+    'apipa',
+    'NET-APIPA',
+    'comprehension',
+    'Qual conclusão é proporcional?',
+    'Wi-Fi ativo, DHCP habilitado, IPv4 169.254.7.40/16 e gateway vazio.',
+    [
+      [
+        'A senha do portal expirou.',
+        'Não há informação sobre autenticação da aplicação nesse output.',
+      ],
+      [
+        'Investigar aquisição da configuração IPv4, sem causa exata ainda.',
+        'Link-local e ausência de gateway orientam a coleta sobre configuração; não identificam o ponto de falha.',
+      ],
+      [
+        'O servidor DHCP certamente foi desligado.',
+        'Pode haver problema de enlace, relay, VLAN, capacidade ou outros fatores.',
+      ],
+    ],
+    'b',
+    'Descreva primeiro o estado observado.',
+  ),
+  q(
+    'net-r02',
+    'i-mask',
+    'interfaces',
+    'NET-CONFIG',
+    'independent',
+    'Qual divergência pode mudar a decisão local/remota?',
+    'Plano: 172.20.12.0/24. Cliente: 172.20.12.18/16; gateway 172.20.12.1. Destino 172.20.44.8.',
+    [
+      [
+        'A máscara /16 pode fazer o cliente tentar entrega local para um destino que no plano seria remoto.',
+        'A comparação de prefixos explica a decisão, sem atribuir o problema a DNS.',
+      ],
+      [
+        'O DNS escolheu a máscara ao traduzir o nome.',
+        'A resolução de nomes não define o prefixo conectado da interface.',
+      ],
+      [
+        'Nenhuma: todo endereço 172.20 pertence à mesma LAN.',
+        'A rede depende da máscara, não apenas de dois octetos iguais.',
+      ],
+    ],
+    'a',
+    'Calcule a rede de origem e de destino usando o prefixo observado.',
+  ),
+  q(
+    'net-r02',
+    'i-offers',
+    'dora',
+    'NET-DHCP-DORA',
+    'independent',
+    'Qual leitura dos registros é correta?',
+    'Cliente vê Offer de S1 e S2; envia Request selecionando S2; recebe ACK de S2.',
+    [
+      [
+        'O cliente necessariamente usará dois endereços ao mesmo tempo.',
+        'Múltiplas ofertas não significam aceitação de todas.',
+      ],
+      ['S1 confirmou a configuração.', 'O registro identifica S2 como emissor do ACK.'],
+      [
+        'S2 confirmou a configuração solicitada; ainda faltam testes de uso.',
+        'A sequência distingue oferta, seleção e confirmação sem inferir saúde da aplicação.',
+      ],
+    ],
+    'c',
+    'Quem confirmou, e o que essa confirmação realmente demonstra?',
+  ),
+  q(
+    'net-r02',
+    'i-t1',
+    'lease',
+    'NET-DHCP-LEASE',
+    'independent',
+    'O que fazer com esta evidência?',
+    'Lease 08:00–16:00; T1 não fornecido, padrão 12:00. Às 12:03, tentativa de renovação sem resposta e IP ainda válido.',
+    [
+      [
+        'Executar release imediatamente por suporte remoto.',
+        'A ação interrompe configuração e pode perder a sessão; não é uma coleta neutra.',
+      ],
+      [
+        'Registrar a falha de renovação e investigar antes de expirar, sem declarar perda imediata do lease.',
+        'T1 inicia renovação; o endereço não expira automaticamente na primeira tentativa sem resposta.',
+      ],
+      [
+        'Concluir que DHCP nunca foi utilizado.',
+        'A existência da concessão anterior contradiz essa conclusão.',
+      ],
+    ],
+    'b',
+    'Separe o momento de tentar renovar do momento de expiração.',
+  ),
+  q(
+    'net-r02',
+    'i-scope',
+    'apipa',
+    'NET-APIPA',
+    'independent',
+    'Qual hipótese ficou sustentada pela evidência adicional?',
+    'Novos clientes apresentam APIPA. Antigos têm leases válidos. Log do servidor: escopo sem endereços livres no horário.',
+    [
+      [
+        'Falta de endereços no escopo pode impedir novas concessões; validar após correção autorizada.',
+        'O log específico fortalece essa causa neste cenário e explica por que antigos ainda funcionam.',
+      ],
+      ['Trocar DNS dos clientes corrige o escopo.', 'DNS não cria endereços livres no pool DHCP.'],
+      [
+        'Os leases antigos provam que novas concessões estão normais.',
+        'Usar uma concessão válida é diferente de adquirir outra.',
+      ],
+    ],
+    'a',
+    'Qual dado é uma observação do servidor, além do sintoma no cliente?',
+  ),
+  q(
+    'net-r02',
+    'r-route',
+    'interfaces',
+    'NET-CONFIG',
+    'review',
+    'Um DNS fora da sub-rede é necessariamente inválido?',
+    'Cliente 10.6.1.25/24; gateway 10.6.1.1; DNS corporativo autorizado 10.6.8.53.',
+    [
+      [
+        'Sim; DNS sempre deve ter o mesmo endereço do gateway.',
+        'As funções são distintas e o resolvedor pode estar remoto.',
+      ],
+      [
+        'Não; verificar rota e alcance ao resolvedor faz parte da análise.',
+        'A localização remota é válida se o caminho e a política permitirem acesso.',
+      ],
+      [
+        'Não é preciso rede para consultar DNS remoto.',
+        'A consulta precisa alcançar o serviço; configuração correta não dispensa conectividade.',
+      ],
+    ],
+    'b',
+    'Compare função do serviço com localização física/lógica.',
+  ),
+  q(
+    'net-r02',
+    'r-relay',
+    'dora',
+    'NET-DHCP-DORA',
+    'review',
+    'Por que verificar relay nesse caso?',
+    'Clientes da VLAN 30 repetem Discover. Servidor DHCP fica na VLAN 90. A rede foi segmentada recentemente.',
+    [
+      [
+        'DNS precisa encaminhar todo broadcast.',
+        'DNS não é o mecanismo que transporta a descoberta DHCP entre essas redes.',
+      ],
+      [
+        'Não pode existir DHCP em rede remota.',
+        'Relay permite atender clientes em redes diferentes quando configurado.',
+      ],
+      [
+        'A descoberta pode precisar de encaminhamento por relay até o servidor remoto.',
+        'Broadcast local não atravessa roteamento indiscriminadamente; verifique a configuração apropriada.',
+      ],
+    ],
+    'c',
+    'Considere o limite do domínio de broadcast.',
+  ),
+  q(
+    'net-r02',
+    'r-expired',
+    'lease',
+    'NET-DHCP-LEASE',
+    'review',
+    'Qual orientação respeita o prazo da concessão?',
+    'A concessão expirou sem confirmação de renovação ou rebinding.',
+    [
+      [
+        'Não continuar usando a concessão expirada indefinidamente; investigar e obter configuração válida.',
+        'A autorização temporal acabou; o estado precisa ser tratado conforme aquisição/configuração.',
+      ],
+      [
+        'Forçar o mesmo IP manualmente sem consultar o plano.',
+        'Pode criar conflito e burlar a política; não é recuperação comprovada.',
+      ],
+      [
+        'Tratar expiração como uma mudança de senha.',
+        'Prazo DHCP não é prazo de credencial da aplicação.',
+      ],
+    ],
+    'a',
+    'Uma concessão é temporária, não propriedade permanente do cliente.',
+  ),
+  q(
+    'net-r02',
+    'r-ipv6',
+    'apipa',
+    'NET-APIPA',
+    'review',
+    'O que não pode ser concluído desse único output?',
+    'Adaptador virtual desconectado apresenta registro link-local; Wi-Fi possui IPv6 e o portal abre.',
+    [
+      [
+        'Há mais de uma interface no cenário.',
+        'O enunciado informa o adaptador virtual e o Wi-Fi.',
+      ],
+      [
+        'Todo o computador está sem conectividade.',
+        'Uma interface ou família de endereços não representa todos os caminhos do dispositivo.',
+      ],
+      [
+        'É necessário identificar o caminho do serviço antes de diagnosticar.',
+        'Essa é uma conduta adequada ao contexto descrito.',
+      ],
+    ],
+    'b',
+    'Evite generalizar uma interface para o equipamento inteiro.',
+  ),
+  q(
+    'net-r02',
+    'm-fields',
+    'interfaces',
+    'NET-CONFIG',
+    'remediation',
+    'Qual campo responde “qual rede está diretamente conectada”?',
+    'IPv4 192.168.9.18; máscara 255.255.255.0; gateway .1; DNS .53.',
+    [
+      ['Somente DNS.', 'O resolvedor informa endereços para nomes, não o prefixo conectado.'],
+      [
+        'O nome do adaptador.',
+        'O nome ajuda a localizar a interface, mas não define matematicamente a rede.',
+      ],
+      ['IPv4 combinado com a máscara.', 'Aplicar o prefixo ao endereço identifica 192.168.9.0/24.'],
+    ],
+    'c',
+    'Endereço e máscara devem ser usados juntos.',
+  ),
+  q(
+    'net-r02',
+    'm-ack',
+    'dora',
+    'NET-DHCP-DORA',
+    'remediation',
+    'Qual frase separa proposta de confirmação?',
+    'Um colega diz que toda Offer já configura definitivamente o cliente.',
+    [
+      [
+        'Offer propõe; ACK confirma a solicitação aceita no fluxo apresentado.',
+        'A distinção explica por que ainda há Request e confirmação depois da oferta.',
+      ],
+      [
+        'Request é sempre enviado pelo servidor.',
+        'Request é mensagem do cliente nos fluxos discutidos.',
+      ],
+      ['ACK comprova que HTTPS foi testado.', 'DHCP não realiza o teste funcional do portal.'],
+    ],
+    'a',
+    'Não use a negociação como prova do serviço final.',
+  ),
+  q(
+    'net-r02',
+    'm-renew',
+    'lease',
+    'NET-DHCP-LEASE',
+    'remediation',
+    'Qual comando é apropriado para apenas coletar o estado inicial?',
+    'Você atende remotamente e ainda não registrou a configuração do adaptador.',
+    [
+      [
+        'ipconfig /release, para não alterar nada.',
+        'Release altera a concessão e pode interromper o acesso.',
+      ],
+      [
+        'ipconfig /all.',
+        'Coleta configuração detalhada, permitindo comparar antes de qualquer mudança.',
+      ],
+      ['Apagar todas as rotas.', 'É uma alteração ampla sem hipótese, autorização ou rollback.'],
+    ],
+    'b',
+    'Qual ação observa, em vez de liberar configuração?',
+  ),
+  q(
+    'net-r02',
+    'm-cause',
+    'apipa',
+    'NET-APIPA',
+    'remediation',
+    'Como registrar a causa com honestidade?',
+    'Você viu APIPA no cliente, mas ainda não consultou servidor, enlace ou relay.',
+    [
+      ['“Servidor queimado, comprovado.”', 'Não houve evidência do estado físico do servidor.'],
+      ['“DNS externo está lento, comprovado.”', 'O sintoma não mede tempo de consulta DNS.'],
+      [
+        '“Cliente sem concessão IPv4 utilizável; origem da falha ainda em investigação.”',
+        'A frase separa o estado observado da causa ainda não demonstrada.',
+      ],
+    ],
+    'c',
+    'Descreva a evidência sem completar as lacunas por suposição.',
+  ),
+];

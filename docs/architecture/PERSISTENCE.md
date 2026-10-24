@@ -1,5 +1,12 @@
 # Persistência proposta e recuperação
 
+Contrato atual da expansão: mesmo envelope/chave, R01 em `progress` e campo opcional `coursework`
+com versão própria 1. Leituras, drafts, runs, respostas, coleta e artefatos das novas unidades
+compartilham o codec/backup. Leitor atual aceita cópias R01 anteriores; leitores antigos não
+conhecem a extensão. Importação confirmada substitui todas as unidades e baixa estado anterior.
+Ver [contrato implementado e limites](../quality/WEEK1_EXPANSION.md). A proposta histórica abaixo
+não substitui os tipos e validadores atuais.
+
 Atualização: esta proposta da Fase 0 foi implementada no recorte descrito em [`storage.ts`](../../apps/learn/src/persistence/storage.ts) e no [relatório de execução](../quality/IMPLEMENTATION_R01.md). Os dados antigos continuam intactos; nem todos os campos projetados abaixo são usados na primeira versão.
 
 Status: projeto de Fase 0. O Hub continua usando seu storage atual; nenhum dado foi migrado.

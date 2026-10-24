@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
-import { activeRun, validRoute } from '../domain/learning';
+import { validRoute } from '../domain/learning';
 import { useLearning } from './useLearning';
 import { BackupPanel } from '../components/BackupPanel';
 import { UnitPlayer } from '../platform/UnitPlayer';
 import { Home, Networks, Journey, Area, Level } from '../platform/Pages';
 import { canonicalRoute, groups, groupNames, pages } from '../platform/catalog';
 import { Icon } from '../platform/Icons';
+import { courseRoute, courseHref } from '../coursework/catalog';
+import { CoursePlayer } from '../coursework/Player';
+import { activeCourseRun, initialCoursework } from '../coursework/model';
+import { KnowledgeMap } from '../coursework/Journey';
 
 const readRoute = () => canonicalRoute(location.hash);
 export function App() {
@@ -16,31 +20,33 @@ export function App() {
   const [menu, setMenu] = useState(false);
   const [backup, setBackup] = useState(false);
   const unit = validRoute(route);
+  const course = courseRoute(route);
+  const courseActive = activeCourseRun(store.envelope.coursework || initialCoursework());
   const page = pages.find((p) => p.hash === route);
-  const known = unit || route === 'redes' || Boolean(page);
+  const known = Boolean(course) || unit || route === 'redes' || Boolean(page);
   const group =
-    unit || route === 'redes' ? 'Redes' : page ? groupNames[page.group] || page.group : 'Começar';
-  const title = unit ? 'NET-R01' : route === 'redes' ? 'Formação de redes' : page?.name || 'Hoje';
+    unit || course || route === 'redes'
+      ? 'Redes'
+      : page
+        ? groupNames[page.group] || page.group
+        : 'Começar';
+  const title = course
+    ? course.unit.id.toUpperCase()
+    : unit
+      ? 'NET-R01'
+      : route === 'redes'
+        ? 'Formação de redes'
+        : page?.name || 'Hoje';
   useEffect(() => {
     function navigate() {
       const candidate = readRoute();
       const next = candidate === 'redes/r01' ? store.getProgress().route : candidate;
       setRoute(next);
       setMenu(false);
-      store.update((p) => {
-        const active = activeRun(p);
-        const consulted = active && next !== (active.kind === 'review' ? 'revisao' : 'avaliacao');
-        return {
-          ...p,
-          route: validRoute(next) ? next : p.route,
-          runs: consulted
-            ? p.runs.map((r) => (r.id === active.id ? { ...r, consulted: true } : r))
-            : p.runs,
-        };
-      });
+      store.visit(next);
     }
     if (!location.hash) history.replaceState(null, '', '#/hoje');
-    else navigate();
+    navigate();
     window.addEventListener('hashchange', navigate);
     return () => window.removeEventListener('hashchange', navigate);
     // Event operations use the hook's current-state ref, not a captured progress snapshot.
@@ -88,7 +94,8 @@ export function App() {
                   .filter((p) => (groupNames[p.group] || p.group) === name)
                   .map((p) => {
                     const target = p.id === 'network-practice' ? 'redes' : p.hash;
-                    const selected = target === route || (unit && target === 'redes');
+                    const selected =
+                      target === route || ((unit || Boolean(course)) && target === 'redes');
                     return (
                       <a
                         key={p.id}
@@ -124,7 +131,11 @@ export function App() {
             Progresso neste dispositivo
           </button>
         </header>
-        <main id="main" tabIndex={-1} className={unit ? 'platform-main in-unit' : 'platform-main'}>
+        <main
+          id="main"
+          tabIndex={-1}
+          className={unit || course ? 'platform-main in-unit' : 'platform-main'}
+        >
           <div className={`storage-message ${store.error ? 'has-error' : ''}`} role="status">
             {store.message}
           </div>
@@ -145,19 +156,37 @@ export function App() {
               preservado.
             </p>
           )}
-          {unit ? (
+          {course ? (
+            <CoursePlayer key={route} unit={course.unit} view={course.view} store={store} />
+          ) : unit ? (
             <>
               <div className="unit-save">
                 <button onClick={() => setBackup(!backup)}>Salvar cópia</button>
               </div>
-              <UnitPlayer route={route} store={store} />
+              {courseActive && ['avaliacao', 'revisao'].includes(route) ? (
+                <section>
+                  <h1>Há uma tentativa em andamento</h1>
+                  <a
+                    href={courseHref(
+                      courseActive.unitId,
+                      courseActive.kind === 'review' ? 'revisao' : 'avaliacao',
+                    )}
+                  >
+                    Retomar tentativa da {courseActive.unitId.toUpperCase()}
+                  </a>
+                </section>
+              ) : (
+                <UnitPlayer route={route} store={store} />
+              )}
             </>
+          ) : route === 'dependencias' ? (
+            <KnowledgeMap store={store} />
           ) : route === 'redes' ? (
             <Networks store={store} />
           ) : route === 'meu-nivel' ? (
             <Level store={store} />
           ) : ['jornada', 'visao-semanal', 'tarefas-jornada', 'semana-1'].includes(route) ? (
-            <Journey mode={route} />
+            <Journey mode={route} store={store} />
           ) : route === 'hoje' || !known ? (
             <Home store={store} />
           ) : (

@@ -1,5 +1,10 @@
 # InfraSec — frontend principal
 
+**Rodada atual:** R02, R03 e R04 disponíveis nativamente junto da R01. Acesso em Redes/Formação de redes
+e Semana 1 detalhada. Retomada, questões, coleta guiada, provas, recuperação, revisão e runbook usam
+o mesmo envelope local. Relatório: [WEEK1_EXPANSION.md](../../docs/quality/WEEK1_EXPANSION.md).
+As aplicações anteriores continuam separadas; bancos de terceiros não foram publicados no novo motor.
+
 Aplicação React/TypeScript principal: navegação global InfraSec, Hoje, formação de Redes, roteiro de 12 semanas, áreas com disponibilidade explícita e unidade NET-R01 nativa.
 
 O ensino R01 não depende do Hub anterior, ConcursoOS, API, banco ou conta. As ferramentas ainda não migradas abrem na versão anterior, por links explícitos. A R01 mantém suas lições, regras e persistência. Ainda não foi validada com iniciantes reais e não representa um curso completo de CCNA.

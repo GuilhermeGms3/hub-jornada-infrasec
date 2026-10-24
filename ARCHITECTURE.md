@@ -1,5 +1,15 @@
 # Arquitetura do Hub Jornada InfraSec
 
+## Expansão pedagógica: suporte a unidades
+
+`apps/learn/src/coursework/` contém contratos, catálogo, ensino R02–R04, motor compartilhado das
+novas atividades e player composto com Options/Correction existentes. R01 mantém conteúdo e
+motor para compatibilidade. Um único `useLearning` controla o envelope e a navegação; campo opcional
+`coursework` versão 1 preserva os registros originais em `progress`, sem criar chave por curso.
+As duas estruturas são projetadas em histórico unificado com modos/fontes distintos, sem conversão
+automática de resultados antigos. Links da Semana 1 e o mapa de conhecimentos são nativos.
+Detalhes e limites: [WEEK1_EXPANSION.md](docs/quality/WEEK1_EXPANSION.md).
+
 ## Arquitetura vigente — frontend React principal
 
 O pedido de 24/10/2026 substitui a direção anterior. `apps/learn` agora contém o frontend principal:

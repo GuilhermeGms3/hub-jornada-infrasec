@@ -9,7 +9,7 @@ test('Hoje, Redes e R01 são uma plataforma nativa com retomada real', async ({ 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Seu próximo passo, com clareza.',
   );
-  await expect(page.locator('.study-facts')).toContainText('0 de 11');
+  await expect(page.locator('.study-facts')).toContainText('0 de 23');
   await expect(page.locator('.global-group')).toHaveCount(6);
   await expect(page.locator('.global-sidebar nav a')).toHaveCount(29);
   await page.getByRole('link', { name: 'Ver formação de redes', exact: true }).click();
@@ -20,7 +20,7 @@ test('Hoje, Redes e R01 são uma plataforma nativa com retomada real', async ({ 
   await page.getByText('Sumário da unidade', { exact: true }).click();
   await page.getByRole('link', { name: '06 Gateway' }).click();
   await page.locator('.global-sidebar').getByRole('link', { name: 'Hoje', exact: true }).click();
-  await expect(page.locator('.study-facts')).toContainText('1 de 11');
+  await expect(page.locator('.study-facts')).toContainText('1 de 23');
   await page.getByRole('link', { name: 'Retomar meu estudo' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('A saída para outras redes');
   await page.reload();
@@ -48,6 +48,7 @@ test('as 29 responsabilidades têm destino sem anunciar aulas inexistentes', asy
         'tarefas-jornada',
         'semana-1',
         'redes',
+        'dependencias',
       ].includes(canonicalRoute(item.hash))
     ) {
       await expect(page.locator('.area-status')).toContainText('reformulação');

@@ -100,4 +100,5 @@ export interface Envelope {
   revision: number;
   savedAt: string;
   progress: Progress;
+  coursework?: import('../coursework/types').Coursework;
 }

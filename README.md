@@ -2,6 +2,22 @@
 
 ## Frontend atual — InfraSec em React
 
+### Expansão da Semana 1
+
+Além da R01, **Redes → Formação de redes** oferece **NET-R02 (configuração/DHCP)**,
+**NET-R03 (troubleshooting)** e **NET-R04 (runbooks, incidentes e evidências)**.
+São aulas internas em português, exemplos resolvidos, prática guiada, avaliações, recuperação e
+revisão. O runbook pode ser editado/exportado, com origem autodeclarada e sem aprovação por texto.
+Hoje e Semana 1 detalhada ligam as sete missões ao ensino correspondente. O mapa de dependências
+abre as explicações necessárias, sem bloquear aulas introdutórias.
+
+A mesma cópia de progresso conserva as quatro unidades. Importar uma cópia antiga sem os dados
+novos substitui também esses dados somente após confirmação; confira o resumo antes de importar.
+Veja [entrega e testes](docs/quality/WEEK1_EXPANSION.md),
+[cobertura real](docs/content/WEEK1_COVERAGE.md) e [acervo/licenças](docs/content/ASSET_REUSE.md).
+
+### Base da plataforma
+
 Esta branch reconstrói a interface em React/TypeScript e preserva a arquitetura de informação do
 Hub: seis grupos e 29 responsabilidades. A entrada principal agora é `index.html` → `platform/index.html`.
 

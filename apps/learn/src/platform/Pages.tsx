@@ -5,6 +5,10 @@ import { ProgressView } from '../features/ProgressView';
 import { ConnectionSketch, Icon } from './Icons';
 import { legacyUrl, pages } from './catalog';
 import journey from './journey.json';
+import { courseUnits, courseHref, courseRoute } from '../coursework/catalog';
+import { WeekOne, recommendedCourseRoute } from '../coursework/Journey';
+import { CourseHistory } from '../coursework/Player';
+import { courseReviewDue } from '../coursework/model';
 
 export function resumeRoute(store: LearningStore) {
   const p = store.envelope.progress;
@@ -20,21 +24,34 @@ export function Home({ store }: { store: LearningStore }) {
   const started = Boolean(
     p.read.length || p.attempts.length || p.runs.length || p.labAttempts.length,
   );
-  const due = dueReview(p);
-  const next = resumeRoute(store);
+  const reviews = [
+    dueReview(p),
+    ...courseUnits.map((u) =>
+      store.envelope.coursework ? courseReviewDue(store.envelope.coursework, u.id) : null,
+    ),
+  ]
+    .filter((r) => r !== null)
+    .sort((a, b) => Date.parse(a.dueAt) - Date.parse(b.dueAt));
+  const due = reviews.find((r) => !r.completed) || reviews.at(-1);
+  const next = recommendedCourseRoute(store) || resumeRoute(store);
+  const nextCourse = courseRoute(next);
   return (
     <article className="home-page">
       <h1 tabIndex={-1}>Seu próximo passo, com clareza.</h1>
       <p className="platform-lead">Aprenda, pratique e volte ao que precisa de atenção.</p>
       <section className="study-next" aria-label="Próxima sessão de estudo">
         <div>
-          <h2>Como um computador acessa um site</h2>
-          <p>NET-R01 · 11 lições com exemplos, exercícios e diagnóstico.</p>
+          <h2>{nextCourse?.unit.title || 'Como um computador acessa um site'}</h2>
+          <p>
+            {nextCourse
+              ? `${nextCourse.unit.id.toUpperCase()} · aulas, exemplos, prática e avaliação integrados.`
+              : 'NET-R01 · 11 lições com exemplos, exercícios e diagnóstico.'}
+          </p>
           <div className="actions">
             <a className="button primary" href={`#/${next}`}>
               {activeRun(p)
                 ? 'Retomar tentativa'
-                : started
+                : started || Boolean(nextCourse)
                   ? 'Retomar meu estudo'
                   : 'Começar a unidade'}
             </a>
@@ -45,7 +62,9 @@ export function Home({ store }: { store: LearningStore }) {
           {started && (
             <p className="resume-note">
               Próxima tela:{' '}
-              {lessons.find((l) => `aula/${l.id}` === next)?.title ||
+              {nextCourse?.unit.lessons.find((l) => l.id === nextCourse.view)?.title ||
+                nextCourse?.view ||
+                lessons.find((l) => `aula/${l.id}` === next)?.title ||
                 {
                   revisao: 'Revisão posterior',
                   avaliacao: 'Avaliação independente',
@@ -63,7 +82,7 @@ export function Home({ store }: { store: LearningStore }) {
         <div>
           <Icon kind={3} />
           <p>
-            <strong>{p.read.length} de 11</strong>
+            <strong>{p.read.length + (store.envelope.coursework?.read.length || 0)} de 23</strong>
             <span>leituras registradas</span>
           </p>
         </div>
@@ -71,8 +90,10 @@ export function Home({ store }: { store: LearningStore }) {
           <Icon kind={1} />
           <p>
             <strong>
-              {p.runs.filter((r) => r.status === 'completed' && r.kind === 'independent').length ||
-                'Nenhuma'}
+              {p.runs.filter((r) => r.status === 'completed' && r.kind === 'independent').length +
+                (store.envelope.coursework?.runs.filter(
+                  (r) => r.status === 'completed' && r.kind === 'independent',
+                ).length || 0) || 'Nenhuma'}
             </strong>
             <span>avaliação concluída</span>
           </p>
@@ -91,13 +112,15 @@ export function Home({ store }: { store: LearningStore }) {
           </p>
         </div>
       </div>
+      <WeekOne store={store} compact />
       <h2>Um percurso maior que esta unidade</h2>
       <div className="path-rows">
         <a href="#/redes">
           <Icon kind={4} />
           <strong>Redes</strong>
           <span>
-            Base, endereçamento, switching e roteamento. A primeira unidade já está disponível.
+            Base, endereçamento, switching e roteamento. A base da Semana 1 tem quatro unidades
+            disponíveis.
           </span>
           <b>Explorar →</b>
         </a>
@@ -130,9 +153,9 @@ export function Networks({ store }: { store: LearningStore }) {
       <h1 tabIndex={-1}>Formação de redes</h1>
       <p className="platform-lead">Entenda o caminho. Investigue a falha. Explique a evidência.</p>
       <p>
-        A sequência preserva a base das semanas 1–6 do percurso InfraSec. A R01 oferece ensino
-        completo neste recorte; as próximas unidades ainda precisam de redação, prática e revisão
-        técnica.
+        A sequência preserva a base das semanas 1–6 do percurso InfraSec. A R01 oferece ensino neste
+        recorte. A Semana 1 agora também possui configuração/DHCP, troubleshooting e runbooks; as
+        etapas seguintes continuam planejadas.
       </p>
       <section className="available-unit">
         <span className="availability available">Disponível · NET-R01</span>
@@ -158,6 +181,20 @@ export function Networks({ store }: { store: LearningStore }) {
           automática com CCNA, N1–N3 ou prontidão profissional.
         </p>
       </section>
+      {courseUnits.map((unit) => (
+        <section className="available-unit" key={unit.id}>
+          <span className="availability available">Disponível · {unit.id.toUpperCase()}</span>
+          <h2>{unit.title}</h2>
+          <p>{unit.motivation}</p>
+          <p className="scope-note">{unit.prerequisite}</p>
+          <div className="actions">
+            <a className="button primary" href={courseHref(unit.id, unit.lessons[0].id)}>
+              Estudar {unit.id.toUpperCase()}
+            </a>
+            <a href={courseHref(unit.id, 'historico')}>Ver evidências da unidade</a>
+          </div>
+        </section>
+      ))}
       <h2>O que vem depois</h2>
       <p>
         Unidades planejadas: seus objetivos fazem parte da formação, mas ainda não são aulas
@@ -184,7 +221,7 @@ export function Networks({ store }: { store: LearningStore }) {
   );
 }
 
-export function Journey({ mode }: { mode: string }) {
+export function Journey({ mode, store }: { mode: string; store: LearningStore }) {
   return (
     <article>
       <h1 tabIndex={-1}>{pages.find((p) => p.hash === mode)?.name || 'Plano de 12 semanas'}</h1>
@@ -193,12 +230,13 @@ export function Journey({ mode }: { mode: string }) {
       </p>
       <p>
         Este roteiro preserva as 12 semanas e 84 missões como organização curricular. Ele não é uma
-        formação nova concluída. A NET-R01 cobre parte da base da primeira semana; marcações e notas
-        antigas não foram transformadas em domínio.
+        formação nova concluída. R01–R04 agora ensinam a base da Semana 1; marcações e notas antigas
+        não foram transformadas em domínio.
       </p>
       <a className="button primary" href="#/redes">
         Estudar a base disponível
       </a>
+      <WeekOne store={store} />
       {journey
         .filter((w) => mode !== 'semana-1' || w.week === 1)
         .map((w) => (
@@ -241,9 +279,9 @@ export function Journey({ mode }: { mode: string }) {
               ))}
             </ol>
             <p className="scope-note">
-              Missões preservadas como roteiro. O ensino aprofundado e a avaliação desta semana
-              ainda precisam de revisão{w.week === 1 ? '; comece pela R01 disponível em Redes' : ''}
-              .
+              {w.week === 1
+                ? 'Ensino, prática e avaliação ligados às missões no painel da Semana 1 acima. Execução real continua identificada separadamente.'
+                : 'Missões preservadas como roteiro; o ensino aprofundado desta etapa permanece pendente.'}
             </p>
           </details>
         ))}
@@ -330,6 +368,7 @@ export function Level({ store }: { store: LearningStore }) {
   return (
     <>
       <ProgressView store={store} />
+      <CourseHistory store={store} />
       <section className="legacy-note">
         <h2>Diagnóstico anterior</h2>
         <p>

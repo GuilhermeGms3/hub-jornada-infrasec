@@ -1,5 +1,10 @@
 # Contratos de dados propostos
 
+Estado vigente: R01 preservada em `domain/types.ts`; novas unidades e evidências em
+`coursework/types.ts`, extensão opcional validada por `coursework/validate.ts`. Um único store e
+backup, IDs estáveis, versões explícitas e histórico unificado sem mescla de pontuações antigas.
+Veja [a implementação da Semana 1](../quality/WEEK1_EXPANSION.md). Abaixo permanece o histórico da proposta.
+
 Atualização: este é o desenho da Fase 0. O contrato implementado da primeira unidade está em [`types.ts`](../../apps/learn/src/domain/types.ts), com diferenças e limites registrados no [relatório de execução](../quality/IMPLEMENTATION_R01.md).
 
 Status: especificação de Fase 0, não contratos já implementados. Cada campo existe para a primeira unidade; a hierarquia curricular completa não obriga criar telas ou tabelas.

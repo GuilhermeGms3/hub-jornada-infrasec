@@ -1,21 +1,23 @@
 import { useState } from 'react';
 import { questionById } from '../content/questions';
 import type { LearningStore } from '../app/useLearning';
-import type { Mode } from '../domain/types';
-import { correctAnswer, makeAttempt } from '../domain/learning';
+import type { Mode, Question } from '../domain/types';
+import { makeAttempt } from '../domain/learning';
 
 export function Options({
   questionId,
   value,
   onChange,
   disabled = false,
+  question,
 }: {
   questionId: string;
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  question?: Pick<Question, 'prompt' | 'context' | 'options' | 'correct'>;
 }) {
-  const q = questionById[questionId];
+  const q = question || questionById[questionId];
   return (
     <fieldset disabled={disabled}>
       <legend>{q.prompt}</legend>
@@ -35,9 +37,19 @@ export function Options({
     </fieldset>
   );
 }
-export function Correction({ questionId, answer }: { questionId: string; answer: string }) {
-  const q = questionById[questionId];
-  const correct = correctAnswer(questionId, answer);
+export function Correction({
+  questionId,
+  answer,
+  question,
+  recoveryHref = '#/recuperacao',
+}: {
+  questionId: string;
+  answer: string;
+  question?: Pick<Question, 'prompt' | 'context' | 'options' | 'correct'>;
+  recoveryHref?: string;
+}) {
+  const q = question || questionById[questionId];
+  const correct = q.correct === answer && q.options.some((o) => o.id === answer);
   return (
     <div className={`feedback ${correct ? 'positive' : 'negative'}`} role="status">
       <strong>{correct ? 'Resposta correta neste exercício.' : 'Vamos rever o raciocínio.'}</strong>
@@ -48,7 +60,7 @@ export function Correction({ questionId, answer }: { questionId: string; answer:
             <strong>Resposta sustentada:</strong> {q.options.find((o) => o.id === q.correct)?.text}
           </p>
           <p>{q.options.find((o) => o.id === q.correct)?.explanation}</p>
-          <a href="#/recuperacao">Abrir recuperação contextual</a>
+          <a href={recoveryHref}>Abrir recuperação contextual</a>
         </>
       )}
       <details>

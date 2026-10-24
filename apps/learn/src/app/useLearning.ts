@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Envelope, Progress } from '../domain/types';
 import { load, save, STORAGE_KEY } from '../persistence/storage';
+import type { Coursework } from '../coursework/types';
+import { initialCoursework, visitCoursework } from '../coursework/model';
+import { courseRoute } from '../coursework/catalog';
+import { validRoute } from '../domain/learning';
 
 const store = {
   getItem: (key: string) => localStorage.getItem(key),
@@ -24,9 +28,8 @@ export function useLearning() {
     ref.current = next;
     setState(next);
   }
-  function update(change: (p: Progress) => Progress) {
+  function write(envelope: Envelope) {
     const current = ref.current;
-    const envelope = { ...current.envelope, progress: change(current.envelope.progress) };
     if (current.locked) {
       publish({ ...current, envelope });
       return;
@@ -49,6 +52,32 @@ export function useLearning() {
         message: 'Não salvo no dispositivo. Exporte esta sessão para preservá-la.',
       });
     }
+  }
+  function update(change: (p: Progress) => Progress) {
+    const envelope = ref.current.envelope;
+    write({ ...envelope, progress: change(envelope.progress) });
+  }
+  function updateCoursework(change: (c: Coursework) => Coursework) {
+    const envelope = ref.current.envelope;
+    write({ ...envelope, coursework: change(envelope.coursework || initialCoursework()) });
+  }
+  function visit(route: string) {
+    const envelope = ref.current.envelope;
+    const p = envelope.progress;
+    const c = envelope.coursework || (courseRoute(route) ? initialCoursework() : undefined);
+    write({
+      ...envelope,
+      progress: {
+        ...p,
+        route: validRoute(route) ? route : p.route,
+        runs: p.runs.map((r) =>
+          r.status === 'active' && route !== (r.kind === 'review' ? 'revisao' : 'avaliacao')
+            ? { ...r, consulted: true }
+            : r,
+        ),
+      },
+      ...(c ? { coursework: visitCoursework(c, route) } : {}),
+    });
   }
   function replace(candidate: Envelope) {
     const current = ref.current;
@@ -84,6 +113,13 @@ export function useLearning() {
     window.addEventListener('storage', changed);
     return () => window.removeEventListener('storage', changed);
   }, []);
-  return { ...state, update, replace, getProgress: () => ref.current.envelope.progress };
+  return {
+    ...state,
+    update,
+    updateCoursework,
+    visit,
+    replace,
+    getProgress: () => ref.current.envelope.progress,
+  };
 }
 export type LearningStore = ReturnType<typeof useLearning>;

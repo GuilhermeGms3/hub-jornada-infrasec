@@ -1,5 +1,11 @@
 # Reconstrução InfraSec
 
+## Expansão pedagógica vigente — Semana 1 (24/10/2026)
+
+R02/R03/R04 implementadas junto da R01, sem redesign. Veja [conteúdo, testes e limites](quality/WEEK1_EXPANSION.md),
+[matriz de cobertura](content/WEEK1_COVERAGE.md), [procedência e decisões](content/ASSET_REUSE.md) e
+[pedido](requirements/PEDAGOGICAL_EXPANSION_REQUEST.md). Os blocos seguintes preservam as etapas anteriores.
+
 ## Direção vigente — novo frontend principal (24/10/2026)
 
 React/TypeScript como aplicação principal, organização InfraSec preservada e ensino R01 nativo.

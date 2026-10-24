@@ -3,6 +3,7 @@ import { lessons } from '../content/lessons';
 import { commandLabels, scenarioById, diagnoses } from '../domain/simulator';
 import { initialProgress, validRoute } from '../domain/learning';
 import { UNIT_VERSION, type Envelope } from '../domain/types';
+import { validateCoursework } from '../coursework/validate';
 
 export const STORAGE_KEY = 'infrasec-learn:v1';
 export const MAX_BYTES = 5 * 1024 * 1024;
@@ -40,7 +41,7 @@ function bool(v: unknown) {
 export function parseEnvelope(raw: string): Envelope {
   if (new Blob([raw]).size > MAX_BYTES) throw new Error('Arquivo excede 5 MiB.');
   const e: unknown = JSON.parse(raw);
-  object(e, ['appId', 'schemaVersion', 'revision', 'savedAt', 'progress']);
+  object(e, ['appId', 'schemaVersion', 'revision', 'savedAt', 'progress', 'coursework']);
   if (e.appId !== 'infrasec-learn' || e.schemaVersion !== 1)
     throw new Error('Formato ou versão de dados incompatível. O original foi preservado.');
   number(e.revision);
@@ -215,6 +216,14 @@ export function parseEnvelope(raw: string): Envelope {
     (sim.answer && !diagnoses.some(([id]) => id === sim.answer))
   )
     throw new Error('Registro de laboratório inválido.');
+  if (e.coursework !== undefined) {
+    validateCoursework(e.coursework);
+    if (
+      p.runs.some((r) => (r as Dict).status === 'active') &&
+      e.coursework.runs.some((r) => r.status === 'active')
+    )
+      throw new Error('Há avaliações ativas conflitantes entre unidades.');
+  }
   return e as unknown as Envelope;
 }
 

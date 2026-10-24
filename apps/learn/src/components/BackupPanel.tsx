@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import type { LearningStore } from '../app/useLearning';
-import { exportBackup, importBackup, MAX_BYTES } from '../persistence/storage';
+import { exportBackup, importBackup, MAX_BYTES, parseEnvelope } from '../persistence/storage';
 import type { Envelope } from '../domain/types';
 
-export function download(name: string, text: string) {
-  const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+export function download(name: string, text: string, type = 'application/json') {
+  const url = URL.createObjectURL(new Blob([text], { type }));
   const link = document.createElement('a');
   link.href = url;
   link.download = name;
@@ -71,8 +71,10 @@ export function BackupPanel({ store }: { store: LearningStore }) {
           <p>
             Cópia válida: {candidate.progress.read.length} leituras,{' '}
             {candidate.progress.attempts.length} respostas e {candidate.progress.labAttempts.length}{' '}
-            casos guiados. Importar substitui o progresso desta aplicação; não mescla históricos. O
-            checksum verifica corrupção acidental, não autentica resultados.
+            casos guiados da R01; {candidate.coursework?.attempts.length || 0} respostas das
+            unidades novas. Importar substitui o progresso de TODAS as unidades desta aplicação,
+            inclusive dados novos ausentes numa cópia antiga; não mescla históricos. O checksum
+            verifica corrupção acidental, não autentica resultados.
           </p>
           <button
             className="primary"
@@ -80,14 +82,21 @@ export function BackupPanel({ store }: { store: LearningStore }) {
             onClick={async () => {
               setBusy(true);
               try {
-                download(
-                  'infrasec-antes-da-importacao.json',
-                  store.raw || (await exportBackup(store.envelope)),
-                );
+                if (store.raw) {
+                  try {
+                    download(
+                      'infrasec-antes-da-importacao.json',
+                      await exportBackup(parseEnvelope(store.raw)),
+                    );
+                  } catch {
+                    download('infrasec-original-bruto-preservado.json', store.raw);
+                  }
+                } else
+                  download('infrasec-antes-da-importacao.json', await exportBackup(store.envelope));
                 store.replace(candidate);
                 setCandidate(null);
                 setError('');
-                location.hash = `#/${candidate.progress.route}`;
+                location.hash = `#/${candidate.coursework?.route || candidate.progress.route}`;
               } catch (e) {
                 setError(
                   e instanceof Error

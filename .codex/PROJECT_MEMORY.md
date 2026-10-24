@@ -1,5 +1,16 @@
 # Project Memory
 
+## Expansão vigente — Semana 1 (2026-10-24)
+- Branch `codex/infrasec-expansao-semana-1`, base `91538e2`. Pedido em `docs/requirements/PEDAGOGICAL_EXPANSION_REQUEST.md`.
+- R02 configuração/DHCP, R03 troubleshooting e R04 runbooks implementadas: 12 lições, 12 exemplos, 51 itens autorais, três práticas guiadas e recuperação/revisão por objetivo. R04 editor/exportação de runbook autodeclarado.
+- Sem redesign/dependência nova. `coursework/` compõe player e correção existentes; motor de outputs R01 reutilizado na R03. Função shuffle CCNA-1 adaptada com MIT integral/aviso público; nenhuma questão de terceiros publicada.
+- Mesmo envelope/chave `infrasec-learn:v1`, `progress` R01 preservado e `coursework?` v1. Store único e histórico projetado em conjunto; modos distintos, versão, fonte, ajuda, runs congelados e eventos idempotentes. Backup completo substitui todas as unidades com confirmação; cópias antigas aceitas, leitores antigos não conhecem extensão.
+- Semana1: sete missões com links internos e critérios locais explícitos. Mapa de dependências nativo; não bloqueia as explicações. Leitura/texto/checkbox não aprovam. Avaliações novas de quatro objetivos essenciais, consulta marca assistência. Agenda1/3/7 sem avanço antecipado.
+- Auditoria reproduzível `scripts/audit-learning-assets.cjs`; números e licenças em `docs/content/ASSET_AUDIT.json` e `ASSET_REUSE.md`. CCNA628/625IDs,295explicaçõesvazias; CCNA1 143; Security145+12PBQ; AWS23arquivosdeprova; SC900365cartões; CCNA-Labs27pkt reais. Importação de bancos retida por direitos e revisão, sem apagar acervo.
+- Validação: 140 Vitest, 28 E2E,149 raiz; format/lint/typecheck/builds. Capturas reais week1-*. Build avisa chunk~521kB(gzip162kB), não falha. Relatório `docs/quality/WEEK1_EXPANSION.md`; cobertura `docs/content/WEEK1_COVERAGE.md`.
+- Limites: sem piloto com alunos/revisão humana independente, prova supervisionada, lab físico ou bancos certificados completos. Próximo lote: IPv4/subnetting/VLSM e revisão editorial de bancos. Nada de novo frontend.
+- Os blocos abaixo são histórico.
+
 ## Direção vigente — frontend React principal (2026-10-24)
 - Pedido: `docs/requirements/REACT_PLATFORM_REQUEST.md`. Reconstruir frontend, preservar/evoluir organização e reconstruir conteúdo. Substitui a direção de Hub antigo principal.
 - Branch `codex/infrasec-react-plataforma`, base R01 `97fc7f4`, servidor/Docker reaplicado como `7d5f40c`. Integração Shadow DOM preservada em branch própria `codex/infrasec-integracao-hub`/`0284dda` e publicada.
