@@ -1,5 +1,7 @@
 # Persistência proposta e recuperação
 
+Atualização: esta proposta da Fase 0 foi implementada no recorte descrito em [`storage.ts`](../../apps/learn/src/persistence/storage.ts) e no [relatório de execução](../quality/IMPLEMENTATION_R01.md). Os dados antigos continuam intactos; nem todos os campos projetados abaixo são usados na primeira versão.
+
 Status: projeto de Fase 0. O Hub continua usando seu storage atual; nenhum dado foi migrado.
 
 ## Envelope isolado

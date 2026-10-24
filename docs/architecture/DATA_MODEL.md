@@ -1,5 +1,7 @@
 # Contratos de dados propostos
 
+Atualização: este é o desenho da Fase 0. O contrato implementado da primeira unidade está em [`types.ts`](../../apps/learn/src/domain/types.ts), com diferenças e limites registrados no [relatório de execução](../quality/IMPLEMENTATION_R01.md).
+
 Status: especificação de Fase 0, não contratos já implementados. Cada campo existe para a primeira unidade; a hierarquia curricular completa não obriga criar telas ou tabelas.
 
 ## Conteúdo e currículo

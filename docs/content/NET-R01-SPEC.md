@@ -1,5 +1,7 @@
 # NET-R01 — Como um computador acessa um site
 
+Atualização: especificação preliminar preservada. A implementação com onze lições, novos conjuntos de oito decisões e suas evidências está no [relatório NET-R01](../quality/IMPLEMENTATION_R01.md); o conteúdo efetivo está em [`lessons.ts`](../../apps/learn/src/content/lessons.ts).
+
 Status: **especificação preliminar detalhada da Fase 0**. A redação integral das aulas e a implementação são as Fases 2 e 3 do macroprompt. Os trechos abaixo fixam mecanismo, profundidade e exemplos; não são um curso publicado.
 
 Subtítulo: “Entenda o caminho da comunicação e aprenda a investigar falhas básicas de conectividade.” Curso: Redes de Computadores — Do Zero à Base para CCNA. Módulo: Comunicação e conectividade. Versão proposta 1.0, idioma PT-BR. Pré-requisito: uso básico de computador. Objetivos em [OBJECTIVES](NET-R01-OBJECTIVES.md).

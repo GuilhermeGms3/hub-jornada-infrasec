@@ -1,4 +1,12 @@
-# Reconstrução InfraSec — Fase 0
+# Reconstrução InfraSec
+
+## Implementação funcional da NET-R01 — 23/10/2026
+
+A nova aplicação está em [`apps/learn`](../apps/learn/README.md), branch `codex/infrasec-r01-implementacao`. Inclui onze lições, diagramas, 41 questões, nove cenários de laboratório, avaliação independente, recuperação, revisão e progresso local recuperável. Veja [execução, testes e limites](quality/IMPLEMENTATION_R01.md). Para iniciar: `cd apps/learn`, `npm ci`, `npm run dev`.
+
+A entrega abaixo permanece como histórico da Fase 0. Seus contratos propostos não significam que todos os campos/recursos planejados foram implementados; o relatório atual e os tipos do código registram o que existe de fato. Hub e ConcursoOS seguem preservados.
+
+## Fase 0 — auditoria e proposta
 
 Data: 23/10/2026. Branch: `codex/infrasec-reconstrucao-fase-0`.
 

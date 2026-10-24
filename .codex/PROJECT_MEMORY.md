@@ -1,5 +1,16 @@
 # Project Memory
 
+## Implementação vigente — NET-R01 (2026-10-23)
+- Branch `codex/infrasec-r01-implementacao`, criada sobre Fase 0/`fd4d5f5`; pedido posterior autoriza implementação e testes de todo o recorte R01 sem perguntar entre subetapas.
+- Aplicação nova independente em `apps/learn/`, React 19.3.1, TypeScript 5.9.3, Vite 8.3.5, Node testado 22.20.0. Manifesto/lockfile próprios. Hub/ConcursoOS não foram modificados em runtime.
+- Entregue: 11 lições originais PT-BR, 11 exemplos, 41 questões, diagramas SVG/HTML, demonstração de máscara/percurso, 9 cenários × 8 ações, ajuda, duas avaliações de 8 decisões, 6 recuperações, revisão de 8 itens e agenda 1/3/7 dias.
+- Progresso exclusivo `infrasec-learn:v1`, schema 1/conteúdo 1.0; backup SHA-256 validado e confirmado, dados inválidos preservados, falhas/quota/conflitos indicados. Sem migração das 26 chaves antigas.
+- Evidência por objetivo e famílias, sem palavras-chave, autodeclaração ou texto mínimo para aprovar. Consulta/ajuda torna avaliação assistida; repetição não aumenta diversidade nem limpa fragilidade sem observação nova.
+- Execução: `cd apps/learn; npm ci; npm run dev`, URL `http://127.0.0.1:5174/`. Build e preview independentes; sem deploy externo.
+- Validação: 105 testes Vitest (54 de conteúdo incluídos), 11 E2E Chromium, 147 testes do Hub, lint/typecheck/build, npm audit sem vulnerabilidades, 32 layouts adicionais sem overflow/erro de console. Capturas e detalhes em `docs/quality/IMPLEMENTATION_R01.md`.
+- Limites: sem piloto com iniciantes ou revisão técnica humana independente; sem auditoria WCAG, outros browsers, terminal real, curso completo CCNA, sincronização ou prova supervisionada. Banco finito; agenda/estados são heurísticos explícitos.
+- Próximo passo: testar aprendizagem com iniciantes e revisar R01 antes de expandir. As propostas/históricos abaixo não substituem o contrato atual em `apps/learn/src/domain/types.ts`.
+
 ## Direção vigente — reconstrução, Fase 0 (2026-10-23)
 - Pedido atual: executar o macroprompt em outra branch. A instrução operacional final restringe esta primeira execução à auditoria/proposta, sem modificar código.
 - Branch: `codex/infrasec-reconstrucao-fase-0`, base `master`/`29f670f`.

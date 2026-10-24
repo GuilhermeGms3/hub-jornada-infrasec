@@ -1,5 +1,7 @@
 # Arquitetura mínima proposta — nova experiência InfraSec
 
+Atualização 23/10/2026: a primeira implementação isolada em `apps/learn` foi entregue na branch `codex/infrasec-r01-implementacao`. O [relatório atual](../quality/IMPLEMENTATION_R01.md) e os [contratos executáveis](../../apps/learn/src/domain/types.ts) descrevem stack, desvios, testes e limitações. O restante deste documento preserva a proposta da Fase 0.
+
 Status: proposta da Fase 0; **não implementada**. A [arquitetura da raiz](../../ARCHITECTURE.md) descreve o Hub atual. Este documento não afirma que já existem componentes React nesta aplicação principal.
 
 ## Escolha e justificativa
