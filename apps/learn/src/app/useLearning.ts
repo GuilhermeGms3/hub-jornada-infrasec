@@ -84,6 +84,6 @@ export function useLearning() {
     window.addEventListener('storage', changed);
     return () => window.removeEventListener('storage', changed);
   }, []);
-  return { ...state, update, replace };
+  return { ...state, update, replace, getProgress: () => ref.current.envelope.progress };
 }
 export type LearningStore = ReturnType<typeof useLearning>;

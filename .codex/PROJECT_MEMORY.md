@@ -1,5 +1,15 @@
 # Project Memory
 
+## Direção vigente — frontend React principal (2026-10-24)
+- Pedido: `docs/requirements/REACT_PLATFORM_REQUEST.md`. Reconstruir frontend, preservar/evoluir organização e reconstruir conteúdo. Substitui a direção de Hub antigo principal.
+- Branch `codex/infrasec-react-plataforma`, base R01 `97fc7f4`, servidor/Docker reaplicado como `7d5f40c`. Integração Shadow DOM preservada em branch própria `codex/infrasec-integracao-hub`/`0284dda` e publicada.
+- `apps/learn` é frontend principal. `index.html` encaminha com hash à build versionada `platform/index.html`; atualizar com `npm run build:platform`. Sem novas dependências/backend ou importação do frontend legado.
+- Inventário prévio das 29 páginas em `docs/architecture/INFORMATION_INVENTORY.md`. Shell nativo com seis grupos; Hoje com registros reais; Redes/R01 disponíveis; plano12/84 como roteiro; áreas restantes com escopo/estado e links explícitos a recursos anteriores.
+- R01 e schema/chave/backup preservados; único store global. Sair da avaliação para qualquer área marca consulta. Nenhuma fusão com notas fracas/N0–N3. Portas diferentes exigem exportar/importar.
+- Validação: 109 Vitest, 19 E2E novo frontend, 147 testes anteriores, dois testes da entrada principal real; lint/typecheck/builds/formatação. Relatório e capturas reais em `docs/quality/REACT_PLATFORM.md`.
+- Limites: ferramentas anteriores não migradas nativamente; semanas2–12 sem novas aulas completas; sem estudo com iniciantes, WCAG completa ou outros browsers. Prioridade seguinte é aprofundar conteúdo neste shell.
+- Os blocos abaixo são histórico e não substituem a direção vigente.
+
 ## Implementação vigente — NET-R01 (2026-10-23)
 - Branch `codex/infrasec-r01-implementacao`, criada sobre Fase 0/`fd4d5f5`; pedido posterior autoriza implementação e testes de todo o recorte R01 sem perguntar entre subetapas.
 - Aplicação nova independente em `apps/learn/`, React 19.3.1, TypeScript 5.9.3, Vite 8.3.5, Node testado 22.20.0. Manifesto/lockfile próprios. Hub/ConcursoOS não foram modificados em runtime.

@@ -1,5 +1,13 @@
 # Reconstrução InfraSec
 
+## Direção vigente — novo frontend principal (24/10/2026)
+
+React/TypeScript como aplicação principal, organização InfraSec preservada e ensino R01 nativo.
+Veja [inventário das 29 páginas](architecture/INFORMATION_INVENTORY.md),
+[pedido vigente](requirements/REACT_PLATFORM_REQUEST.md) e
+[implementação, acesso, testes e limites](quality/REACT_PLATFORM.md).
+Execute `npm run dev` na raiz e abra a porta 4173. As seções abaixo documentam etapas anteriores.
+
 ## Implementação funcional da NET-R01 — 23/10/2026
 
 A nova aplicação está em [`apps/learn`](../apps/learn/README.md), branch `codex/infrasec-r01-implementacao`. Inclui onze lições, diagramas, 41 questões, nove cenários de laboratório, avaliação independente, recuperação, revisão e progresso local recuperável. Veja [execução, testes e limites](quality/IMPLEMENTATION_R01.md). Para iniciar: `cd apps/learn`, `npm ci`, `npm run dev`.

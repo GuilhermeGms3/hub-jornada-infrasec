@@ -1,7 +1,13 @@
 import { test, expect, type Page } from '@playwright/test';
 import { questionById } from '../src/content/questions';
 
+async function openOutline(page: Page) {
+  if (!(await page.locator('.unit-outline').evaluate((e) => e.hasAttribute('open'))))
+    await page.getByText('Sumário da unidade', { exact: true }).click();
+}
+
 async function chooseCorrect(page: Page) {
+  await expect(page.locator('.assessment-run fieldset')).toHaveCount(8);
   const ids = await page
     .locator('.assessment-run fieldset')
     .evaluateAll((items) => items.map((e) => e.querySelector('input')?.getAttribute('name') || ''));
@@ -12,8 +18,8 @@ test('leitura real, atividade, feedback e retomada sem contaminar legado', async
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.addInitScript(() => localStorage.setItem('infrasec-task-progress', 'legado-intacto'));
-  await page.goto('/');
-  await expect(page).toHaveTitle('InfraSec · Redes do zero');
+  await page.goto('/#/aula/redes');
+  await expect(page).toHaveTitle('InfraSec · NET-R01');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Uma rede começa com uma conversa',
   );
@@ -24,12 +30,14 @@ test('leitura real, atividade, feedback e retomada sem contaminar legado', async
     page.getByRole('status').filter({ hasText: 'Resposta correta neste exercício' }),
   ).toBeVisible();
   await page.getByLabel('Registrei a leitura desta lição').check();
+  await openOutline(page);
   await page.getByRole('link', { name: '06 Gateway' }).click();
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('A saída para outras redes');
   expect(await page.evaluate(() => localStorage.getItem('infrasec-task-progress'))).toBe(
     'legado-intacto',
   );
+  await openOutline(page);
   await page.getByRole('link', { name: 'Evidências e histórico' }).click();
   await expect(page.getByText('1/11', { exact: true })).toBeVisible();
   await expect(page.getByText('Demonstrado neste recorte', { exact: true })).toHaveCount(0);
@@ -110,7 +118,9 @@ test('consulta durante avaliação a reclassifica e recuperação tem atividade 
 }) => {
   await page.goto('/#/avaliacao');
   await page.getByRole('button', { name: 'Iniciar avaliação', exact: true }).click();
+  await openOutline(page);
   await page.getByRole('link', { name: '07 DNS', exact: true }).click();
+  await openOutline(page);
   await page.getByRole('link', { name: 'Avaliação independente', exact: true }).click();
   await chooseCorrect(page);
   await page.getByRole('button', { name: 'Concluir e ver correção' }).click();
@@ -119,6 +129,7 @@ test('consulta durante avaliação a reclassifica e recuperação tem atividade 
       'Tentativa assistida. O resultado registra prática e não desempenho independente.',
     ),
   ).toBeVisible();
+  await openOutline(page);
   await page.getByRole('link', { name: 'Recuperar conceitos', exact: true }).click();
   await expect(page.locator('.recovery-section')).toHaveCount(6);
   await page
@@ -143,7 +154,7 @@ test('revisão é funcional e antecipação não vira retenção medida', async 
 
 test('dados corrompidos ficam intactos e a sessão continua utilizável', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('infrasec-learn:v1', '{corrompido'));
-  await page.goto('/');
+  await page.goto('/#/aula/redes');
   await expect(page.getByRole('alert').first()).toContainText(
     'Os dados antigos não foram sobrescritos',
   );
@@ -157,7 +168,7 @@ test('quota bloqueada informa não salvo sem perder interação em memória', as
       throw new DOMException('Quota excedida', 'QuotaExceededError');
     };
   });
-  await page.goto('/');
+  await page.goto('/#/aula/redes');
   await page.getByLabel('Registrei a leitura desta lição').check();
   await expect(page.getByRole('status').first()).toContainText('Não salvo no dispositivo');
   await expect(page.getByLabel('Registrei a leitura desta lição')).toBeChecked();
@@ -166,9 +177,10 @@ test('quota bloqueada informa não salvo sem perder interação em memória', as
 test('mobile, teclado e navegação inválida continuam acessíveis', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/#/rota-inexistente');
-  await expect(page.getByRole('alert')).toContainText('não pertence à unidade');
+  await expect(page.getByRole('alert')).toContainText('não pertence à plataforma');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await page.getByRole('button', { name: 'Abrir sumário da unidade' }).click();
+  await page.getByRole('link', { name: 'Começar a unidade', exact: true }).click();
+  await page.getByText('Sumário da unidade', { exact: true }).click();
   await page.getByRole('link', { name: '06 Gateway' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('A saída para outras redes');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -181,7 +193,7 @@ test('mobile, teclado e navegação inválida continuam acessíveis', async ({ p
 });
 
 test('exportação e importação preservam progresso após confirmação', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#/aula/redes');
   await page.getByLabel('Registrei a leitura desta lição').check();
   await page.getByRole('button', { name: 'Salvar cópia', exact: true }).click();
   const downloadPromise = page.waitForEvent('download');

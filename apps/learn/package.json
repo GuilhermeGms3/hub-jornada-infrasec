@@ -16,6 +16,7 @@
     "test:content": "vitest run tests/content.test.ts",
     "test:e2e": "playwright test",
     "build": "tsc --noEmit && vite build",
+    "build:platform": "tsc --noEmit && vite build --config vite.platform.config.ts",
     "preview": "vite preview --host 127.0.0.1 --port 4174 --strictPort"
   },
   "dependencies": {

@@ -1,0 +1,542 @@
+[
+  {
+    "week": 1,
+    "title": "Conectividade sem adivinhacao",
+    "outcome": "Explicar como um site abre e isolar falhas entre computador, rede local, internet e DNS.",
+    "prerequisite": "Nenhum. Esta e a porta de entrada.",
+    "exit": "Executar ipconfig, ping, nslookup e tracert e explicar o que cada resultado comprova.",
+    "notYet": "Subnetting, VLAN, OSPF, cloud e ferramentas de ataque.",
+    "days": [
+      {
+        "title": "Entender o caminho de uma requisicao",
+        "objective": "Construir o mapa mental navegador -> DNS -> gateway -> internet -> servidor.",
+        "evidence": "Um desenho simples e dez linhas explicando como um site abre."
+      },
+      {
+        "title": "Ler a configuracao do seu computador",
+        "objective": "Reconhecer IP, mascara, gateway, DHCP e DNS no output real.",
+        "evidence": "Tabela campo -> valor -> para que serve, usando seu computador."
+      },
+      {
+        "title": "Testar por camadas",
+        "objective": "Usar uma ordem de diagnostico que separa rede local, internet e nomes.",
+        "evidence": "Checklist com comando, resultado e interpretacao."
+      },
+      {
+        "title": "Investigar um cliente com APIPA",
+        "objective": "Reconhecer quando o computador nao conseguiu obter configuracao do DHCP.",
+        "evidence": "Ticket avaliado com pelo menos 80%."
+      },
+      {
+        "title": "Fechar a primeira semana com um runbook",
+        "objective": "Transformar comandos soltos em um procedimento repetivel.",
+        "evidence": "Runbook “usuario sem internet” em Markdown."
+      },
+      {
+        "title": "Montar a primeira LAN no Packet Tracer",
+        "objective": "Consolidar IP, mascara, gateway e testes em uma topologia visual.",
+        "evidence": "Print da topologia, tabela IP e comparacao antes/depois."
+      },
+      {
+        "title": "Revisar conectividade e planejar a Semana 2",
+        "objective": "Fechar lacunas de IP, gateway, DNS e DHCP antes de subnetting.",
+        "evidence": "Revisao com nota, erros explicados e plano da Semana 2."
+      }
+    ]
+  },
+  {
+    "week": 2,
+    "title": "Enderecamento e subnetting",
+    "outcome": "Calcular rede, broadcast e hosts e diagnosticar mascara incorreta.",
+    "prerequisite": "Conseguir localizar IP, mascara e gateway.",
+    "exit": "Resolver /24 a /28, criar uma tabela VLSM simples e provar duas redes diferentes.",
+    "notYet": "IPv6 avancado, sumarizacao complexa e BGP.",
+    "days": [
+      {
+        "title": "Entender rede e host na mascara",
+        "objective": "Visualizar o que a mascara separa sem depender de macete.",
+        "evidence": "Tres sub-redes resolvidas mostrando o raciocinio."
+      },
+      {
+        "title": "Calcular blocos /24 a /28",
+        "objective": "Ganhar fluidez com tamanhos usados em labs e suporte.",
+        "evidence": "Tabela CIDR -> mascara -> bloco -> hosts."
+      },
+      {
+        "title": "Planejar enderecos com VLSM",
+        "objective": "Distribuir redes sem sobreposicao e sem desperdicio grosseiro.",
+        "evidence": "Plano VLSM com quatro setores."
+      },
+      {
+        "title": "Quebrar uma mascara no lab",
+        "objective": "Observar como uma mascara errada altera a decisao local/remota.",
+        "evidence": "Antes/depois da mascara com causa e validacao."
+      },
+      {
+        "title": "Documentar o primeiro lab de rede",
+        "objective": "Produzir uma evidencia compreensivel por outra pessoa.",
+        "evidence": "README do lab com tabela IP e validacoes."
+      },
+      {
+        "title": "Consolidar subnetting em uma topologia",
+        "objective": "Aplicar rede, broadcast, hosts e gateway em dois segmentos.",
+        "evidence": "Plano de enderecamento, outputs e arquivo .pkt corrigido."
+      },
+      {
+        "title": "Revisar subnetting e preparar switching",
+        "objective": "Usar os erros da semana para decidir o que revisar antes de VLAN.",
+        "evidence": "Caderno de erros e plano de entrada na Semana 3."
+      }
+    ]
+  },
+  {
+    "week": 3,
+    "title": "Ethernet, switching e VLAN",
+    "outcome": "Entender entrega local, tabela MAC, portas access e trunks.",
+    "prerequisite": "Sub-redes e gateway compreendidos.",
+    "exit": "Configurar duas VLANs e um trunk e localizar uma VLAN ausente no caminho.",
+    "notYet": "Fabric, VXLAN, SD-WAN e automacao de switches.",
+    "days": [
+      {
+        "title": "Seguir um quadro na rede local",
+        "objective": "Relacionar ARP, MAC e switching ao ping entre hosts.",
+        "evidence": "Fluxo host -> ARP -> switch -> destino."
+      },
+      {
+        "title": "Criar VLANs e portas access",
+        "objective": "Separar dominios de broadcast de forma intencional.",
+        "evidence": "Tabela porta -> modo -> VLAN."
+      },
+      {
+        "title": "Transportar VLANs em um trunk",
+        "objective": "Entender por que o enlace entre switches carrega varias VLANs.",
+        "evidence": "Outputs de show interfaces trunk e pings."
+      },
+      {
+        "title": "Investigar VLAN ausente",
+        "objective": "Isolar uma falha que afeta apenas um setor.",
+        "evidence": "Incidente NOC avaliado com 80% ou mais."
+      },
+      {
+        "title": "Consolidar switching",
+        "objective": "Explicar access, trunk, broadcast e inter-VLAN sem decorar frase pronta.",
+        "evidence": "Diagrama e caderno de erros."
+      },
+      {
+        "title": "Consolidar VLAN, access e trunk",
+        "objective": "Construir e validar segmentacao entre dois switches.",
+        "evidence": "Arquivo .pkt, show vlan brief, show interfaces trunk e pings."
+      },
+      {
+        "title": "Revisar switching pelos erros",
+        "objective": "Transformar erros de switching em explicacoes operacionais.",
+        "evidence": "Caderno de erros de switching e meta da Semana 4."
+      }
+    ]
+  },
+  {
+    "week": 4,
+    "title": "Roteamento e caminho de ida e volta",
+    "outcome": "Ler tabela de rotas, criar rotas estaticas e localizar falta de retorno.",
+    "prerequisite": "VLAN e sub-redes dominadas.",
+    "exit": "Construir tres redes com rota de ida/volta e explicar longest prefix match.",
+    "notYet": "BGP, MPLS, redistribuicao e policy routing.",
+    "days": [
+      {
+        "title": "Ler uma tabela de rotas",
+        "objective": "Reconhecer rotas conectadas, locais, estaticas e default.",
+        "evidence": "Tabela de cinco rotas interpretadas."
+      },
+      {
+        "title": "Criar rotas estaticas",
+        "objective": "Conectar redes sem protocolo dinamico.",
+        "evidence": "Configuracao e ping fim a fim."
+      },
+      {
+        "title": "Usar rota default com criterio",
+        "objective": "Entender quando 0.0.0.0/0 e usada.",
+        "evidence": "Tres destinos com a rota escolhida e justificativa."
+      },
+      {
+        "title": "Diagnosticar next hop incorreto",
+        "objective": "Usar traceroute e tabela para localizar onde o caminho para.",
+        "evidence": "Ticket com causa, correcao e rollback."
+      },
+      {
+        "title": "Escrever um runbook de rotas",
+        "objective": "Criar uma ordem de verificacao para NOC/N2.",
+        "evidence": "Runbook de perda de conectividade entre redes."
+      },
+      {
+        "title": "Consolidar rotas estaticas e default",
+        "objective": "Validar ida, retorno e escolha da rota mais especifica.",
+        "evidence": "Arquivo .pkt, tabelas de rota, traceroute e rollback."
+      },
+      {
+        "title": "Revisar roteamento e preparar OSPF",
+        "objective": "Fechar duvidas de next hop e retorno antes do protocolo dinamico.",
+        "evidence": "Revisao de rotas e plano do lab OSPF."
+      }
+    ]
+  },
+  {
+    "week": 5,
+    "title": "OSPF e convergencia",
+    "outcome": "Formar vizinhanca, anunciar redes e diagnosticar adjacencia.",
+    "prerequisite": "Tabela de rotas e caminho de retorno.",
+    "exit": "Provar neighbor FULL, rotas O e conectividade fim a fim; corrigir area divergente.",
+    "notYet": "OSPF multi-area complexo, tuning e outros protocolos dinamicos.",
+    "days": [
+      {
+        "title": "Entender por que usar OSPF",
+        "objective": "Relacionar vizinhos, estado de enlace, custo e convergencia.",
+        "evidence": "Mapa OSPF com redes e vizinhos."
+      },
+      {
+        "title": "Configurar OSPF area 0",
+        "objective": "Substituir rotas estaticas por anuncios controlados.",
+        "evidence": "Configuracao reproduzivel dos tres roteadores."
+      },
+      {
+        "title": "Validar adjacencias e rotas",
+        "objective": "Distinguir vizinhanca saudavel de conectividade completa.",
+        "evidence": "Outputs FULL, rotas O e ping."
+      },
+      {
+        "title": "Investigar area mismatch",
+        "objective": "Correlacionar mudanca, interface e perda de adjacencia.",
+        "evidence": "Incidente OSPF com 80% ou mais."
+      },
+      {
+        "title": "Explicar OSPF como em entrevista",
+        "objective": "Consolidar sinais de saude e ordem de troubleshooting.",
+        "evidence": "Resposta tecnica com nota registrada."
+      },
+      {
+        "title": "Consolidar OSPF e troubleshooting",
+        "objective": "Configurar vizinhanca, anunciar redes e recuperar uma adjacencia.",
+        "evidence": "Arquivo .pkt, outputs OSPF, causa e validacao."
+      },
+      {
+        "title": "Revisar OSPF por um incidente",
+        "objective": "Fechar a semana com uma investigacao baseada em evidencias.",
+        "evidence": "Incidente OSPF aprovado e lista de revisao."
+      }
+    ]
+  },
+  {
+    "week": 6,
+    "title": "ACL, NAT e mentalidade de firewall",
+    "outcome": "Permitir somente o trafego necessario e provar permitidos e negados.",
+    "prerequisite": "Roteamento funcionando e testes fim a fim.",
+    "exit": "Aplicar ACL e PAT com testes positivos/negativos, counters e rollback.",
+    "notYet": "UTM avancado, IDS/IPS tuning, VPN complexa e fabricantes especificos.",
+    "days": [
+      {
+        "title": "Pensar em origem, destino, protocolo e porta",
+        "objective": "Transformar “liberar acesso” em uma regra verificavel.",
+        "evidence": "Matriz origem/destino/porta/acao."
+      },
+      {
+        "title": "Aplicar uma ACL",
+        "objective": "Entender ordem das regras e implicit deny.",
+        "evidence": "Configuracao, counters e resultados."
+      },
+      {
+        "title": "Configurar NAT overload",
+        "objective": "Relacionar enderecos privados, inside/outside e traducao.",
+        "evidence": "Tabela origem privada -> traducao -> destino."
+      },
+      {
+        "title": "Investigar uma ACL fora de ordem",
+        "objective": "Provar por counters que um deny amplo bloqueia a regra especifica.",
+        "evidence": "Incidente ACL com 80% ou mais."
+      },
+      {
+        "title": "Fechar a base de redes",
+        "objective": "Revisar dependencias antes de entrar em sistemas e operacao.",
+        "evidence": "Mapa de dependencias e historico do simulado."
+      },
+      {
+        "title": "Consolidar ACL com testes positivos e negativos",
+        "objective": "Provar que a politica permite apenas o fluxo solicitado.",
+        "evidence": "Arquivo .pkt, ACL, counters, testes e rollback."
+      },
+      {
+        "title": "Revisar a base completa de redes",
+        "objective": "Conectar IP, VLAN, rota, OSPF, ACL e NAT antes de Linux.",
+        "evidence": "Mapa da rede, nota e plano de entrada em Linux."
+      }
+    ]
+  },
+  {
+    "week": 7,
+    "title": "Linux para suporte e operacao",
+    "outcome": "Navegar, ler logs, trabalhar com permissoes, processos, services e rede.",
+    "prerequisite": "Base de rede concluida. WSL ou VM Linux recomendado.",
+    "exit": "Executar os desafios de arquivos, permissoes, services, rede e logs e repetir em ambiente real.",
+    "notYet": "Kernel, compilacao, Kubernetes, hardening avancado e administracao enterprise.",
+    "days": [
+      {
+        "title": "Navegar e encontrar arquivos",
+        "objective": "Usar shell, ajuda, caminhos, listagem e busca sem alterar o sistema.",
+        "evidence": "Transcript real com comandos e explicacoes."
+      },
+      {
+        "title": "Entender usuarios e permissoes",
+        "objective": "Ler rwx e aplicar o minimo necessario sem chmod 777.",
+        "evidence": "Tabela rwx -> octal e desafio aprovado."
+      },
+      {
+        "title": "Investigar processos e services",
+        "objective": "Coletar estado e logs antes de reiniciar.",
+        "evidence": "Runbook “servico nao inicia”."
+      },
+      {
+        "title": "Diagnosticar rede e SSH no Linux",
+        "objective": "Relacionar IP, rota, porta em escuta e servico.",
+        "evidence": "Checklist de SSH indisponivel."
+      },
+      {
+        "title": "Extrair informacao de logs",
+        "objective": "Combinar grep, awk, sort, uniq e tail.",
+        "evidence": "Top IPs de falha e comandos usados."
+      },
+      {
+        "title": "Consolidar Linux em um incidente de SSH",
+        "objective": "Usar arquivos, services, logs e rede numa unica investigacao.",
+        "evidence": "Transcript do terminal e runbook de SSH indisponivel."
+      },
+      {
+        "title": "Revisar Linux e preparar operacao NOC",
+        "objective": "Transformar comandos da semana em uma rotina operacional.",
+        "evidence": "Runbook Linux revisado e plano da Semana 8."
+      }
+    ]
+  },
+  {
+    "week": 8,
+    "title": "Operacao NOC e comunicacao de incidentes",
+    "outcome": "Triar alertas, medir impacto, priorizar, escalar e manter uma linha do tempo.",
+    "prerequisite": "Troubleshooting de rede e comandos Linux basicos.",
+    "exit": "Resolver dois incidentes com 80% e escrever um runbook que outro analista consiga seguir.",
+    "notYet": "Ferramentas caras de observabilidade, SRE avancado e capacity planning profundo.",
+    "days": [
+      {
+        "title": "Entender sinal, sintoma e impacto",
+        "objective": "Evitar tratar todo alerta como causa raiz.",
+        "evidence": "Modelo de triagem com prioridade justificada."
+      },
+      {
+        "title": "Observar com horario confiavel",
+        "objective": "Relacionar NTP, logs, metricas, SNMP e baseline.",
+        "evidence": "Tabela sinal -> fonte -> limiar -> acao."
+      },
+      {
+        "title": "Resolver um chamado de DNS",
+        "objective": "Coletar evidencia suficiente sem reiniciar tudo.",
+        "evidence": "Incidente DNS com 80% ou mais."
+      },
+      {
+        "title": "Resolver uma falha de OSPF/VLAN",
+        "objective": "Atuar como NOC, considerando mudanca e dominio de impacto.",
+        "evidence": "Segundo incidente NOC aprovado."
+      },
+      {
+        "title": "Produzir um runbook operacional",
+        "objective": "Transformar a semana em procedimento e criterio de escalonamento.",
+        "evidence": "Runbook NOC versionado no Git."
+      },
+      {
+        "title": "Consolidar triagem em um chamado DNS",
+        "objective": "Aplicar impacto, horario, evidencia, causa e escalonamento.",
+        "evidence": "Incidente DNS aprovado e ticket operacional."
+      },
+      {
+        "title": "Revisar comunicacao operacional",
+        "objective": "Explicar uma investigacao de forma clara para usuario e equipe tecnica.",
+        "evidence": "Resumo executivo, resposta tecnica e plano da Semana 9."
+      }
+    ]
+  },
+  {
+    "week": 9,
+    "title": "Fundamentos de seguranca e identidade",
+    "outcome": "Raciocinar sobre risco, autenticacao, autorizacao, menor privilegio e defesa em profundidade.",
+    "prerequisite": "Rede, Linux e operacao basica.",
+    "exit": "Explicar Zero Trust e aplicar menor privilegio em um fluxo de rede/cloud.",
+    "notYet": "Pentest, exploit development, malware reversing e red team.",
+    "days": [
+      {
+        "title": "Separar ativo, ameaca, vulnerabilidade e risco",
+        "objective": "Usar vocabulario de seguranca sem transformar tudo em “ataque”.",
+        "evidence": "Registro de risco com controle proposto."
+      },
+      {
+        "title": "Entender identidade e acesso",
+        "objective": "Diferenciar identidade, autenticacao, autorizacao, MFA e RBAC.",
+        "evidence": "Diagrama de identidade e cinco definicoes."
+      },
+      {
+        "title": "Aplicar defesa em profundidade",
+        "objective": "Combinar identidade, endpoint, rede, workload e logs.",
+        "evidence": "Matriz camada -> controle -> evidencia."
+      },
+      {
+        "title": "Praticar menor privilegio",
+        "objective": "Remover uma permissao ampla sem quebrar o uso legitimo.",
+        "evidence": "Politica proposta e plano de validacao."
+      },
+      {
+        "title": "Consolidar seguranca para operacao",
+        "objective": "Conectar ACL, IAM, logs, secrets e resposta.",
+        "evidence": "Resumo de seguranca e caderno de erros."
+      },
+      {
+        "title": "Consolidar arquitetura de seguranca",
+        "objective": "Aplicar identidade, segmentacao, menor privilegio e telemetria.",
+        "evidence": "Arquitetura de seguranca aprovada e diagrama."
+      },
+      {
+        "title": "Revisar seguranca com SC-900",
+        "objective": "Organizar os conceitos fundamentais antes da pratica SOC.",
+        "evidence": "Plano SC-900 atualizado e lacunas priorizadas."
+      }
+    ]
+  },
+  {
+    "week": 10,
+    "title": "SOC: logs, triagem e resposta inicial",
+    "outcome": "Construir timeline, extrair IOCs, classificar severidade e propor contencao proporcional.",
+    "prerequisite": "Identidade, logs Linux e fundamentos de seguranca.",
+    "exit": "Aprovar tres casos SOC distintos e produzir um playbook de login suspeito.",
+    "notYet": "Threat hunting avancado, engenharia reversa e criacao complexa de regras SIEM.",
+    "days": [
+      {
+        "title": "Ler eventos de autenticacao",
+        "objective": "Diferenciar falha 4625, sucesso 4624, conta e origem.",
+        "evidence": "Tabela de eventos e linha do tempo."
+      },
+      {
+        "title": "Extrair IOCs e contexto",
+        "objective": "Evitar chamar qualquer IP de IOC sem explicar relevancia.",
+        "evidence": "Lista comentada de IOCs e entidades."
+      },
+      {
+        "title": "Investigar password spray",
+        "objective": "Reconhecer uma origem tentando poucas senhas em varias contas.",
+        "evidence": "Caso spray aprovado com 80% ou mais."
+      },
+      {
+        "title": "Investigar execucao suspeita",
+        "objective": "Correlacionar processo pai, PowerShell, rede, arquivo e alerta EDR.",
+        "evidence": "Caso PowerShell aprovado com 80% ou mais."
+      },
+      {
+        "title": "Escrever um playbook SOC",
+        "objective": "Criar procedimento que diferencia erro, servico quebrado, spray e comprometimento.",
+        "evidence": "Playbook failed login/brute force em Markdown."
+      },
+      {
+        "title": "Consolidar investigacao de password spray",
+        "objective": "Executar triagem, timeline, contencao e escalonamento.",
+        "evidence": "Caso SOC aprovado e relatorio de investigacao."
+      },
+      {
+        "title": "Revisar SOC com um segundo caso",
+        "objective": "Comparar autenticacao suspeita com execucao maliciosa.",
+        "evidence": "Segundo caso aprovado e comparacao das investigacoes."
+      }
+    ]
+  },
+  {
+    "week": 11,
+    "title": "Cloud sem pular redes e identidade",
+    "outcome": "Entender responsabilidade compartilhada, IAM/RBAC, VPC/VNet, compute, storage, monitoramento e custo.",
+    "prerequisite": "Rede, ACL, identidade e Linux basicos.",
+    "exit": "Aprovar um lab AWS e um Azure e comparar controles equivalentes.",
+    "notYet": "Kubernetes, multi-cloud complexo, certificacao associate e arquitetura de escala global.",
+    "days": [
+      {
+        "title": "Entender o modelo cloud",
+        "objective": "Diferenciar IaaS, PaaS, SaaS e responsabilidade compartilhada.",
+        "evidence": "Tabela modelo -> responsabilidade -> caso de uso."
+      },
+      {
+        "title": "Mapear uma arquitetura AWS",
+        "objective": "Relacionar VPC, subnet, SG, EC2, S3, IAM, CloudTrail e budget.",
+        "evidence": "Diagrama AWS com controles e custo."
+      },
+      {
+        "title": "Mapear uma arquitetura Azure",
+        "objective": "Relacionar VNet, subnet, NSG, VM, Entra, RBAC, Monitor e Cost Management.",
+        "evidence": "Diagrama Azure com controles equivalentes."
+      },
+      {
+        "title": "Praticar identidade cloud",
+        "objective": "Corrigir privilegio amplo e validar menor privilegio.",
+        "evidence": "Lab IAM/RBAC aprovado com 80% ou mais."
+      },
+      {
+        "title": "Comparar AWS e Azure sem decorar produtos",
+        "objective": "Reconhecer conceitos transferiveis entre provedores.",
+        "evidence": "Relatorio comparativo AWS x Azure."
+      },
+      {
+        "title": "Consolidar uma arquitetura AWS segura",
+        "objective": "Combinar VPC, subnets, security groups, IAM, auditoria e custo.",
+        "evidence": "Lab AWS aprovado e diagrama com controles."
+      },
+      {
+        "title": "Revisar cloud comparando Azure",
+        "objective": "Transferir conceitos entre AWS e Azure sem decorar nomes.",
+        "evidence": "Lab Azure aprovado e tabela comparativa."
+      }
+    ]
+  },
+  {
+    "week": 12,
+    "title": "Arquitetura, automacao e entrada no mercado",
+    "outcome": "Enxergar sistemas completos, versionar evidencias e apresentar competencia para uma vaga inicial.",
+    "prerequisite": "Semanas 1-11 e pelo menos cinco entregaveis.",
+    "exit": "Publicar tres evidencias fortes, explicar dois incidentes e escolher uma certificacao coerente.",
+    "notYet": "Acumular novas certificacoes, Kubernetes e projetos enormes sem terminar os atuais.",
+    "days": [
+      {
+        "title": "Seguir uma requisicao ponta a ponta",
+        "objective": "Localizar DNS, edge, API, banco, identidade e telemetria.",
+        "evidence": "Arquitetura cliente-servidor aprovada."
+      },
+      {
+        "title": "Entender distribuicao e resiliencia",
+        "objective": "Raciocinar sobre replicas, timeout, retry, cache e filas.",
+        "evidence": "Arquitetura distribuida aprovada."
+      },
+      {
+        "title": "Versionar o portfolio com Git",
+        "objective": "Usar branch, diff, commit e reversao em uma mudanca real.",
+        "evidence": "Historico Git limpo e dois desafios aprovados."
+      },
+      {
+        "title": "Automatizar uma tarefa pequena",
+        "objective": "Extrair IPs de um log e gerar um resumo reproduzivel.",
+        "evidence": "Script curto, amostra de entrada/saida e README."
+      },
+      {
+        "title": "Montar candidatura baseada em evidencia",
+        "objective": "Escolher projetos que provam rede, operacao e cloud/security.",
+        "evidence": "Portfolio publicavel e plano dos proximos 30 dias."
+      },
+      {
+        "title": "Consolidar arquitetura e resiliencia",
+        "objective": "Investigar falha distribuida com logs, metricas e rollback.",
+        "evidence": "Arquitetura distribuida aprovada e runbook."
+      },
+      {
+        "title": "Fechar a jornada e planejar os proximos 30 dias",
+        "objective": "Reunir evidencias, lacunas e candidatura num plano executavel.",
+        "evidence": "Portfolio publicavel e plano profissional de 30 dias."
+      }
+    ]
+  }
+]

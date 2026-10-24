@@ -1,5 +1,17 @@
 # Arquitetura do Hub Jornada InfraSec
 
+## Arquitetura vigente — frontend React principal
+
+O pedido de 24/10/2026 substitui a direção anterior. `apps/learn` agora contém o frontend principal:
+shell global, Hoje, Redes, roteiro e R01 nativa. A raiz encaminha a `platform/index.html`, bundle
+estático versionado. Não há Shadow DOM ou iframe no novo produto. O Hub original permanece como
+referência e acesso explícito a ferramentas ainda não migradas, sem seus controllers no React.
+
+Inventário: [29 responsabilidades](docs/architecture/INFORMATION_INVENTORY.md).
+Contratos/execução/testes/limites atuais: [REACT_PLATFORM.md](docs/quality/REACT_PLATFORM.md).
+R01 mantém schema/chave e componentes didáticos. Os contratos abaixo documentam o Hub anterior;
+suas regras N0–N3 e pontuações não são domínio automaticamente reconhecido pela nova aplicação.
+
 ## Contrato
 
 Aplicacao estatica, sem framework, backend ou bundler. O desenvolvimento local usa o servidor Node em `scripts/static-server.cjs`; a imagem Docker serve os mesmos arquivos estaticos com Nginx. Sao baseline: UX e textos atuais, divulgacao progressiva, 12 semanas/84 missoes, N0-N3, thresholds 70/75/80, provas, readiness, recomendacoes, soft gating, rotas, 14 aliases, foco/ARIA, 26 storage keys e os progressos independentes.

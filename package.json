@@ -5,6 +5,7 @@
   "description": "Testes de caracterizacao do Hub Jornada InfraSec",
   "scripts": {
     "dev": "node scripts/static-server.cjs",
+    "build:platform": "npm --prefix apps/learn run build:platform",
     "serve:test": "node scripts/static-server.cjs",
     "test": "playwright test",
     "test:headed": "playwright test --headed"

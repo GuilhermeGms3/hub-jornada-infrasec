@@ -1,8 +1,10 @@
-# InfraSec Learn — NET-R01
+# InfraSec — frontend principal
 
-Aplicação independente para estudar **Como um computador acessa um site**. A unidade inclui ensino em PT-BR, exemplos resolvidos, diagramas, demonstração de máscara, percurso por etapas, diagnóstico guiado, avaliação, recuperação e revisão.
+Aplicação React/TypeScript principal: navegação global InfraSec, Hoje, formação de Redes, roteiro de 12 semanas, áreas com disponibilidade explícita e unidade NET-R01 nativa.
 
-Não depende do Hub antigo, do ConcursoOS, de API, banco, conta ou serviços externos para funcionar. Não altera o progresso antigo. Ainda não foi validada com iniciantes reais e não representa um curso completo de CCNA.
+O ensino R01 não depende do Hub anterior, ConcursoOS, API, banco ou conta. As ferramentas ainda não migradas abrem na versão anterior, por links explícitos. A R01 mantém suas lições, regras e persistência. Ainda não foi validada com iniciantes reais e não representa um curso completo de CCNA.
+
+`npm run build:platform` compila o frontend principal em `../../platform/`, servido pela raiz do repositório na porta 4173. O modo Vite abaixo é para desenvolvimento; recursos anteriores também precisam do servidor da raiz. Veja [a entrega e os testes](../../docs/quality/REACT_PLATFORM.md).
 
 ## Instalar e iniciar
 

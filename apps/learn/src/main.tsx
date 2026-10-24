@@ -2,6 +2,7 @@ import { Component, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app/App';
 import './styles.css';
+import './platform/platform.css';
 
 class LearningBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };

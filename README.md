@@ -1,5 +1,29 @@
 # Hub Jornada InfraSec
 
+## Frontend atual — InfraSec em React
+
+Esta branch reconstrói a interface em React/TypeScript e preserva a arquitetura de informação do
+Hub: seis grupos e 29 responsabilidades. A entrada principal agora é `index.html` → `platform/index.html`.
+
+Abra **Redes → Formação de redes → Entrar na unidade NET-R01** para estudar as 11 aulas, exemplos,
+diagramas, exercícios, laboratório, avaliação, recuperação e revisão. Hoje oferece retomada com
+base no progresso real. O plano mantém as 12 semanas/84 missões como roteiro curricular, sem
+apresentar as demais formações como concluídas. Ferramentas e referências anteriores estão
+identificadas e abrem separadamente.
+
+Execute `npm ci` e `npm run dev` na raiz, depois abra `http://127.0.0.1:4173/`.
+Para alterar a interface: `npm --prefix apps/learn ci` e `npm --prefix apps/learn run dev`.
+Antes de commitar mudanças de frontend, execute `npm run build:platform` e inclua o bundle gerado.
+
+O progresso R01 mantém a chave e formato anteriores. Se estudou em outra porta/domínio, exporte
+em **Salvar cópia** na origem anterior e importe o JSON na nova aplicação com confirmação.
+Nenhum progresso antigo é convertido automaticamente em domínio.
+
+Veja [inventário das 29 páginas](docs/architecture/INFORMATION_INVENTORY.md) e
+[entrega, arquitetura, testes e limites](docs/quality/REACT_PLATFORM.md).
+
+## Referência do Hub anterior
+
 Hub de estudos em formato de jornada para quem quer entrar em Help Desk, NOC, SOC junior, suporte N2 ou infraestrutura/cloud sem se perder em excesso de ferramenta.
 
 O projeto organiza o estudo por semana, dependencias e entregaveis. Em vez de mostrar uma vitrine de links, ele mostra a tarefa atual, a ferramenta certa para aquela tarefa e o artefato que deve virar evidencia de portfolio.
@@ -30,9 +54,9 @@ docker compose up --build -d
 
 Abra `http://127.0.0.1:8080`. Para encerrar, execute `docker compose down`. A porta pode ser alterada definindo `HUB_PORT` antes de subir o Compose.
 
-Como alternativa sem servidor, abra `index.html` ou `hub-estudos-infrasec.html` diretamente no navegador.
+A versão anterior permanece em `hub-estudos-infrasec.html`. A nova aplicação deve ser servida por HTTP; não abra o bundle React por `file://`.
 
-## Como usar
+## Como usar a versão anterior
 
 O hub abre em `Hoje`, mostrando somente a missao atual. Comece pela Semana 1 e siga este ciclo:
 
