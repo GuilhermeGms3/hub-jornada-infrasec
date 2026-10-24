@@ -15,6 +15,7 @@ import { initializeArchitecture } from './features/architecture/controller.js';
 import { initializeJourney } from './features/journey/controller.js';
 import { adaptiveApi, initializeAdaptive } from './features/adaptive/controller.js';
 import { initializeExams } from './features/exams/controller.js';
+import { initializeLearning } from './features/learning/controller.js';
 
 initializeFeature('career', () => initializeCareer({ weeks, weekSelect }));
 initializeFeature('academy', initializeAcademy);
@@ -23,3 +24,5 @@ initializeFeature('journey', () => initializeJourney({ loadTemplate }));
 initializeFeature('adaptive', initializeAdaptive);
 initializeFeature('exams', () => initializeExams(adaptiveApi));
 installLegacyBridges();
+
+initializeLearning();

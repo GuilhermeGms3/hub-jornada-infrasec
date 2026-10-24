@@ -34,6 +34,25 @@ Como alternativa sem servidor, abra `index.html` ou `hub-estudos-infrasec.html` 
 
 ## Como usar
 
+### Aulas completas de Redes dentro do Hub
+
+Abra **Redes → Missoes de redes → Estudar NET-R01**. A unidade oferece 11 lições em português,
+exemplos, diagramas, exercícios, laboratório, avaliação, recuperação e revisão dentro da organização
+original do Hub. O botão **Abrir sumário da unidade** mostra as aulas sem substituir o menu global.
+Endereço direto: `hub-estudos-infrasec.html#redes/r01`. Esse endereço retoma a última tela da unidade.
+
+O player compilado está versionado em `modules/net-r01`; `npm run dev` na raiz já o serve.
+Para alterar e recompilar o ensino: `npm --prefix apps/learn ci`, depois `npm run build:learning`.
+O Hub continua estático, sem migração global para React. Veja [a decisão e os testes da integração](docs/quality/HUB_INTEGRATION.md).
+
+**Progresso anterior da R01:** se você estudou em `http://127.0.0.1:5174`, abra essa aplicação,
+use **Salvar cópia → Baixar cópia desta sessão** e importe o JSON pelo mesmo botão dentro do Hub.
+Revise o resumo e confirme a substituição. Portas, domínios e protocolos diferentes possuem
+armazenamentos separados. A importação substitui somente o histórico R01 e permite baixar o estado
+anterior; não mescla históricos nem altera as chaves de progresso do Hub.
+
+### Jornada existente
+
 O hub abre em `Hoje`, mostrando somente a missao atual. Comece pela Semana 1 e siga este ciclo:
 
 1. Leia o objetivo e selecione um dos tres passos acionaveis.

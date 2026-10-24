@@ -174,7 +174,7 @@ export function initializeAdaptive() {
     document.body.classList.remove('adaptive-content-locked');
     support.hidden = true;
     support.className = 'adaptive-support';
-    if (!requirement || pageId === 'level') return;
+    if (!requirement || pageId === 'level' || document.body.classList.contains('learning-r01')) return;
     const [domainId, required] = requirement;
     const domain = domains[domainId];
     const current = competency(domainId);
@@ -299,7 +299,7 @@ export function initializeAdaptive() {
   renderProfile();
   renderSupport();
   showLevelView('overview', false);
-  if (!profile.completedAt && storage.readRaw(onboardingKey, null) !== 'true') {
+  if (!profile.completedAt && storage.readRaw(onboardingKey, null) !== 'true' && !/^#redes\/r01(?:\/|$)/.test(location.hash)) {
     storage.writeRaw(onboardingKey, 'true');
     navigateToPage('level', true);
   }

@@ -1,5 +1,15 @@
 # Arquitetura do Hub Jornada InfraSec
 
+## Integração didática vigente
+
+O Hub continua sendo a aplicação principal. NET-R01 é carregada sob demanda em
+`#redes/r01[/tela]`, dentro do percurso `network-practice`, sem alterar as 29 rotas e 14 aliases.
+`src/features/learning/controller.js` carrega o bundle de `apps/learn` e o monta em Shadow DOM,
+sem iframe. Só o player usa React/TypeScript e build; o shell e seus controllers permanecem ESM.
+A chave `infrasec-learn:v1` continua separada do progresso legado. Nenhum resultado antigo é
+convertido em evidência R01. Detalhes e limites: [HUB_INTEGRATION.md](docs/quality/HUB_INTEGRATION.md).
+O contrato abaixo descreve o shell original; a ausência de bundler não se aplica ao player incorporado.
+
 ## Contrato
 
 Aplicacao estatica, sem framework, backend ou bundler. O desenvolvimento local usa o servidor Node em `scripts/static-server.cjs`; a imagem Docker serve os mesmos arquivos estaticos com Nginx. Sao baseline: UX e textos atuais, divulgacao progressiva, 12 semanas/84 missoes, N0-N3, thresholds 70/75/80, provas, readiness, recomendacoes, soft gating, rotas, 14 aliases, foco/ARIA, 26 storage keys e os progressos independentes.

@@ -1,0 +1,20 @@
+/* Additive integration only. Original global tokens and navigation remain authoritative. */
+#net-r01 { min-width: 0; }
+#net-r01-player { display: block; min-width: 0; }
+.r01-entry { padding: 18px 0; margin-bottom: 24px; border-bottom: 1px solid var(--line, #d9e3ea); }
+body:not([data-hub-page="network-practice"]) .r01-entry,
+body.learning-r01 .r01-entry { display: none; }
+body.learning-r01 #adaptiveSupport { display: none; }
+/* R01 teaches from zero: the legacy prerequisite overlay must not hide its lessons. */
+body.learning-r01.adaptive-content-locked main > #net-r01:not([hidden]) { display: block !important; }
+@media (max-width: 1060px) {
+  .hub-page-bar { margin: -18px -18px 18px; padding: 9px 18px; }
+  .hub-page-bar > div:first-child { flex-wrap: wrap; gap: 4px 10px; }
+  .guided-header { flex-wrap: wrap; }
+  .today-workspace { grid-template-columns: minmax(0, 1fr); }
+  .today-mission { padding-right: 0; border-right: 0; }
+  .guided-selectors { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+}
+@media (max-width: 560px) {
+  .guided-selectors { grid-template-columns: minmax(0, 1fr); }
+}

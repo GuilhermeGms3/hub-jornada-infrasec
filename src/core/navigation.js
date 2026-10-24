@@ -15,6 +15,7 @@ export function configureNavigation(options = {}) {
 }
 
 export function resolveRoute(hash = location.hash.slice(1)) {
+  if (hash === 'redes/r01' || hash.startsWith('redes/r01/')) return pageById['network-practice'];
   return pageByHash[hash]
     || pageById[legacyHashAliases[hash]]
     || pageById[storage.readRaw(storage.keys.ACTIVE_PAGE, null)]
@@ -24,7 +25,9 @@ export function resolveRoute(hash = location.hash.slice(1)) {
 export function activatePage(pageId, scroll = true) {
   const page = pageById[pageId] || pageById.today;
   activePageId = page.id;
-  document.querySelectorAll('main > section').forEach((section) => { section.hidden = section.id !== page.section; });
+  const learning = page.id === 'network-practice' && /^#redes\/r01(?:\/|$)/.test(location.hash);
+  document.querySelectorAll('main > section').forEach((section) => { section.hidden = section.id !== (learning ? 'net-r01' : page.section); });
+  document.body.classList.toggle('learning-r01', learning);
   activateFeatureView(page);
   document.body.classList.toggle('route-focused', Boolean(page.depthTab || page.careerTab));
   document.querySelectorAll('[data-hub-page]').forEach((link) => {
@@ -33,7 +36,7 @@ export function activatePage(pageId, scroll = true) {
   });
   const pageIndex = hubPages.indexOf(page);
   document.getElementById('hubPageGroup').textContent = page.group;
-  document.getElementById('hubPageTitle').textContent = page.title;
+  document.getElementById('hubPageTitle').textContent = learning ? 'Redes · NET-R01' : page.title;
   document.getElementById('hubPagePosition').textContent = `Modulo ${pageIndex + 1} de ${hubPages.length}`;
   document.getElementById('previousHubPage').disabled = pageIndex === 0;
   document.getElementById('nextHubPage').disabled = pageIndex === hubPages.length - 1;

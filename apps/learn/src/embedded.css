@@ -1,0 +1,64 @@
+:host {
+  display: block;
+  min-width: 0;
+  font-family: inherit;
+}
+.topbar {
+  position: static;
+  height: auto;
+  flex-wrap: wrap;
+  padding: 14px 0;
+  gap: 12px;
+}
+.topbar .brand {
+  display: none;
+}
+.sidebar {
+  position: static;
+  width: auto;
+  height: auto;
+  max-height: none;
+  border: 1px solid var(--line);
+  padding: 16px;
+  display: none;
+}
+.sidebar.expanded {
+  display: block;
+}
+.sidebar ol {
+  columns: 2;
+}
+.sidebar li {
+  break-inside: avoid;
+}
+.sidebar .sidebar-note {
+  display: none;
+}
+.mobile-menu {
+  display: inline-flex;
+  position: static;
+  width: auto;
+  margin: 12px 0;
+}
+main {
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+.main-inner {
+  max-width: 860px;
+  padding: 20px 16px;
+  margin: auto;
+}
+@media (max-width: 600px) {
+  .sidebar ol {
+    columns: 1;
+  }
+  .main-inner {
+    padding: 16px 0;
+  }
+  .header-actions {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
