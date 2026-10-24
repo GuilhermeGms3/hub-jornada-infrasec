@@ -1,5 +1,17 @@
 # Project Memory
 
+## Direção vigente — reconstrução, Fase 0 (2026-10-23)
+- Pedido atual: executar o macroprompt em outra branch. A instrução operacional final restringe esta primeira execução à auditoria/proposta, sem modificar código.
+- Branch: `codex/infrasec-reconstrucao-fase-0`, base `master`/`29f670f`.
+- Referência adicional inspecionada somente em leitura: `F:\DSF\ConcursoOS`, HEAD `c004812`, branch `codex/consolidacao-funcional-2026-10-19`.
+- Fontes canônicas desta direção: `docs/README.md`, `docs/requirements/MASTER_SPEC.md`, `docs/architecture/REUSE_AUDIT.md` e `docs/quality/ACCEPTANCE.md`.
+- Entrega: documentação de auditoria dos dois projetos, arquitetura mínima proposta, contratos/políticas, primeiro percurso e especificação preliminar NET-R01. Nenhum player novo foi implementado.
+- Proposta futura: `apps/learn/` independente, React/TypeScript/Vite com versões/engines a validar na Fase 1; sem backend, dependência runtime dos projetos de referência ou migração dos resultados antigos.
+- Primeira trilha: Redes do Zero à Base para CCNA; primeira unidade NET-R01. Não anunciar curso CCNA completo ou domínio baseado em leitura/autodeclaração.
+- Verificação nesta fase: `npm test`, 147 aprovados (2,2 min). Validação documental e diff registradas no encerramento.
+- Próxima ação: fundação mínima e redação integral da R01 nas fases seguintes, com objetivos e avaliação versionados; não expandir catálogo antes de revisar a primeira unidade.
+- As seções históricas abaixo descrevem o Hub preservado. Seu escopo de manutenção e limitações continuam vigentes para o legado; não impõem thresholds ou critérios fracos ao produto novo.
+
 ## Project identity
 - Purpose: Hub estatico de estudo guiado para InfraSec, redes, operacao, SOC e cloud.
 - Repository root: `hub-jornada-infrasec-repo`.
