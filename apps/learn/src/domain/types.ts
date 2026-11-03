@@ -101,4 +101,5 @@ export interface Envelope {
   savedAt: string;
   progress: Progress;
   coursework?: import('../coursework/types').Coursework;
+  certifications?: import('../certifications/types').CertificationProgress;
 }

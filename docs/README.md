@@ -1,5 +1,12 @@
 # Reconstrução InfraSec
 
+## Certificações — 02/11/2026
+
+16 percursos de 12 semanas e 60 aulas-base compartilhadas, com foco CCNA v2.0 e
+Fortinet NSE 1–7. Veja [pedido](requirements/CERTIFICATION_RESTORE_REQUEST.md),
+[entrega, reuso e validação](quality/CERTIFICATION_EXPANSION.md).
+R01–R04, frontend e histórico anterior preservados; lacunas por semana explícitas.
+
 ## Expansão pedagógica vigente — Semana 1 (24/10/2026)
 
 R02/R03/R04 implementadas junto da R01, sem redesign. Veja [conteúdo, testes e limites](quality/WEEK1_EXPANSION.md),

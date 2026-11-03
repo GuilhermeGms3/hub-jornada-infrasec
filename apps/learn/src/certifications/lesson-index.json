@@ -1,0 +1,422 @@
+[
+  {
+    "id": "connectivity",
+    "title": "O caminho do cliente até o serviço",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "physical",
+    "title": "Enlace: estado, negociação e erros",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o3"
+  },
+  {
+    "id": "subnetting",
+    "title": "Subnetting e VLSM sem decorar resposta",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "dhcp",
+    "title": "DHCP: configuração entregue e caminho até o servidor",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "ipv6",
+    "title": "IPv6: prefixo, escopo e próximo salto",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "routing",
+    "title": "Seleção de rotas e caminho de retorno",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o3"
+  },
+  {
+    "id": "vlan",
+    "title": "VLAN e trunk: seguir o domínio de broadcast",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "discovery",
+    "title": "CDP/LLDP e documentação verificável",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "switching",
+    "title": "LACP e Rapid PVST+: funções diferentes",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o3"
+  },
+  {
+    "id": "ospf",
+    "title": "OSPF: vizinho, rota e tráfego",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "dns",
+    "title": "DNS: resposta, tipo e serviço",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "nat",
+    "title": "NAT/PAT não concede acesso por si só",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "acl",
+    "title": "ACL: ordem, direção e teste negativo",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "l2-security",
+    "title": "Proteções de camada 2 e confiança limitada",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "wireless",
+    "title": "Wireless: RF não é configuração IP",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "vpn",
+    "title": "VPN: túnel ativo não basta",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "firewall",
+    "title": "Firewall stateful: decisão e sessão",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "fort-policy",
+    "title": "FortiGate: encontrar a política de um fluxo",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "fort-logs",
+    "title": "FortiGate: logs com escopo e correlação",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "inspection",
+    "title": "Perfis e TLS: visibilidade tem custo e limites",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "sdwan",
+    "title": "SD-WAN: enlace ativo e caminho adequado",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "ha",
+    "title": "HA: eleição, sincronização e serviço",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "central-management",
+    "title": "FortiManager: editar não é instalar",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "device-access",
+    "title": "Gestão segura e acesso de emergência",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "risk",
+    "title": "Risco: priorizar com contexto",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "security-controls",
+    "title": "CIA e defesa em profundidade",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "phishing",
+    "title": "Engenharia social: confirmar fora do canal suspeito",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "identity",
+    "title": "Autenticação, autorização e privilégio",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "crypto",
+    "title": "Criptografia, hash e confiança",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "incident-triage",
+    "title": "Logs do Hub: hipótese não é veredito",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "soc-operations",
+    "title": "Do alerta à resposta autorizada",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "compliance",
+    "title": "Classificação, retenção e proteção dos dados",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "conditional-access",
+    "title": "Conditional Access: política precisa de piloto",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "identity-governance",
+    "title": "Governança: acesso tem começo, mudança e fim",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "workload-identity",
+    "title": "Identidades de aplicações e permissões",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "cloud-models",
+    "title": "Modelos de serviço e responsabilidade",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "aws-iam",
+    "title": "AWS IAM: ação e recurso corretos",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "aws-network",
+    "title": "VPC: rota, alcance e Security Group",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "azure-rbac",
+    "title": "Azure RBAC: escopo menor não basta",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "azure-network",
+    "title": "Azure NSG e exposição administrativa",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "azure-governance",
+    "title": "Azure: hierarquia, Policy e locks",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "cloud-governance",
+    "title": "Governança cloud: limites e responsáveis",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "cloud-cost",
+    "title": "Orçamento não é trava de gasto",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "cloud-observability",
+    "title": "Auditoria, métricas e logs têm perguntas próprias",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "storage",
+    "title": "Dados: objeto, bloco, arquivo e recuperação",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "resilience",
+    "title": "Disponibilidade, recuperação e dependências",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "telemetry",
+    "title": "Métricas, logs, traces e syslog",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "automation",
+    "title": "Automação: intenção, diff e validação",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "ai-operations",
+    "title": "IA em redes: recomendação precisa de evidência",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "incidents",
+    "title": "Incidente: escopo, hipótese e próxima ação",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "evidence",
+    "title": "Runbook e evidência que outra pessoa entende",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "kql",
+    "title": "KQL: filtrar, agrupar e preservar contexto",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "linux-foundation",
+    "title": "Linux: camadas e licença",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "linux-shell",
+    "title": "Shell: caminho e comando previsível",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "linux-text",
+    "title": "Pipelines: conteúdo, contagem e risco de truncar",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "linux-process",
+    "title": "Processo ativo não prova serviço utilizável",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "linux-permissions",
+    "title": "Permissões: arquivo e diretório-pai",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "containers",
+    "title": "VM, contêiner e imagem",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o1"
+  },
+  {
+    "id": "kubernetes",
+    "title": "Kubernetes: estado desejado e estado observado",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "kubernetes-network",
+    "title": "Service: seletor, prontidão e porta",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  }
+]

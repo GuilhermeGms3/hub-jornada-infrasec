@@ -1,5 +1,13 @@
 # Contratos de dados propostos
 
+Extensão implementada em 02/11/2026: `certifications?`, versão própria 1, preserva
+roteiro/semana, leituras únicas de aulas-base, notas semanais e respostas de
+compreensão (`id`, certificação, semana, aula/versão, alternativa, data e modo).
+`certifications/model.ts` valida a forma e referências usando `lesson-index.json`
+gerado; notas/leituras não criam domínio ou aprovação. Os roteiros são conteúdo
+editorial estático, não tabelas nem nova fonte de dados do aluno. Veja
+[contrato e limites](../quality/CERTIFICATION_EXPANSION.md).
+
 Estado vigente: R01 preservada em `domain/types.ts`; novas unidades e evidências em
 `coursework/types.ts`, extensão opcional validada por `coursework/validate.ts`. Um único store e
 backup, IDs estáveis, versões explícitas e histórico unificado sem mescla de pontuações antigas.

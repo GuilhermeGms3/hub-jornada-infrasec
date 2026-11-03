@@ -1,5 +1,16 @@
 # Arquitetura do Hub Jornada InfraSec
 
+## Certificações nativas — 02/11/2026
+
+`apps/learn/src/certifications/` acrescenta 16 roteiros de 12 semanas e 60 aulas-base
+compartilhadas. Player carregado sob demanda, componentes de opções/correção e
+demonstrações R01 reutilizados; modelo finito de políticas específico para estudo.
+Não importa controllers legados nem arquivos MD como ensino obrigatório.
+Um único `useLearning` mantém `certifications?` versão 1 junto de `progress` e
+`coursework?`, com leituras, caderno, tentativas de compreensão e retomada. O histórico
+separa esses casos das avaliações independentes. Nenhum backend ou dependência nova.
+Veja [entrega e limites](docs/quality/CERTIFICATION_EXPANSION.md).
+
 ## Expansão pedagógica: suporte a unidades
 
 `apps/learn/src/coursework/` contém contratos, catálogo, ensino R02–R04, motor compartilhado das

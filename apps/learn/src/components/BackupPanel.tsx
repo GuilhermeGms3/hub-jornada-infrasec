@@ -72,9 +72,11 @@ export function BackupPanel({ store }: { store: LearningStore }) {
             Cópia válida: {candidate.progress.read.length} leituras,{' '}
             {candidate.progress.attempts.length} respostas e {candidate.progress.labAttempts.length}{' '}
             casos guiados da R01; {candidate.coursework?.attempts.length || 0} respostas das
-            unidades novas. Importar substitui o progresso de TODAS as unidades desta aplicação,
-            inclusive dados novos ausentes numa cópia antiga; não mescla históricos. O checksum
-            verifica corrupção acidental, não autentica resultados.
+            unidades novas; {candidate.certifications?.read.length || 0} leituras e{' '}
+            {candidate.certifications?.attempts.length || 0} respostas de compreensão nas
+            certificações. Importar substitui o progresso de TODAS as unidades e certificações desta
+            aplicação, inclusive dados novos ausentes numa cópia antiga; não mescla históricos. O
+            checksum verifica corrupção acidental, não autentica resultados.
           </p>
           <button
             className="primary"
@@ -96,7 +98,7 @@ export function BackupPanel({ store }: { store: LearningStore }) {
                 store.replace(candidate);
                 setCandidate(null);
                 setError('');
-                location.hash = `#/${candidate.coursework?.route || candidate.progress.route}`;
+                location.hash = `#/${candidate.certifications?.route || candidate.coursework?.route || candidate.progress.route}`;
               } catch (e) {
                 setError(
                   e instanceof Error

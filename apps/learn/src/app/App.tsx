@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { validRoute } from '../domain/learning';
 import { useLearning } from './useLearning';
 import { BackupPanel } from '../components/BackupPanel';
@@ -10,6 +10,10 @@ import { courseRoute, courseHref } from '../coursework/catalog';
 import { CoursePlayer } from '../coursework/Player';
 import { activeCourseRun, initialCoursework } from '../coursework/model';
 import { KnowledgeMap } from '../coursework/Journey';
+import { certificationRoute } from '../certifications/catalog';
+import { CertificationBoundary } from '../certifications/CertificationBoundary';
+
+const CertificationPage = lazy(() => import('../certifications/CertificationPage'));
 
 const readRoute = () => canonicalRoute(location.hash);
 export function App() {
@@ -21,22 +25,28 @@ export function App() {
   const [backup, setBackup] = useState(false);
   const unit = validRoute(route);
   const course = courseRoute(route);
+  const certification = certificationRoute(route);
+  const certPage =
+    Boolean(certification) || ['certificacoes', 'certificacoes-pratica'].includes(route);
   const courseActive = activeCourseRun(store.envelope.coursework || initialCoursework());
   const page = pages.find((p) => p.hash === route);
-  const known = Boolean(course) || unit || route === 'redes' || Boolean(page);
-  const group =
-    unit || course || route === 'redes'
+  const known = certPage || Boolean(course) || unit || route === 'redes' || Boolean(page);
+  const group = certPage
+    ? 'Carreira'
+    : unit || course || route === 'redes'
       ? 'Redes'
       : page
         ? groupNames[page.group] || page.group
         : 'Começar';
-  const title = course
-    ? course.unit.id.toUpperCase()
-    : unit
-      ? 'NET-R01'
-      : route === 'redes'
-        ? 'Formação de redes'
-        : page?.name || 'Hoje';
+  const title = certification
+    ? certification.certification.title
+    : course
+      ? course.unit.id.toUpperCase()
+      : unit
+        ? 'NET-R01'
+        : route === 'redes'
+          ? 'Formação de redes'
+          : page?.name || 'Hoje';
   useEffect(() => {
     function navigate() {
       const candidate = readRoute();
@@ -95,7 +105,9 @@ export function App() {
                   .map((p) => {
                     const target = p.id === 'network-practice' ? 'redes' : p.hash;
                     const selected =
-                      target === route || ((unit || Boolean(course)) && target === 'redes');
+                      target === route ||
+                      ((unit || Boolean(course)) && target === 'redes') ||
+                      (Boolean(certification) && target === 'certificacoes');
                     return (
                       <a
                         key={p.id}
@@ -156,7 +168,13 @@ export function App() {
               preservado.
             </p>
           )}
-          {course ? (
+          {certPage ? (
+            <CertificationBoundary key={route}>
+              <Suspense fallback={<p role="status">Carregando aulas e roteiros…</p>}>
+                <CertificationPage key={route} route={route} store={store} />
+              </Suspense>
+            </CertificationBoundary>
+          ) : course ? (
             <CoursePlayer key={route} unit={course.unit} view={course.view} store={store} />
           ) : unit ? (
             <>

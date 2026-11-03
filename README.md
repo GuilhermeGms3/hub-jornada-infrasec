@@ -2,6 +2,19 @@
 
 ## Frontend atual — InfraSec em React
 
+### Certificações: CCNA 2.0, Fortinet e demais percursos
+
+**Guia de certificações** agora abre 16 roteiros próprios de 12 semanas: CCNA v2.0,
+Fortinet NSE 1–7, AWS CLF-C02, AZ-900, SC-900, SC-200, SC-300, Security+, Linux Essentials
+e KCNA. São 60 aulas-base internas em português, exemplos e casos de compreensão
+comentados, com prática específica e caderno por semana. Leitura e respostas ficam
+na mesma cópia das unidades R01–R04. Não é necessário abrir MD/TXT para essas aulas.
+
+Abra `http://127.0.0.1:4173/platform/index.html#/certificacoes` após `npm run dev`.
+Os roteiros indicam o aprofundamento ainda necessário; não representam 16 cursos
+integrais ou simulados calibrados. NSE 5 destaca SD-WAN Core, NSE 6 FortiManager e
+NSE 7 Secure Networking. Veja [entrega, reuso, validação e limites](docs/quality/CERTIFICATION_EXPANSION.md).
+
 ### Expansão da Semana 1
 
 Além da R01, **Redes → Formação de redes** oferece **NET-R02 (configuração/DHCP)**,

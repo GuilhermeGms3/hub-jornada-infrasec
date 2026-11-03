@@ -49,12 +49,17 @@ test('as 29 responsabilidades têm destino sem anunciar aulas inexistentes', asy
         'semana-1',
         'redes',
         'dependencias',
+        'certificacoes',
+        'certificacoes-pratica',
       ].includes(canonicalRoute(item.hash))
     ) {
       await expect(page.locator('.area-status')).toContainText('reformulação');
       await expect(
         page.getByRole('link', { name: new RegExp(`Abrir ${item.name}`) }),
       ).toHaveAttribute('href', new RegExp(`hub-estudos-infrasec.html#${item.hash}$`));
+    } else if (['certificacoes', 'certificacoes-pratica'].includes(item.hash)) {
+      await expect(page.locator('.cert-grid > section')).toHaveCount(16);
+      await expect(page.locator('main')).toContainText('CCNA 2.0');
     }
   }
 });

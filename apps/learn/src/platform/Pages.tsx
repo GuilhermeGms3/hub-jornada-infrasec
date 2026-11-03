@@ -9,6 +9,8 @@ import { courseUnits, courseHref, courseRoute } from '../coursework/catalog';
 import { WeekOne, recommendedCourseRoute } from '../coursework/Journey';
 import { CourseHistory } from '../coursework/Player';
 import { courseReviewDue } from '../coursework/model';
+import { CertificationHistory } from '../certifications/CertificationHistory';
+import { certificationById, certificationHref } from '../certifications/catalog';
 
 export function resumeRoute(store: LearningStore) {
   const p = store.envelope.progress;
@@ -113,6 +115,26 @@ export function Home({ store }: { store: LearningStore }) {
         </div>
       </div>
       <WeekOne store={store} compact />
+      <section className="available-unit">
+        <h2>Seu percurso de certificações</h2>
+        <p>
+          CCNA 2.0, Fortinet NSE 1–7 e as outras certificações têm roteiros próprios de 12 semanas,
+          com aulas-base e casos internos. As lacunas de aprofundamento aparecem em cada semana.
+        </p>
+        <div className="actions">
+          <a
+            className="button"
+            href={
+              store.envelope.certifications
+                ? `#/${store.envelope.certifications.route}`
+                : '#/certificacao/ccna'
+            }
+          >
+            {store.envelope.certifications ? 'Retomar certificação' : 'Conhecer CCNA 2.0'}
+          </a>
+          <a href="#/certificacoes">Ver todas as certificações</a>
+        </div>
+      </section>
       <h2>Um percurso maior que esta unidade</h2>
       <div className="path-rows">
         <a href="#/redes">
@@ -152,6 +174,11 @@ export function Networks({ store }: { store: LearningStore }) {
     <article>
       <h1 tabIndex={-1}>Formação de redes</h1>
       <p className="platform-lead">Entenda o caminho. Investigue a falha. Explique a evidência.</p>
+      <p>
+        <a className="button" href="#/certificacao/ccna">
+          Abrir roteiro CCNA 2.0 · 12 semanas
+        </a>
+      </p>
       <p>
         A sequência preserva a base das semanas 1–6 do percurso InfraSec. A R01 oferece ensino neste
         recorte. A Semana 1 agora também possui configuração/DHCP, troubleshooting e runbooks; as
@@ -229,6 +256,11 @@ export function Journey({ mode, store }: { mode: string; store: LearningStore })
         Objetivos e sequência do percurso original, com disponibilidade explícita.
       </p>
       <p>
+        <a href="#/certificacoes">
+          Procurando um plano específico? Abra os roteiros de 12 semanas por certificação.
+        </a>
+      </p>
+      <p>
         Este roteiro preserva as 12 semanas e 84 missões como organização curricular. Ele não é uma
         formação nova concluída. R01–R04 agora ensinam a base da Semana 1; marcações e notas antigas
         não foram transformadas em domínio.
@@ -292,6 +324,15 @@ export function Journey({ mode, store }: { mode: string; store: LearningStore })
 export function Area({ route }: { route: string }) {
   const page = pages.find((p) => p.hash === route);
   if (!page) return null;
+  const relatedCertifications: Record<string, string[]> = {
+    'helpdesk-noc': ['ccna', 'nse3', 'nse4'],
+    'linux-git': ['linux', 'kcna'],
+    terminal: ['linux'],
+    soc: ['nse1', 'nse2', 'sc900', 'sc200', 'securityplus'],
+    cloud: ['aws-clf', 'az900', 'sc300'],
+    arquitetura: ['ccna', 'nse7', 'kcna'],
+    biblioteca: ['ccna', 'nse1', 'aws-clf', 'az900', 'securityplus'],
+  };
   const references = [
     'certificacoes',
     'biblioteca',
@@ -321,6 +362,22 @@ export function Area({ route }: { route: string }) {
     <article>
       <h1 tabIndex={-1}>{page.name}</h1>
       <p className="platform-lead">{page.purpose}.</p>
+      {relatedCertifications[route] && (
+        <section className="available-unit">
+          <h2>Estudo interno por certificação</h2>
+          <p>
+            Os roteiros abaixo já abrem aulas-base, exemplos e casos comentados nesta aplicação.
+            Cada semana identifica a prática específica e as lacunas de aprofundamento.
+          </p>
+          <ul>
+            {relatedCertifications[route].map((id) => (
+              <li key={id}>
+                <a href={certificationHref(id)}>{certificationById.get(id)!.title} · 12 semanas</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <div className="area-status">
         <strong>
           {kind === 'reference'
@@ -369,6 +426,7 @@ export function Level({ store }: { store: LearningStore }) {
     <>
       <ProgressView store={store} />
       <CourseHistory store={store} />
+      <CertificationHistory store={store} />
       <section className="legacy-note">
         <h2>Diagnóstico anterior</h2>
         <p>

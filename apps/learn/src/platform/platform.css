@@ -3,6 +3,123 @@
   color: #142c40;
   background: #fff;
 }
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.cert-grid .available-unit {
+  margin: 0;
+}
+.cert-grid h2 {
+  font-size: 22px;
+}
+.cert-scope {
+  border-left: 3px solid var(--accent, #007d87);
+  background: #f2f7f9;
+  padding: 16px 22px;
+  margin: 24px 0;
+  overflow-wrap: anywhere;
+}
+.cert-scope > :first-child {
+  margin-top: 0;
+}
+.cert-scope > :last-child {
+  margin-bottom: 0;
+}
+.cert-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 16px;
+  margin: 24px 0 12px;
+}
+.cert-filters label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+.cert-area-filter {
+  display: grid;
+  gap: 8px;
+}
+.cert-filters input,
+.cert-filters select {
+  font: inherit;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: white;
+  color: var(--ink);
+}
+.cert-weeks h3 {
+  margin: 0;
+  font-size: 19px;
+}
+.cert-lesson-links {
+  list-style: none;
+  padding: 0;
+}
+.cert-lesson-links li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cert-lesson-links span {
+  color: var(--muted);
+  font-size: 13px;
+}
+.cert-reader {
+  max-width: 900px;
+}
+.cert-reader pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.cert-check {
+  margin: 32px 0;
+}
+.read-marker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 28px 0;
+}
+.policy-rules {
+  padding-left: 24px;
+}
+.policy-rules li {
+  padding: 8px;
+}
+.policy-rules [aria-current='step'] {
+  background: #d6edf0;
+  font-weight: 600;
+}
+.cert-reader select {
+  max-width: 100%;
+  font: inherit;
+  padding: 8px;
+}
+@media (max-width: 1000px) {
+  .cert-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .cert-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cert-lesson-links li {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cert-scope {
+    padding: 14px 16px;
+  }
+}
 .platform-app {
   min-height: 100dvh;
 }

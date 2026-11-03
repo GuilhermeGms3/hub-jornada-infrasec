@@ -1,5 +1,14 @@
 # Persistência proposta e recuperação
 
+Atualização 02/11/2026: extensão opcional `certifications` versão 1 no mesmo envelope
+`infrasec-learn:v1`, sem nova chave. Cópias anteriores continuam aceitas; importação
+substitui todas as áreas, inclusive ausência de dados na cópia antiga, mediante
+confirmação e download anterior. Builds antigas não entendem a extensão nova.
+Notas até 8192 caracteres por semana, até 10 mil respostas de compreensão com
+contexto validado; limite global de 5 MiB e proteções anteriores preservados.
+Não há migração de notas legadas como prontidão ou execução real. Detalhes no
+[relatório de certificações](../quality/CERTIFICATION_EXPANSION.md).
+
 Contrato atual da expansão: mesmo envelope/chave, R01 em `progress` e campo opcional `coursework`
 com versão própria 1. Leituras, drafts, runs, respostas, coleta e artefatos das novas unidades
 compartilham o codec/backup. Leitor atual aceita cópias R01 anteriores; leitores antigos não

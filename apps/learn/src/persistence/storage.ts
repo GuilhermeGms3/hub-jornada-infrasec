@@ -4,6 +4,7 @@ import { commandLabels, scenarioById, diagnoses } from '../domain/simulator';
 import { initialProgress, validRoute } from '../domain/learning';
 import { UNIT_VERSION, type Envelope } from '../domain/types';
 import { validateCoursework } from '../coursework/validate';
+import { validateCertifications } from '../certifications/model';
 
 export const STORAGE_KEY = 'infrasec-learn:v1';
 export const MAX_BYTES = 5 * 1024 * 1024;
@@ -41,7 +42,15 @@ function bool(v: unknown) {
 export function parseEnvelope(raw: string): Envelope {
   if (new Blob([raw]).size > MAX_BYTES) throw new Error('Arquivo excede 5 MiB.');
   const e: unknown = JSON.parse(raw);
-  object(e, ['appId', 'schemaVersion', 'revision', 'savedAt', 'progress', 'coursework']);
+  object(e, [
+    'appId',
+    'schemaVersion',
+    'revision',
+    'savedAt',
+    'progress',
+    'coursework',
+    'certifications',
+  ]);
   if (e.appId !== 'infrasec-learn' || e.schemaVersion !== 1)
     throw new Error('Formato ou versão de dados incompatível. O original foi preservado.');
   number(e.revision);
@@ -224,6 +233,7 @@ export function parseEnvelope(raw: string): Envelope {
     )
       throw new Error('Há avaliações ativas conflitantes entre unidades.');
   }
+  if (e.certifications !== undefined) validateCertifications(e.certifications);
   return e as unknown as Envelope;
 }
 

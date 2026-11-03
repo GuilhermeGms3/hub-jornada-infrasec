@@ -5,6 +5,9 @@ import type { Coursework } from '../coursework/types';
 import { initialCoursework, visitCoursework } from '../coursework/model';
 import { courseRoute } from '../coursework/catalog';
 import { validRoute } from '../domain/learning';
+import type { CertificationProgress } from '../certifications/types';
+import { initialCertifications } from '../certifications/model';
+import { certificationRoute } from '../certifications/catalog';
 
 const store = {
   getItem: (key: string) => localStorage.getItem(key),
@@ -77,6 +80,16 @@ export function useLearning() {
         ),
       },
       ...(c ? { coursework: visitCoursework(c, route) } : {}),
+      ...(certificationRoute(route)
+        ? { certifications: { ...(envelope.certifications || initialCertifications()), route } }
+        : {}),
+    });
+  }
+  function updateCertifications(change: (p: CertificationProgress) => CertificationProgress) {
+    const envelope = ref.current.envelope;
+    write({
+      ...envelope,
+      certifications: change(envelope.certifications || initialCertifications()),
     });
   }
   function replace(candidate: Envelope) {
@@ -117,6 +130,7 @@ export function useLearning() {
     ...state,
     update,
     updateCoursework,
+    updateCertifications,
     visit,
     replace,
     getProgress: () => ref.current.envelope.progress,

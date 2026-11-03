@@ -44,3 +44,15 @@ test('bundle funciona em subdiretório com assets relativos e deep link recarreg
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Do nome ao endereço');
   expect(errors).toEqual([]);
 });
+
+test('aulas de certificação carregam o chunk sob subdiretório', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto(
+    'http://127.0.0.1:4184/estudo/index.html#/certificacao/nse4/semana/3/aula/fort-policy',
+  );
+  await expect(page.locator('main h1')).toHaveText('FortiGate: encontrar a política de um fluxo');
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Entenda o mecanismo' })).toBeVisible();
+  expect(errors).toEqual([]);
+});

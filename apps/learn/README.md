@@ -1,6 +1,14 @@
 # InfraSec — frontend principal
 
-**Rodada atual:** R02, R03 e R04 disponíveis nativamente junto da R01. Acesso em Redes/Formação de redes
+**Certificações (02/11/2026):** 16 roteiros nativos de 12 semanas, 60 aulas-base
+compartilhadas, exemplos e casos comentados. Prioridade CCNA v2.0 e Fortinet NSE 1–7.
+Navegação em `#/certificacoes`; histórico em Meu nível e progresso no mesmo envelope.
+Veja [escopo, reuso e limites](../../docs/quality/CERTIFICATION_EXPANSION.md).
+Ao editar os dados de aulas, regenere o índice de backup na raiz com
+`node scripts/build-certification-index.cjs`, antes dos testes/builds.
+O catálogo e a base não equivalem a cursos integrais de todas as certificações.
+
+**Rodada anterior:** R02, R03 e R04 disponíveis nativamente junto da R01. Acesso em Redes/Formação de redes
 e Semana 1 detalhada. Retomada, questões, coleta guiada, provas, recuperação, revisão e runbook usam
 o mesmo envelope local. Relatório: [WEEK1_EXPANSION.md](../../docs/quality/WEEK1_EXPANSION.md).
 As aplicações anteriores continuam separadas; bancos de terceiros não foram publicados no novo motor.

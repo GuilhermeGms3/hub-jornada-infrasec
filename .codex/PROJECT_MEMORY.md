@@ -1,5 +1,17 @@
 # Project Memory
 
+## Certificações — 2026-11-02
+- Branch `codex/infrasec-certificacoes-ccna2-fortinet`, base `ca95500`. Pedido em `docs/requirements/CERTIFICATION_RESTORE_REQUEST.md`.
+- 16 roteiros nativos de 12 semanas (192 no total): CCNA v2.0, NSE1–7, AWS CLF-C02, AZ900, SC900/200/300, Security+, Linux Essentials e KCNA. Sem redesign; 29 responsabilidades/seis grupos preservados.
+- 60 aulas-base compartilhadas, 60 exemplos e 60 casos de compreensão com 180 explicações. Não são 16 cursos completos. Toda semana explicita aprofundamento faltante. NSE5 SD-WAN Core, NSE6 FortiManager, NSE7 Secure Networking Architect; outras especializações não cobertas automaticamente.
+- Reuso editorial de VLSM/VLAN/rotas/OSPF/ACL, IAM/VPC/RBAC/NSG, triagem SOC e terminal Linux do Hub. Corrigido VM Contributor como suposto mínimo para reiniciar VM; não migradas rubricas por palavras ou logs sintéticos como prova real. Nenhum banco de terceiro publicado.
+- `certifications/` com roteiros, player lazy e modelo finito de políticas; Options/Correction e demonstrações R01 reutilizados. Mesma chave/envelope/store; `certifications?` v1 com read, notes, route, attempts contextuais/versionadas comprehension. Backup antigo aceito; leitores antigos rejeitam extensão nova. Notas/texto/leitura não concedem aprovação.
+- Gerador `scripts/build-certification-index.cjs` usa só dados locais confiáveis; índice validado nos testes. Notas até8192/semana, respostas até10mil, envelope5MiB. Sem backend, nova dependência ou execução remota.
+- Fontes oficiais Cisco/Fortinet/Microsoft/AWS/LPI/CNCF consultadas. Security+ preserva base SY0-701 com transição a conferir: páginas CompTIA V7/V8 falharam no acesso; não foram inventadas datas ou cobertura V8.
+- Validação:157 Vitest,41 E2E,149 raiz; format/lint/typecheck/builds. Oito capturas reais certifications-*. Aviso chunk~599kB(gzip187) e aulas137kB(gzip48), não suprimido. Relatório `docs/quality/CERTIFICATION_EXPANSION.md`.
+- Próxima profundidade: laboratórios/unidades de subnetting/IPv6/OSPFv3/L2security CCNA, FortiOS por versão e trilhas especializadas; manter lacunas explícitas e avaliar com iniciantes/revisor humano. Não anunciar prontidão com casos finitos de compreensão.
+- Os blocos abaixo são histórico.
+
 ## Expansão vigente — Semana 1 (2026-10-24)
 - Branch `codex/infrasec-expansao-semana-1`, base `91538e2`. Pedido em `docs/requirements/PEDAGOGICAL_EXPANSION_REQUEST.md`.
 - R02 configuração/DHCP, R03 troubleshooting e R04 runbooks implementadas: 12 lições, 12 exemplos, 51 itens autorais, três práticas guiadas e recuperação/revisão por objetivo. R04 editor/exportação de runbook autodeclarado.

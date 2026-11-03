@@ -42,11 +42,13 @@ export function Correction({
   answer,
   question,
   recoveryHref = '#/recuperacao',
+  recoveryTarget,
 }: {
   questionId: string;
   answer: string;
   question?: Pick<Question, 'prompt' | 'context' | 'options' | 'correct'>;
   recoveryHref?: string;
+  recoveryTarget?: string;
 }) {
   const q = question || questionById[questionId];
   const correct = q.correct === answer && q.options.some((o) => o.id === answer);
@@ -60,7 +62,23 @@ export function Correction({
             <strong>Resposta sustentada:</strong> {q.options.find((o) => o.id === q.correct)?.text}
           </p>
           <p>{q.options.find((o) => o.id === q.correct)?.explanation}</p>
-          <a href={recoveryHref}>Abrir recuperação contextual</a>
+          <a
+            href={recoveryHref}
+            onClick={
+              recoveryTarget
+                ? (e) => {
+                    const target = document.getElementById(recoveryTarget);
+                    if (target) {
+                      e.preventDefault();
+                      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+                      target.focus({ preventScroll: true });
+                    }
+                  }
+                : undefined
+            }
+          >
+            Abrir recuperação contextual
+          </a>
         </>
       )}
       <details>
