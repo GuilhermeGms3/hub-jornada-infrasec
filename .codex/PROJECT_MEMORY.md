@@ -1,5 +1,12 @@
 # Project Memory
 
+## CCNA intensivo e monitoramento — 2026-11-16
+- Branch codex/ccna-intensive-monitoring. Seis aulas novas (66 totais), treino /24–/30, receitas IOS, Jeremy por semana e ensaio curto 20 itens reaproveitados, sem equivalência à prova.
+- Cópia MIT de Brendo Nery 05706cf4 em projetos/monitoramento-sala-servidores; painel interno simulado e execução real independente. Não iniciar automaticamente; docker.sock/HTTP exigem bancada isolada.
+- Validação: 159 Vitest, 44 E2E frontend, 149 raiz; builds/typecheck/lint/compose config passaram. Stack/hardware não executados.
+- Sem nova persistência ou prontidão automática. Referência e limitações: docs/quality/CCNA_INTENSIVE_MONITORING.md.
+
+
 ## Certificações — 2026-11-02
 - Branch `codex/infrasec-certificacoes-ccna2-fortinet`, base `ca95500`. Pedido em `docs/requirements/CERTIFICATION_RESTORE_REQUEST.md`.
 - 16 roteiros nativos de 12 semanas (192 no total): CCNA v2.0, NSE1–7, AWS CLF-C02, AZ900, SC900/200/300, Security+, Linux Essentials e KCNA. Sem redesign; 29 responsabilidades/seis grupos preservados.

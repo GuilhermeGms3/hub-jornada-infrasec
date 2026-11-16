@@ -1,0 +1,15 @@
+# Diz ao Grafana: "carregue todos os dashboards .json desta pasta".
+# A pasta grafana/dashboards do projeto é montada em /var/lib/grafana/dashboards.
+# O Grafana relê a pasta a cada 10 s: rodou o gerar_dashboard.py, a mudança aparece.
+apiVersion: 1
+
+providers:
+  - name: sala-do-servidor
+    folder: Sala do servidor          # pasta onde o dashboard aparece no Grafana
+    type: file
+    disableDeletion: true             # não deixa apagar pela tela por engano
+    allowUiUpdates: true              # pode ajustar pela tela para testar, mas o
+                                      # arquivo é quem manda: ao reiniciar, volta ao do arquivo
+    updateIntervalSeconds: 10
+    options:
+      path: /var/lib/grafana/dashboards

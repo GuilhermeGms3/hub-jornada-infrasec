@@ -1,0 +1,428 @@
+/* =====================================================================
+   estilo.css — visual da central
+   ---------------------------------------------------------------------
+   Referência: ferramentas de operação reais (Grafana, Zabbix). Fundo
+   grafite, texto normal, números em monoespaçada, cor SÓ para estado.
+   Sem brilhos, sem animações enfeitadas: o que pisca é só alarme grave.
+   Tudo começa com ".noc" para não afetar o resto do Grafana.
+   ===================================================================== */
+
+.noc {
+  /* Fundo e painel com a MESMA cor da sala 3D: a tela vira uma superfície
+     só, sem caixas separadas. A organização vem do espaçamento. */
+  --fundo: #15181d;
+  --painel: #15181d;
+  --gaveta: #1b1e24;
+  --painel-2: #1f2228;
+  --borda: #2c3038;
+  --texto: #d8d9da;
+  --fraco: #8e959e;
+  --mais-fraco: #6e7681;
+  --ok: #73bf69;
+  --atencao: #ff9830;
+  --alerta: #f2495c;
+  --info: #5794f2;
+  --mono: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--texto);
+  background: var(--fundo);
+  font: 13px/1.4 Inter, "Segoe UI", Roboto, system-ui, sans-serif;
+  display: grid;
+  grid-template-columns: minmax(260px, 20%) 1fr minmax(300px, 23%);
+  grid-template-rows: 52px 1fr;
+  grid-template-areas: "topo topo topo" "esq centro dir";
+  gap: 0;
+  padding: 4px 6px;
+  box-sizing: border-box;
+}
+/* Sombra nos quatro cantos da tela (vinheta). Fica por cima de tudo, mas
+   não pega clique; a gaveta do servidor (z-index 30) fica acima dela. */
+.noc::after {
+  content: ""; position: absolute; inset: 0; z-index: 20; pointer-events: none;
+  background:
+    radial-gradient(ellipse 38% 45% at 0 0, rgba(0, 0, 0, .42), transparent 70%),
+    radial-gradient(ellipse 38% 45% at 100% 0, rgba(0, 0, 0, .42), transparent 70%),
+    radial-gradient(ellipse 38% 45% at 0 100%, rgba(0, 0, 0, .42), transparent 70%),
+    radial-gradient(ellipse 38% 45% at 100% 100%, rgba(0, 0, 0, .42), transparent 70%);
+}
+.noc *, .noc *::before, .noc *::after { box-sizing: border-box; }
+.noc .num, .noc b, .noc dd, .noc time { font-variant-numeric: tabular-nums; }
+
+/* ---------- Cartões ---------- */
+.noc .cartao {
+  padding: 10px 12px 12px;
+}
+.noc .cartao.destaque, .noc .estado.destaque { outline: 1px solid var(--info); outline-offset: -1px; }
+.noc h2 {
+  margin: 0 0 8px; font-size: 12.5px; font-weight: 600; color: var(--texto);
+  display: flex; align-items: center; gap: 7px;
+}
+/* Ícones de linha: uma cor só (a do texto), traço fino, sem preenchimento. */
+.noc .ico {
+  width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor;
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.noc h2 > .ico { color: var(--fraco); }
+/* Marca de quem fez a central + título. Só o monograma leva cor de destaque. */
+.noc-topo .marca { display: flex; align-items: center; gap: 8px; font-size: 15.5px; letter-spacing: .01em; }
+.noc-topo .marca b { font-weight: 650; }
+.noc-topo .marca .ico.logo { width: 24px; height: 24px; color: var(--info); stroke-width: 1.7; }
+.noc-topo h1 { display: flex; align-items: baseline; gap: 8px; padding-left: 6px; }
+.noc-topo h1 span { font-size: 13px; font-weight: 400; color: var(--fraco); }
+.noc-topo h1 span::before { content: "·"; margin-right: 8px; color: var(--mais-fraco); }
+.noc .gaveta h3 { display: flex; align-items: center; gap: 8px; }
+.noc .gaveta h3 .ico { width: 17px; height: 17px; color: var(--fraco); }
+.noc h2 .extra { margin-left: auto; font-weight: 400; font-size: 11.5px; color: var(--fraco); }
+
+/* ---------- Topo ---------- */
+.noc-topo {
+  grid-area: topo; display: flex; align-items: center; gap: 16px; padding: 0 14px;
+}
+.noc-topo h1 { margin: 0; font-size: 14px; font-weight: 500; }
+.noc .status-geral { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--fraco); }
+.noc .status-geral i { width: 8px; height: 8px; border-radius: 50%; background: var(--mais-fraco); }
+.noc .status-geral.ok i { background: var(--ok); }
+.noc .status-geral.atencao { color: var(--atencao); }
+.noc .status-geral.atencao i { background: var(--atencao); }
+.noc .status-geral.alerta { color: var(--alerta); font-weight: 600; }
+.noc .status-geral.alerta i { background: var(--alerta); animation: noc-pisca 1.2s steps(2) infinite; }
+
+.noc .contadores { display: flex; gap: 14px; margin-left: auto; font-size: 11.5px; color: var(--mais-fraco); }
+.noc .contadores span { display: flex; align-items: baseline; gap: 5px; }
+.noc .contadores b { font: 600 14px var(--mono); color: var(--mais-fraco); }
+.noc .contadores span.ativo { color: var(--texto); }
+.noc .contadores span.ativo b { color: var(--cor); }
+
+.noc .relogio { display: flex; align-items: baseline; gap: 10px; padding-left: 14px; }
+.noc .relogio b { font: 500 18px var(--mono); }
+.noc .relogio span { font-size: 11.5px; color: var(--fraco); }
+
+/* ---------- Colunas ---------- */
+.noc-esq, .noc-dir { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+.noc-esq { grid-area: esq; }
+.noc-dir { grid-area: dir; }
+.noc-centro { grid-area: centro; display: grid; grid-template-rows: 1fr 150px; gap: 8px; min-height: 0; min-width: 0; }
+.noc .preenche { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.noc .preenche > .alertas, .noc .preenche > .tempo, .noc .preenche > .ficha { flex: 1; min-height: 0; overflow: auto; }
+/* Tudo numa tela só: cada bloco ocupa o que o conteúdo pede; só as LISTAS
+   (problemas e eventos) rolam por dentro quando passam do espaço. */
+.noc-esq, .noc-dir { overflow: hidden; }
+.noc .ficha { align-content: start; }                 /* linhas juntas, não espalhadas */
+.noc .lista-problemas { flex: 0 1 auto; min-height: 0; max-height: 42%; display: flex; flex-direction: column; }
+.noc .lista-problemas > .alertas { min-height: 0; overflow: auto; }
+.noc .preenche > .tempo, .noc .lista-problemas > .alertas { overflow-x: hidden; }   /* só rolagem vertical */
+.noc .preenche > .tempo { overflow: hidden; }          /* eventos: só os que cabem, sem rolagem */
+.noc .evento[hidden] { display: none; }
+
+/* ---------- Leituras grandes ---------- */
+.noc .leitura { display: flex; align-items: baseline; gap: 4px; margin: 2px 0 8px; }
+.noc .leitura b { font: 500 32px/1 var(--mono); letter-spacing: -0.02em; }
+.noc .leitura span { color: var(--fraco); font-size: 14px; }
+
+.noc .regua { position: relative; height: 6px; background: var(--painel-2); border-radius: 3px; overflow: visible; }
+.noc .regua .zona { position: absolute; top: 0; bottom: 0; opacity: .35; }
+.noc .regua .zona:last-of-type { border-radius: 0 3px 3px 0; }
+.noc .regua .marcador { position: absolute; top: -4px; width: 2px; height: 14px; background: var(--texto); transform: translateX(-1px); }
+.noc .regua-rotulos { position: relative; height: 14px; margin-top: 4px; font: 10px var(--mono); color: var(--mais-fraco); }
+.noc .regua-rotulos span { position: absolute; transform: translateX(-50%); }
+.noc .regua-rotulos span:first-child { left: 0; transform: none; }
+.noc .regua-rotulos span:last-child { right: 0; transform: none; }
+
+.noc .mini-dados { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11.5px; color: var(--fraco); }
+.noc .mini-dados b { color: var(--texto); font: 500 12px var(--mono); margin-left: 3px; }
+.noc .spark { width: 100%; height: 32px; display: block; margin-top: 6px; }
+
+.noc .trilho { height: 4px; background: var(--painel-2); border-radius: 2px; overflow: hidden; }
+.noc .trilho.largo { height: 6px; border-radius: 3px; }
+.noc .trilho i { display: block; height: 100%; background: var(--info); transition: width .5s; }
+
+/* ---------- Estado da sala (linhas) ---------- */
+.noc .estados { display: grid; }
+.noc .estado {
+  display: grid; grid-template-columns: 17px 1fr auto; gap: 0 9px; align-items: center;
+  padding: 7px 0; border-top: 1px solid var(--borda);
+}
+.noc .estado:first-child { border-top: 0; padding-top: 2px; }
+.noc .estado .ico { width: 17px; height: 17px; color: var(--mais-fraco); grid-row: span 2; }
+.noc .estado b { font-weight: 600; text-align: right; }
+.noc .estado small { grid-column: 2 / 4; font: 10.5px var(--mono); color: var(--mais-fraco); }
+.noc .estado small:empty { display: none; }
+.noc .estado.ok .ico { color: var(--ok); }
+.noc .estado.ok b { color: var(--texto); font-weight: 500; }
+.noc .estado.neutro b { color: var(--mais-fraco); font-weight: 400; }
+.noc .estado.alerta { background: rgba(242, 73, 92, .10); margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
+.noc .estado.alerta .ico { color: var(--alerta); animation: noc-pisca 1.2s steps(2) infinite; }
+.noc .estado.alerta b { color: var(--alerta); }
+
+/* ---------- Fichas (lista de dados) ---------- */
+.noc .ficha { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 5px 12px; font-size: 12px; }
+.noc .ficha dt { color: var(--fraco); }
+.noc .ficha dd { margin: 0; text-align: right; font-family: var(--mono); font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; }
+.noc .ficha.colunas { grid-template-columns: auto 1fr auto 1fr; }
+
+/* ---------- Cena 3D ---------- */
+.noc .palco { position: relative; min-height: 0; overflow: hidden; background: var(--fundo); }
+/* As bordas da cena 3D se desfazem no fundo, sem linha de corte. */
+.noc .palco::after {
+  content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  box-shadow: inset 0 0 36px 18px var(--fundo);
+}
+.noc .noc3d { position: absolute; inset: 0; }
+.noc .noc3d canvas { display: block; }
+.noc .noc3d-etiquetas { position: absolute; inset: 0; }
+.noc .hud { position: absolute; z-index: 5; pointer-events: none; font-size: 11px; color: var(--mais-fraco); }
+.noc .hud.cd { top: 8px; right: 10px; }
+.noc .hud.rd { bottom: 8px; right: 10px; }
+
+/* Rótulos presos aos objetos da sala */
+.noc .rotulo3d {
+  display: flex; align-items: center; gap: 6px; white-space: nowrap; pointer-events: none;
+  padding: 3px 8px; border-radius: 3px; font-size: 11px; color: var(--texto);
+  background: rgba(17, 18, 23, .82); border: 1px solid var(--borda);
+}
+.noc .rotulo3d .ico { width: 13px; height: 13px; color: var(--mais-fraco); }
+.noc .rotulo3d span { color: var(--fraco); }
+.noc .rotulo3d b { font-weight: 600; }
+.noc .rotulo3d.ok .ico { color: var(--ok); }
+.noc .rotulo3d.atencao .ico { color: var(--atencao); }
+.noc .rotulo3d.atencao b { color: var(--atencao); }
+.noc .rotulo3d.alerta { border-color: rgba(242, 73, 92, .7); }
+.noc .rotulo3d.alerta .ico { color: var(--alerta); }
+.noc .rotulo3d.alerta b { color: #ff7383; }
+.noc .rotulo3d.neutro b { color: var(--mais-fraco); font-weight: 400; }
+
+/* ---------- Gráfico de temperatura ---------- */
+.noc .grafico { display: flex; flex-direction: column; padding-bottom: 6px; }
+.noc .area-grafico { flex: 1; min-height: 0; display: flex; }
+.noc .area-grafico svg { flex: 1; width: 100%; min-height: 0; }
+.noc .legenda { display: flex; gap: 12px; }
+.noc .legenda i { display: inline-block; width: 12px; height: 2px; margin-right: 5px; vertical-align: middle; }
+
+/* ---------- Servidores ---------- */
+.noc .lista-srv { display: grid; gap: 4px; max-height: 32vh; overflow: auto; }
+.noc .srv {
+  display: grid; grid-template-columns: 8px 1fr auto; gap: 1px 9px; align-items: center; cursor: pointer;
+  padding: 7px 8px; border-radius: 3px; border: 1px solid transparent;
+}
+.noc .srv:hover { background: var(--painel-2); }
+.noc .srv.sel { background: var(--painel-2); border-color: var(--info); }
+.noc .srv > i { width: 8px; height: 8px; border-radius: 50%; grid-row: span 2; }
+.noc .srv .nome { font-weight: 600; }
+.noc .srv .dir { text-align: right; font: 12px var(--mono); }
+.noc .srv .sub { font-size: 11px; color: var(--fraco); }
+.noc .srv .dir.sub { font-size: 11px; }
+.noc .srv .barras { grid-column: 2 / 4; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
+
+.noc .barra-linha { display: grid; grid-template-columns: 1fr auto; gap: 3px 6px; font-size: 11.5px; color: var(--fraco); }
+.noc .barra-linha b { font: 500 11.5px var(--mono); color: var(--texto); }
+.noc .barra-linha .trilho { grid-column: 1 / 3; }
+.noc .barra-linha small { grid-column: 1 / 3; color: var(--mais-fraco); font-size: 10.5px; }
+.noc .vazio { color: var(--fraco); font-size: 12px; padding: 4px 0; }
+
+/* ---------- Problemas e eventos ---------- */
+.noc .alertas { display: grid; gap: 4px; align-content: start; }
+.noc .alerta-item {
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; padding: 6px 8px 6px 10px;
+  background: var(--painel-2); border-left: 3px solid var(--cor); border-radius: 2px;
+}
+.noc .alerta-item .titulo { font-weight: 500; }
+.noc .alerta-item .sev { font-size: 11px; color: var(--cor); font-weight: 600; }
+.noc .alerta-item .sub { grid-column: 1 / 3; font-size: 11px; color: var(--fraco); }
+.noc .alerta-item.grave { background: rgba(242, 73, 92, .09); }
+
+.noc .tempo { display: grid; align-content: start; font-size: 12px; overflow-x: hidden; }
+.noc .evento > span { min-width: 0; overflow-wrap: anywhere; }   /* nome longo quebra, sem barra lateral */
+.noc .evento { display: grid; grid-template-columns: 40px 8px 1fr; gap: 8px; padding: 4px 0; border-top: 1px solid var(--borda); align-items: start; }
+.noc .evento:first-child { border-top: 0; }
+.noc .evento time { font: 11px var(--mono); color: var(--fraco); padding-top: 1px; }
+.noc .evento i { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; }
+.noc .evento small { display: block; color: var(--mais-fraco); font-size: 11px; }
+
+/* ---------- Gaveta do servidor ---------- */
+.noc .gaveta {
+  position: absolute; top: 68px; right: 8px; bottom: 8px; width: min(400px, 38%); z-index: 30;
+  background: var(--gaveta); border: 1px solid var(--borda); border-radius: 6px;
+  box-shadow: -16px 0 40px rgba(0, 0, 0, .55);
+  transform: translateX(105%); transition: transform .3s ease;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.noc .gaveta.aberta { transform: none; }
+.noc .gaveta .cab { padding: 12px 14px; border-bottom: 1px solid var(--borda); position: relative; }
+.noc .gaveta .cab h3 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+.noc .gaveta .cab .ficha { margin-top: 10px; }
+.noc .gaveta .fechar {
+  position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 3px; cursor: pointer;
+  background: transparent; border: 1px solid transparent; color: var(--fraco); font-size: 20px; line-height: 1;
+}
+.noc .gaveta .fechar:hover { border-color: var(--borda); color: var(--texto); }
+.noc .linha-estado { display: flex; align-items: center; gap: 7px; font-size: 12.5px; }
+.noc .linha-estado i { width: 8px; height: 8px; border-radius: 50%; background: var(--mais-fraco); }
+.noc .linha-estado.ok i { background: var(--ok); }
+.noc .linha-estado.alerta { color: var(--alerta); }
+.noc .linha-estado.alerta i { background: var(--alerta); }
+.noc .gaveta .corpo { padding: 12px 14px; overflow: auto; display: grid; gap: 12px; }
+.noc .bloco-barras { display: grid; gap: 10px; }
+.noc .graf { border-top: 1px solid var(--borda); padding-top: 8px; }
+.noc .graf .t { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--fraco); }
+.noc .graf .t span:last-child { font-family: var(--mono); color: var(--texto); }
+.noc .graf svg { width: 100%; height: 46px; display: block; margin-top: 4px; }
+
+/* ---------- Aviso de erro ---------- */
+.noc .aviso-erro {
+  position: absolute; left: 50%; top: 64px; transform: translateX(-50%); z-index: 60; display: none;
+  background: #3a1d22; border: 1px solid var(--alerta); padding: 6px 12px; border-radius: 3px; font-size: 12px;
+}
+.noc .aviso-erro.on { display: block; }
+
+@keyframes noc-pisca { 50% { opacity: .25; } }
+
+/* ---------- Telas menores ---------- */
+@media (max-width: 1280px) {
+  .noc { grid-template-columns: 240px 1fr 280px; }
+  .noc .contadores span { font-size: 0; gap: 0; }
+  .noc .contadores b { font-size: 13px; }
+}
+@media (max-width: 980px) {
+  .noc { grid-template-columns: 1fr; grid-template-rows: auto 55vh auto auto; grid-template-areas: "topo" "centro" "esq" "dir"; overflow: auto; height: auto; }
+  .noc-topo { flex-wrap: wrap; padding: 8px 10px; }
+  .noc .gaveta { width: auto; left: 8px; }
+}
+
+.noc ::-webkit-scrollbar { width: 6px; height: 6px; }
+.noc ::-webkit-scrollbar-thumb { background: #353a43; border-radius: 3px; }
+
+/* ---------- Vista explodida: componentes do servidor ---------- */
+/* Etiquetas 3D dos componentes: um pouco maiores que as da sala. */
+.noc .rotulo3d.componente3d { font-size: 11.5px; padding: 4px 9px; }
+.noc .rotulo3d.componente3d .ico { width: 14px; height: 14px; }
+.noc .rotulo3d.componente3d.alerta { animation: noc-pisca 1.2s steps(2) infinite; }
+
+/* Cartões na gaveta */
+.noc .componentes { display: flex; flex-direction: column; gap: 8px; }
+.noc .comp {
+  border: 1px solid var(--borda); border-radius: 6px; padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 6px; scroll-margin-top: 8px;
+}
+.noc .comp.destaque { outline: 1px solid var(--info); outline-offset: 1px; }
+.noc .comp-cab { display: flex; align-items: center; gap: 7px; }
+.noc .comp-cab > .ico { width: 17px; height: 17px; color: var(--fraco); }
+.noc .comp-cab b { font-weight: 600; }
+.noc .comp .selo {
+  display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--info);
+  border: 1px dashed rgba(87, 148, 242, .6); border-radius: 3px; padding: 0 5px;
+}
+.noc .comp .selo .ico { width: 11px; height: 11px; }
+.noc .comp-estado { margin-left: auto; display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--fraco); }
+.noc .comp-estado i { width: 7px; height: 7px; border-radius: 50%; background: var(--mais-fraco); }
+.noc .comp-estado.ok i { background: var(--ok); }
+.noc .comp-estado.atencao { color: var(--atencao); } .noc .comp-estado.atencao i { background: var(--atencao); }
+.noc .comp-estado.alerta { color: var(--alerta); } .noc .comp-estado.alerta i { background: var(--alerta); animation: noc-pisca 1.2s steps(2) infinite; }
+.noc .comp .ficha { margin: 0; }
+.noc .comp .graf { border-top: 0; padding-top: 2px; }
+.noc .comp-prob { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--alerta); }
+.noc .comp-prob .ico { width: 13px; height: 13px; }
+
+/* Etiquetas que se afastam para não se sobrepor (cena3d.js, afastarEtiquetas). */
+.noc .rotulo3d { transition: margin-top .25s ease; }
+
+/* Alertas e eventos clicáveis: "mostrar na sala" (noc.js → cena3d.focar). */
+.noc .clicavel { cursor: pointer; position: relative; }
+.noc .alerta-item.clicavel:hover { filter: brightness(1.25); }
+.noc .evento.clicavel:hover { background: var(--painel-2); }
+.noc .evento.clicavel { grid-template-columns: 40px 8px 1fr 14px; }
+.noc .ico.localizar { width: 13px; height: 13px; color: var(--info); opacity: 0; transition: opacity .15s; vertical-align: -2px; margin-left: 5px; }
+.noc .clicavel:hover .ico.localizar { opacity: 1; }
+
+/* ---------- Telas baixas (notebook, TV pequena): modo compacto ----------
+   Mesmas informações, menos espaço em volta. Abaixo de 700 px de altura os
+   minigráficos da coluna esquerda somem (o gráfico de 30 min continua). */
+@media (max-height: 820px) {
+  .noc { grid-template-rows: 44px 1fr; }
+  .noc .cartao { padding: 7px 12px 8px; }
+  .noc h2 { margin-bottom: 5px; }
+  .noc .leitura { margin: 0 0 5px; }
+  .noc .leitura b { font-size: 26px; }
+  .noc .spark { height: 24px; margin-top: 4px; }
+  .noc .estado { padding: 5px 0; }
+  .noc .ficha { gap: 3px 12px; }
+  .noc-centro { grid-template-rows: 1fr 120px; }
+  .noc .srv { padding: 5px 8px; }
+}
+@media (max-height: 700px) {
+  .noc-esq .spark { display: none; }
+  .noc .mini-dados { margin-top: 4px; }
+  .noc-centro { grid-template-rows: 1fr 100px; }
+}
+
+/* ---------- Ações da central (Reconhecer, Comentar, Manutenção) ---------- */
+.noc .ico.mini { width: 12px; height: 12px; vertical-align: -2px; margin-right: 3px; }
+.noc .alerta-item.visto { opacity: .78; }                       /* já tem dono: menos chamativo */
+.noc .alerta-item.aberto { filter: none; outline: 1px solid var(--borda); }
+.noc .alerta-item .estado-ack { color: var(--texto); }
+.noc .alerta-item .nota { grid-column: 1 / 3; font-size: 11.5px; color: var(--fraco); margin-top: 3px; overflow-wrap: anywhere; }
+.noc .alerta-item .nota b { color: var(--texto); font-weight: 500; }
+.noc .alerta-item .botoes-item { grid-column: 1 / 3; display: flex; gap: 6px; margin-top: 5px; }
+.noc .botao {
+  display: inline-flex; align-items: center; gap: 5px; cursor: pointer; font-weight: 500; font-size: 11.5px;
+  padding: 4px 9px; border-radius: 3px; color: var(--texto); background: rgba(255, 255, 255, .04);
+  border: 1px solid var(--borda); font-family: inherit;
+}
+.noc .botao:hover { background: rgba(255, 255, 255, .09); border-color: var(--mais-fraco); }
+.noc .botao .ico { width: 13px; height: 13px; }
+.noc .botao.pri { background: var(--info); border-color: var(--info); color: #0b0d10; }
+.noc .botao.pri:hover { filter: brightness(1.1); }
+.noc .botao:focus-visible { outline: 2px solid var(--info); outline-offset: 1px; }
+
+.noc .srv .selo { margin-left: 7px; font-weight: 500; font-size: 10.5px; color: var(--atencao); }
+
+.noc .manutencao { margin-top: 10px; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.noc .manutencao small { color: var(--mais-fraco); font-size: 11px; flex: 1 1 160px; }
+.noc .manutencao.on { padding: 7px 9px; border-radius: 3px; background: rgba(255, 152, 48, .08); color: var(--atencao); }
+.noc .manutencao.on > .ico { width: 16px; height: 16px; }
+.noc .manutencao.on > span { flex: 1; color: var(--texto); font-size: 12px; }
+.noc .manutencao.on small { display: block; margin-top: 2px; }
+
+/* Caixa de confirmação (por cima de tudo, até da gaveta) */
+.noc .dialogo { position: absolute; inset: 0; z-index: 80; display: grid; place-items: center; background: rgba(8, 10, 13, .6); }
+.noc .dialogo[hidden] { display: none; }
+.noc .dialogo .caixa {
+  width: min(420px, calc(100% - 32px)); padding: 18px 18px 16px; border-radius: 6px;
+  background: var(--gaveta); border: 1px solid var(--borda); box-shadow: 0 20px 60px rgba(0, 0, 0, .6);
+}
+.noc .dialogo h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+.noc .dialogo .alvo { margin: 0 0 8px; font-size: 12.5px; color: var(--texto); }
+.noc .dialogo .explica { margin: 0 0 12px; font-size: 12px; line-height: 1.45; color: var(--fraco); }
+.noc .dialogo .duracoes { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.noc .dialogo .duracoes input { position: absolute; opacity: 0; pointer-events: none; }
+.noc .dialogo .duracoes span { display: block; padding: 4px 10px; border-radius: 3px; border: 1px solid var(--borda); font: 12px var(--mono); cursor: pointer; }
+.noc .dialogo .duracoes input:checked + span { border-color: var(--info); color: var(--info); background: rgba(87, 148, 242, .1); }
+.noc .dialogo .duracoes input:focus-visible + span { outline: 2px solid var(--info); }
+.noc .dialogo .campo { display: grid; gap: 5px; font-size: 12px; color: var(--fraco); }
+.noc .dialogo textarea {
+  resize: none; padding: 7px 9px; border-radius: 3px; font-size: 13px; font-family: inherit; color: var(--texto);
+  background: var(--fundo); border: 1px solid var(--borda);
+}
+.noc .dialogo textarea:focus { outline: none; border-color: var(--info); }
+.noc .dialogo .erro-campo { min-height: 16px; margin: 4px 0 6px; font-size: 11.5px; color: var(--alerta); }
+.noc .dialogo .botoes { display: flex; justify-content: flex-end; gap: 8px; }
+.noc .dialogo .botoes .botao { padding: 6px 14px; font-size: 12.5px; }
+
+/* Recado depois da ação ("Reconhecido: ..."), no rodapé do palco */
+.noc .recado {
+  position: absolute; left: 50%; bottom: 18px; transform: translate(-50%, 12px); z-index: 70; opacity: 0;
+  pointer-events: none; transition: opacity .2s, transform .2s; max-width: min(560px, 80%);
+  padding: 8px 14px; border-radius: 4px; font-size: 12.5px; background: #1f2a1f; border: 1px solid var(--ok);
+}
+.noc .recado.erro { background: #3a1d22; border-color: var(--alerta); }
+.noc .recado.on { opacity: 1; transform: translate(-50%, 0); }
+
+/* Ações que corrigem (reiniciar, encerrar conexões) */
+.noc .comp-acoes { margin-top: 8px; }
+.noc .botao.corrige { color: var(--atencao); border-color: rgba(255, 152, 48, .35); }
+.noc .botao.corrige:hover { background: rgba(255, 152, 48, .1); border-color: var(--atencao); }
+.noc .alerta-item .botoes-item { flex-wrap: wrap; }
+.noc .recado.espera { background: #1d2432; border-color: var(--info); }

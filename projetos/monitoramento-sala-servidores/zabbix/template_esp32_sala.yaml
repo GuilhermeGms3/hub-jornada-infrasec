@@ -1,0 +1,380 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: ca8c2f40f16c4fe2a63cb266b9db1600
+      name: 'Templates/Sala do servidor'
+  templates:
+    - uuid: 221706e8bf0f40059fb91760235b998f
+      template: 'ESP32 Sala do Servidor'
+      name: 'ESP32 Sala do Servidor'
+      description: 'Ambiente físico da sala do servidor via ESP32 (http://IP/status). Gerado por zabbix/configurar.py.'
+      groups:
+        - name: 'Templates/Sala do servidor'
+      items:
+        - uuid: d3f2e1cbdf9a4288a7c217acdb16440f
+          name: Vazamento
+          type: DEPENDENT
+          key: esp32.agua
+          delay: '0'
+          valuemap:
+            name: Agua
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.agua
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: agua
+          triggers:
+            - uuid: e089cf284fd14db99e547cce5193c537
+              expression: 'last(/ESP32 Sala do Servidor/esp32.agua)=1'
+              name: 'Água detectada no piso'
+              priority: DISASTER
+              description: 'O sensor de chuva do piso está molhado. Possível goteira do ar-condicionado.'
+              tags:
+                - tag: efeito
+                  value: agua
+                - tag: local
+                  value: sala-servidor
+        - uuid: d089b0c09a954f0e878df6209120b701
+          name: 'Água: leitura bruta'
+          type: DEPENDENT
+          key: esp32.agua_raw
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.agua_raw
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: calibracao
+        - uuid: 51e8ea6935dc430da547ba0639e3a379
+          name: 'Sensor DHT11'
+          type: DEPENDENT
+          key: esp32.dht_ok
+          delay: '0'
+          valuemap:
+            name: DHT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.dht_ok
+              error_handler: DISCARD_VALUE
+            - type: BOOL_TO_DECIMAL
+              parameters:
+                - ''
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: temperatura
+          triggers:
+            - uuid: b623c4548cde48c699e565a8f76ab6f1
+              expression: 'max(/ESP32 Sala do Servidor/esp32.dht_ok,1m)=0'
+              name: 'Sensor DHT11 sem resposta'
+              priority: INFO
+              description: 'O DHT11 falhou em todas as leituras do último minuto. Confira o fio DATA (GPIO 4).'
+              tags:
+                - tag: efeito
+                  value: dht
+                - tag: local
+                  value: sala-servidor
+        - uuid: 75170b632f2a45eebb4c36656cbe548e
+          name: 'Energia da tomada'
+          type: DEPENDENT
+          key: esp32.energia
+          delay: '0'
+          valuemap:
+            name: Energia
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.energia
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: energia
+          triggers:
+            - uuid: dcbde73990524882aac02767f01ce278
+              expression: 'last(/ESP32 Sala do Servidor/esp32.energia)=0'
+              name: 'Tomada sem energia'
+              priority: HIGH
+              description: 'O carregador-sentinela parou de dar 5 V: a tomada (filtro de linha) caiu. O servidor pode estar só na bateria/nobreak.'
+              tags:
+                - tag: efeito
+                  value: energia
+                - tag: local
+                  value: sala-servidor
+        - uuid: 2361660743c6419dba9b3c777addc00a
+          name: 'Energia: leitura bruta'
+          type: DEPENDENT
+          key: esp32.energia_raw
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.energia_raw
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: calibracao
+        - uuid: 40e52372d011481cbe496fbda53ad095
+          name: 'Energia: sensor instalado (1=sim)'
+          type: DEPENDENT
+          key: esp32.energia_instalada
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.energia_instalada
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: calibracao
+        - uuid: 4101f77b55bb408798d039a527d24c68
+          name: 'Porta da sala'
+          type: DEPENDENT
+          key: esp32.porta
+          delay: '0'
+          valuemap:
+            name: Porta
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.porta_aberta
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: porta
+          triggers:
+            - uuid: 35457222233e4ed2857b9f38eb34d6f2
+              expression: 'min(/ESP32 Sala do Servidor/esp32.porta,{$PORTA.TEMPO})=1'
+              name: 'Porta aberta há mais de {$PORTA.TEMPO}'
+              priority: WARNING
+              description: 'A porta ficou aberta durante todo o período.'
+              tags:
+                - tag: efeito
+                  value: porta
+                - tag: local
+                  value: sala-servidor
+        - uuid: 16bd27e31d114244b21061521d80701c
+          name: 'Porta: pino cru (1=HIGH, 0=LOW)'
+          type: DEPENDENT
+          key: esp32.porta_raw
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.porta_raw
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: calibracao
+        - uuid: 4de98ffc0552490682f33a46004a765f
+          name: 'ESP32: sinal Wi-Fi'
+          type: DEPENDENT
+          key: esp32.rssi
+          delay: '0'
+          value_type: FLOAT
+          units: dBm
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.wifi_rssi
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: esp32
+        - uuid: 105c1a8bd8ae45d192893ba4cfc10a9a
+          name: 'ESP32 status (JSON)'
+          type: HTTP_AGENT
+          key: esp32.status
+          delay: '{$ESP32.INTERVALO}'
+          history: 1d
+          value_type: TEXT
+          trends: '0'
+          allow_traps: 'YES'
+          description: 'JSON do ESP32: buscado a cada {$ESP32.INTERVALO} (polling) e também recebido na hora quando algo muda (push). Os itens dependentes recortam cada campo.'
+          timeout: 5s
+          url: 'http://{$ESP32.IP}/status'
+          tags:
+            - tag: componente
+              value: esp32
+          triggers:
+            - uuid: 470420176dff4883b06654fed56cb90b
+              expression: 'nodata(/ESP32 Sala do Servidor/esp32.status,{$ESP32.SEM_DADOS})=1'
+              name: 'ESP32 parou de responder'
+              priority: HIGH
+              description: 'O Zabbix não recebe o /status do ESP32. Placa desligada, fora do Wi-Fi ou IP mudou.'
+              tags:
+                - tag: efeito
+                  value: sensor
+                - tag: local
+                  value: sala-servidor
+        - uuid: 952b952246da4b949ca0101b0e282e08
+          name: 'Temperatura da sala'
+          type: DEPENDENT
+          key: esp32.temperatura
+          delay: '0'
+          value_type: FLOAT
+          units: °C
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.temperatura
+              error_handler: DISCARD_VALUE
+            - type: MATCHES_REGEX
+              parameters:
+                - '^-?[0-9]+(\.[0-9]+)?$'
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: temperatura
+          triggers:
+            - uuid: 0427882c71114289beedd8972566a92d
+              expression: 'avg(/ESP32 Sala do Servidor/esp32.temperatura,2m)>{$TEMP.ALTA}'
+              name: 'Temperatura da sala acima de {$TEMP.ALTA} °C'
+              priority: HIGH
+              description: 'Média dos últimos 2 minutos acima do limite alto. Verifique o ar-condicionado.'
+              tags:
+                - tag: efeito
+                  value: temperatura
+                - tag: local
+                  value: sala-servidor
+            - uuid: ac6d950ea3c34828bdd8333fdb53159f
+              expression: 'avg(/ESP32 Sala do Servidor/esp32.temperatura,2m)>{$TEMP.ATENCAO}'
+              name: 'Temperatura da sala acima de {$TEMP.ATENCAO} °C'
+              priority: WARNING
+              description: 'Média dos últimos 2 minutos acima do limite de atenção.'
+              dependencies:
+                - name: 'Temperatura da sala acima de {$TEMP.ALTA} °C'
+                  expression: 'avg(/ESP32 Sala do Servidor/esp32.temperatura,2m)>{$TEMP.ALTA}'
+              tags:
+                - tag: efeito
+                  value: temperatura
+                - tag: local
+                  value: sala-servidor
+        - uuid: c05d9e5d2e704ff5a3da88bd193bf857
+          name: 'Umidade da sala'
+          type: DEPENDENT
+          key: esp32.umidade
+          delay: '0'
+          units: '%'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.umidade
+              error_handler: DISCARD_VALUE
+            - type: MATCHES_REGEX
+              parameters:
+                - '^-?[0-9]+(\.[0-9]+)?$'
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: umidade
+        - uuid: 96eebd9684d04d04868f75c09a111cdd
+          name: 'ESP32: tempo ligado'
+          type: DEPENDENT
+          key: esp32.uptime
+          delay: '0'
+          units: uptime
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.uptime_s
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: esp32
+        - uuid: 1552cdebadec44b4a3c2540dabb4aec2
+          name: 'ESP32: versão do firmware'
+          type: DEPENDENT
+          key: esp32.versao
+          delay: '0'
+          value_type: CHAR
+          trends: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.versao
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: esp32.status
+          tags:
+            - tag: sensor
+              value: esp32
+      tags:
+        - tag: local
+          value: sala-servidor
+      macros:
+        - macro: '{$ESP32.INTERVALO}'
+          value: 15s
+          description: 'De quanto em quanto tempo o Zabbix BUSCA o /status (polling). Serve para a temperatura/umidade e como sinal de vida. Água, porta e energia não esperam por isso: o ESP32 EMPURRA o JSON na hora em que mudam (push, porta 10051).'
+        - macro: '{$ESP32.IP}'
+          value: 192.168.0.50
+          description: 'IP (ou nome) do ESP32. O host esp32-sala sobrescreve com o valor do .env.'
+        - macro: '{$ESP32.SEM_DADOS}'
+          value: 2m
+          description: 'Tempo sem resposta até alertar ''ESP32 parou de responder''.'
+        - macro: '{$PORTA.TEMPO}'
+          value: 1m
+          description: 'Porta aberta por mais que isso vira alerta.'
+        - macro: '{$TEMP.ALTA}'
+          value: '32'
+          description: '°C: alerta de severidade Alta.'
+        - macro: '{$TEMP.ATENCAO}'
+          value: '28'
+          description: '°C: alerta de Atenção.'
+      valuemaps:
+        - uuid: 5c20fc5de92d4160995cbdd06e542578
+          name: Agua
+          mappings:
+            - value: '0'
+              newvalue: Seco
+            - value: '1'
+              newvalue: 'Água detectada'
+        - uuid: 27f33bb0d4ba40ffbd5a01cddf8f29ac
+          name: DHT
+          mappings:
+            - value: '0'
+              newvalue: Falha
+            - value: '1'
+              newvalue: OK
+        - uuid: 12c4a9a1e3de4a67a763df2d7e0e5b73
+          name: Energia
+          mappings:
+            - value: '0'
+              newvalue: 'Sem energia'
+            - value: '1'
+              newvalue: 'Com energia'
+        - uuid: fcef4813b2b04b4080d58d8a83bd1ce0
+          name: Porta
+          mappings:
+            - value: '0'
+              newvalue: Fechada
+            - value: '1'
+              newvalue: Aberta

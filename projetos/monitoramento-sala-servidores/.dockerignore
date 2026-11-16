@@ -1,0 +1,11 @@
+# O "contexto" de build é a pasta inteira do projeto (o Dockerfile do gravador
+# precisa de firmware/ e de gravador/). Este arquivo diz o que o Docker PODE
+# ver durante o build.
+#
+# Usamos uma LISTA BRANCA: bloqueia tudo ("*") e libera só o necessário.
+# Por quê: assim o .env (com senhas e token) NUNCA entra numa imagem, nem
+# por engano, e o build fica mais rápido (não copia volumes, .pio etc.).
+*
+!firmware/platformio.ini
+!firmware/src/
+!gravador/

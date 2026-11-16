@@ -1,0 +1,10 @@
+# Habilita o plugin do Zabbix automaticamente quando o Grafana liga.
+# Por quê: plugins do tipo "app" (como este) vêm instalados porém
+# DESLIGADOS. Sem este arquivo, você teria que ir em
+# Administração > Plugins > Zabbix > "Enable" na mão.
+apiVersion: 1
+
+apps:
+  - type: alexanderzobnin-zabbix-app
+    org_id: 1          # organização padrão do Grafana
+    disabled: false    # false = habilitado

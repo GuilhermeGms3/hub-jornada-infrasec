@@ -1,0 +1,95 @@
+{
+  "uid": "sala-do-servidor",
+  "title": "Nertysoft · Sala de servidores",
+  "description": "Central de monitoramento da sala do servidor (ESP32 + Zabbix). Gerado por grafana/gerar_dashboard.py.",
+  "tags": [
+    "esp32",
+    "zabbix",
+    "sala-servidor",
+    "noc"
+  ],
+  "timezone": "browser",
+  "editable": true,
+  "refresh": "",
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "schemaVersion": 39,
+  "version": 2,
+  "panels": [
+    {
+      "id": 1,
+      "type": "marcusolsson-dynamictext-panel",
+      "title": "",
+      "transparent": true,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 22
+      },
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "zabbix"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "0",
+          "group": {
+            "filter": "Sala do servidor"
+          },
+          "host": {
+            "filter": "esp32-sala"
+          },
+          "application": {
+            "filter": ""
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "item": {
+            "filter": "ESP32: tempo ligado"
+          },
+          "functions": [],
+          "options": {
+            "showDisabledItems": false,
+            "skipEmptyValues": false,
+            "disableDataAlignment": false,
+            "useZabbixValueMapping": false
+          }
+        }
+      ],
+      "options": {
+        "renderMode": "data",
+        "editors": [
+          "afterRender"
+        ],
+        "editor": {
+          "language": "html",
+          "format": "auto"
+        },
+        "content": "<div class=\"noc-raiz\"></div>",
+        "defaultContent": "<div class=\"noc-raiz\"></div>",
+        "afterRender": "const self = this;\nif (!self.noc) {\n  self.noc = import('/public/noc/noc.js?v=' + Date.now());\n}\nself.noc\n  .then((m) => m.iniciar(context))\n  .catch((e) => {\n    console.error('[noc]', e);\n    context.element.textContent = 'Não consegui carregar a central: ' + e.message;\n  });\n",
+        "helpers": "",
+        "styles": "",
+        "wrap": false,
+        "contentPartials": [],
+        "externalStyles": []
+      }
+    }
+  ],
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  },
+  "links": []
+}

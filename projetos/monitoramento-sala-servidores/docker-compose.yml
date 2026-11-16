@@ -1,0 +1,285 @@
+# =====================================================================
+# docker-compose.yml — o "mapa" de todos os programas do laboratório
+# ---------------------------------------------------------------------
+# Cada bloco dentro de "services" vira um CONTAINER: uma caixinha isolada
+# com um programa já instalado e configurado. O Docker Compose sobe todos
+# juntos, numa rede privada onde eles se acham pelo NOME do serviço
+# (ex.: o Zabbix server encontra o banco no endereço "postgres").
+#
+# Comandos do dia a dia (rodar nesta pasta):
+#   docker compose up -d        -> sobe tudo em segundo plano
+#   docker compose ps           -> mostra o estado de cada container
+#   docker compose logs -f zabbix-server   -> acompanha os logs
+#   docker compose down         -> para tudo (os DADOS ficam nos volumes)
+#
+# Senhas e IPs NÃO ficam aqui: o Compose lê o arquivo .env sozinho e
+# troca cada ${VARIAVEL} pelo valor que está lá.
+# =====================================================================
+
+# Nome fixo do projeto. Sem isso o Compose usaria o nome da pasta
+# ("monitor lab"), que tem espaço e gera nomes feios nos containers.
+name: sala-servidor
+
+services:
+
+  # -------------------------------------------------------------------
+  # BANCO DE DADOS (PostgreSQL)
+  # Por quê: o Zabbix guarda TUDO num banco — hosts, itens, histórico de
+  # temperatura, alertas. Sem banco, o Zabbix não liga.
+  # Versão 16: está dentro da faixa suportada pelo Zabbix 7.0.
+  # -------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped          # volta sozinho se o PC reiniciar
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: America/Sao_Paulo
+    volumes:
+      # Volume nomeado: os dados ficam fora do container. Assim você pode
+      # apagar/recriar o container sem perder o histórico.
+      - postgres-dados:/var/lib/postgresql/data
+    healthcheck:
+      # "pg_isready" pergunta ao banco se ele já aceita conexões.
+      # Os outros serviços só sobem quando a resposta for "sim".
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # Sem "ports": o banco NÃO fica exposto para a rede de casa, só para
+    # os outros containers. Menos portas abertas = mais seguro.
+
+  # -------------------------------------------------------------------
+  # ZABBIX SERVER — o "cérebro"
+  # Por quê: é ele quem busca os dados (no ESP32 e no agente), compara com
+  # os gatilhos e decide quando mandar alerta para o Telegram.
+  # Versão 7.0 LTS (suporte longo), fixada no patch 7.0.32. Fixar a versão
+  # evita que um "docker compose pull" mude tudo sem você saber, e o agente
+  # do notebook velho deve ser da MESMA versão.
+  # -------------------------------------------------------------------
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:alpine-7.0.32
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy   # espera o banco ficar pronto
+    environment:
+      DB_SERVER_HOST: postgres       # nome do serviço = endereço na rede
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: America/Sao_Paulo
+    ports:
+      # 10051 é a porta onde o Zabbix server ESCUTA. O agente do notebook
+      # velho (modo "ativo") se conecta aqui para mandar dados.
+      - "10051:10051"
+
+  # -------------------------------------------------------------------
+  # ZABBIX WEB (nginx + PHP) — a tela do Zabbix e a API
+  # Por quê: é o site onde você vê hosts, gráficos e problemas. Também é
+  # a "porta de entrada" da API que o script Python e o Grafana usam.
+  # -------------------------------------------------------------------
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:alpine-7.0.32
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      zabbix-server:
+        condition: service_started
+    environment:
+      ZBX_SERVER_HOST: zabbix-server # onde está o "cérebro"
+      DB_SERVER_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PHP_TZ: America/Sao_Paulo      # fuso das datas mostradas na tela
+      TZ: America/Sao_Paulo
+    ports:
+      # Lado esquerdo = porta no SEU computador; direito = porta dentro do
+      # container (nesta imagem o nginx escuta na 8080).
+      - "8080:8080"
+
+  # -------------------------------------------------------------------
+  # GRAFANA — o painel bonito para o vídeo
+  # Por quê: o Zabbix é ótimo para alertar; o Grafana é ótimo para MOSTRAR.
+  # Ele lê os dados do Zabbix pelo plugin oficial da comunidade.
+  # -------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:13.2.5
+    restart: unless-stopped
+    depends_on:
+      - zabbix-web
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      # Forma atual (Grafana 12/13) de instalar plugin no container.
+      # Usamos a versão "_SYNC": o Grafana baixa o plugin ANTES de ligar.
+      # Sem o SYNC ele baixa em segundo plano, e o provisionamento (que
+      # habilita o plugin) roda antes do download terminar -> o Grafana
+      # trava na primeira vez. Versão fixada para não mudar sozinha.
+      # Instalar não basta — plugin do tipo "app" também precisa ser
+      # HABILITADO; isso é feito em grafana/provisioning/plugins/zabbix.yaml.
+      # Dois plugins, separados por vírgula:
+      #   - Zabbix: fonte de dados + painel de problemas.
+      #   - Business Text: painel que roda HTML/JavaScript; é nele que mora a sala 3D.
+      GF_PLUGINS_PREINSTALL_SYNC: alexanderzobnin-zabbix-app@6.10.1,marcusolsson-dynamictext-panel@6.3.0
+      # Login da API do Zabbix, usado pela fonte de dados provisionada
+      # (grafana/provisioning/datasources/zabbix.yaml).
+      ZABBIX_USER: ${ZABBIX_USER}
+      ZABBIX_PASSWORD: ${ZABBIX_PASSWORD}
+      TZ: America/Sao_Paulo
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-dados:/var/lib/grafana
+      # "Provisionamento": arquivos que o Grafana lê ao ligar e aplica
+      # sozinho (plugins, fonte de dados, dashboards). Nada de clicar.
+      # ":ro" = somente leitura; o Grafana não pode alterar seus arquivos.
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      # A central de monitoramento (interface + sala 3D + Three.js) servida
+      # pelo próprio Grafana em http://localhost:3000/public/noc/
+      - ./grafana/noc:/usr/share/grafana/public/noc:ro
+
+  # -------------------------------------------------------------------
+  # GRAVADOR DE FIRMWARE — compila o ESP32 e oferece a página de gravação
+  # Por quê: em vez de instalar Arduino IDE/PlatformIO no seu PC, o Docker
+  # compila o firmware (pasta firmware/) e serve uma página que grava a
+  # placa pelo navegador, via cabo USB (WebSerial).
+  #
+  # "build" em vez de "image": esta imagem não vem pronta da internet; ela
+  # é MONTADA aqui pelo gravador/Dockerfile. Rodando
+  #     docker compose up -d --build
+  # o Docker percebe se o código do firmware mudou e recompila sozinho.
+  # -------------------------------------------------------------------
+  gravador:
+    build:
+      context: .                      # a pasta do projeto (veja .dockerignore)
+      dockerfile: gravador/Dockerfile
+      args:
+        # IP do PC do Zabbix (do .env) gravado no firmware para o push.
+        ZABBIX_SERVIDOR: ${ZABBIX_HOST_IP:-}
+    image: sala-servidor/gravador:local
+    restart: unless-stopped
+    ports:
+      # http://localhost:8090. "localhost" conta como conexão segura para o
+      # navegador, então o WebSerial funciona sem HTTPS.
+      - "8090:80"
+
+  # Gerador de carga para a aplicação Loja (app/loja.py): faz pedidos num
+  # ritmo escolhido na página :8092, que também injeta lentidão/erros na
+  # aplicação para testar os alertas. Alvo: a Loja do SRV-01 (celular).
+  gerador:
+    image: python:3.12-alpine
+    restart: unless-stopped
+    command: ["python", "-u", "/app/gerador.py"]
+    volumes:
+      - ./gerador:/app:ro
+    environment:
+      TZ: America/Sao_Paulo
+      # As duas lojas: a do SRV-01 (celular) e a do SRV-02 (containers).
+      ALVOS: http://${NOTEBOOK_VELHO_IP:?defina NOTEBOOK_VELHO_IP no .env}:8080,http://loja2-proxy
+      ALVOS_NOMES: SRV-01,SRV-02
+    ports:
+      - "8092:80"
+
+  # -------------------------------------------------------------------
+  # AÇÕES DA CENTRAL — Reconhecer, Comentar, Manutenção (acoes/acoes.py)
+  # Por quê: a ponte do Grafana até o Zabbix só LÊ. Para AGIR, a central
+  # chama este serviço, que confere no Grafana QUEM está logado (e se é
+  # Editor/Admin) e só então fala com o Zabbix usando um usuário restrito
+  # (central-acoes), cuja senha fica aqui dentro, nunca no navegador.
+  # -------------------------------------------------------------------
+  acoes:
+    image: python:3.12-alpine
+    restart: unless-stopped
+    command: ["python", "-u", "/app/acoes.py"]
+    volumes:
+      - ./acoes:/app:ro
+    environment:
+      TZ: America/Sao_Paulo
+      ACOES_ZABBIX_SENHA: ${ACOES_ZABBIX_SENHA:-}
+      ORIGENS_PERMITIDAS: http://localhost:3000,http://127.0.0.1:3000
+    depends_on:
+      - grafana
+    ports:
+      # Só neste PC (127.0.0.1): ninguém da rede de casa chega nas ações.
+      - "127.0.0.1:8094:80"
+
+  # ===================================================================
+  # SRV-02 — "servidor de containers" (a Loja em 3 camadas, no Docker)
+  # -------------------------------------------------------------------
+  # Docker não roda no Android sem root, então o servidor de containers é
+  # este PC. A mesma aplicação do celular, agora como imagens:
+  #   loja2-proxy (nginx) → loja2-api (Python) → loja2-db (PostgreSQL)
+  # e um agente Zabbix que enxerga TODOS os containers pelo Docker.
+  # ===================================================================
+  loja2-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: loja
+      POSTGRES_USER: loja
+      POSTGRES_PASSWORD: ${LOJA2_DB_SENHA:?defina LOJA2_DB_SENHA no .env}
+      TZ: America/Sao_Paulo
+    volumes:
+      - loja2-dados:/var/lib/postgresql/data
+      # Na PRIMEIRA subida, o Postgres roda os .sql desta pasta: cria as tabelas.
+      - ./app/esquema.sql:/docker-entrypoint-initdb.d/esquema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loja -d loja"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  loja2-api:
+    build: ./app                            # imagem feita a partir de app/Dockerfile
+    image: sala-servidor/loja:local
+    restart: unless-stopped
+    environment:
+      LOJA_DB_HOST: loja2-db
+      LOJA_DB_SENHA: ${LOJA2_DB_SENHA:?defina LOJA2_DB_SENHA no .env}
+      TZ: America/Sao_Paulo
+    depends_on:
+      loja2-db:
+        condition: service_healthy
+
+  loja2-proxy:
+    image: nginx:1.28-alpine
+    restart: unless-stopped
+    volumes:
+      - ./app/nginx-loja.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - loja2-api
+    ports:
+      - "8093:80"                           # para abrir a Loja do SRV-02 no navegador
+
+  # O "olho" do Zabbix no SRV-02. Com o socket do Docker montado, o plugin
+  # Docker do agente lista os containers e lê CPU, memória, rede, reinícios
+  # e saúde de cada um.
+  # AÇÕES: o agente também executa as duas receitas de acoes/agente/srv02
+  # (reiniciar a API, encerrar conexões ociosas) quando a central pede pelo
+  # Zabbix. Só essas duas: acoes/agente/acoes.conf nega todo o resto.
+  srv02-agente:
+    build: ./acoes/agente/srv02             # imagem oficial + curl
+    image: sala-servidor/agente-srv02:local
+    restart: unless-stopped
+    hostname: srv02-agente
+    user: root                              # o socket do Docker só abre para root
+    environment:
+      ZBX_HOSTNAME: srv02-docker            # nome técnico do host no Zabbix
+      ZBX_SERVER_HOST: zabbix-server
+      TZ: America/Sao_Paulo
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./acoes/agente/srv02:/opt/acoes:ro                       # as receitas (só leitura)
+      - ./acoes/agente/acoes.conf:/etc/zabbix/zabbix_agentd.d/acoes.conf:ro
+
+# Volumes nomeados: "HDs virtuais" que o Docker guarda para você.
+# Sobrevivem a "docker compose down". Só somem com "down -v" (cuidado!).
+volumes:
+  postgres-dados:
+  grafana-dados:
+  loja2-dados:

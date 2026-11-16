@@ -1,0 +1,32 @@
+# Fonte de dados do Zabbix, criada automaticamente quando o Grafana liga.
+#
+# URL: o Grafana fala com a API do Zabbix DENTRO da rede do Docker, pelo nome
+# do serviço (zabbix-web) e pela porta interna do container (8080).
+# Por isso NÃO é "localhost": dentro do container do Grafana, "localhost"
+# seria o próprio Grafana.
+#
+# Usuário e senha vêm do .env: o docker-compose.yml repassa ZABBIX_USER e
+# ZABBIX_PASSWORD para o container, e o Grafana troca $ZABBIX_USER pelo valor.
+# Trocou a senha do Admin no Zabbix? Atualize o .env e rode:
+#     docker compose up -d grafana
+apiVersion: 1
+
+datasources:
+  - name: Zabbix
+    type: alexanderzobnin-zabbix-datasource
+    uid: zabbix                 # fixo: o dashboard procura a fonte por este uid
+    access: proxy               # o servidor do Grafana faz as chamadas, não o navegador
+    url: http://zabbix-web:8080/api_jsonrpc.php
+    isDefault: true
+    editable: false             # muda-se aqui no arquivo, não pela tela
+    jsonData:
+      username: $ZABBIX_USER
+      trends: true              # para períodos longos, usa médias (mais leve)
+      trendsFrom: 7d
+      trendsRange: 4d
+      # Quanto tempo o Grafana repete uma resposta guardada antes de perguntar de
+      # novo. A central consulta a cada 1 s, então este valor precisa ser menor,
+      # senão ela recebe dado velho. Não use 0: pode significar "nunca expira".
+      cacheTTL: 500ms
+    secureJsonData:
+      password: $ZABBIX_PASSWORD

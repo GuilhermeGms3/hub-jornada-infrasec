@@ -1,0 +1,9 @@
+# Fim de linha sempre LF (padrão Linux). Os arquivos deste projeto rodam
+# dentro de containers Linux (scripts, Dockerfile, Python, JS do Grafana);
+# sem isto, o Git no Windows trocaria por CRLF ao baixar o projeto.
+* text=auto eol=lf
+
+# Binários: nunca mexer.
+*.png binary
+*.jpg binary
+*.bin binary

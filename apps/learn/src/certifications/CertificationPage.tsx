@@ -1,3 +1,4 @@
+import { CcnaSupport, SubnetTrainer, RoomLab } from './Intensive';
 import { useEffect, useState } from 'react';
 import type { LearningStore } from '../app/useLearning';
 import type { Certification, StudyLesson, StudyWeek } from './types';
@@ -58,12 +59,12 @@ function Catalog({ store, practice }: { store: LearningStore; practice: boolean 
         prazo quando necessário.
       </p>
       <details className="cert-scope">
-        <summary>Disponível agora: 16 roteiros e 60 aulas-base compartilhadas</summary>
+        <summary>Disponível agora: 16 roteiros e {lessonIndex.size} aulas-base</summary>
         <p>
-          São 16 roteiros, 60 aulas-base e casos comentados, além das unidades R01–R04. As aulas
-          compartilhadas são contadas uma vez, mesmo quando aparecem em mais de um roteiro. Cada
-          semana informa o aprofundamento específico ainda necessário. Não há curso completo ou
-          simulado calibrado para todos os exames.
+          São 16 roteiros, {lessonIndex.size} aulas-base e casos comentados, além das unidades
+          R01–R04. As aulas compartilhadas são contadas uma vez, mesmo quando aparecem em mais de um
+          roteiro. Cada semana informa o aprofundamento específico ainda necessário. Não há curso
+          completo ou simulado calibrado para todos os exames.
         </p>
       </details>
       {store.envelope.certifications && (
@@ -238,6 +239,7 @@ function Week({
           integral demonstrada.
         </p>
       )}
+      {cert.id === 'ccna' && <CcnaSupport week={week.number} />}
       <h2>Estude aqui</h2>
       <ul className="cert-lesson-links">
         {week.lessons.map((id) => (
@@ -428,6 +430,8 @@ function Reader({
         ))}
       </section>
       {lesson.id === 'subnetting' && <MaskDemo />}
+      {lesson.id === 'subnet-28' && <SubnetTrainer />}
+      {lesson.id === 'monitor-room' && <RoomLab />}
       {lesson.id === 'connectivity' && <FlowDiagram />}
       {['fort-policy', 'firewall'].includes(lesson.id) && <PolicyWalkthrough />}
       <section className="worked-example">

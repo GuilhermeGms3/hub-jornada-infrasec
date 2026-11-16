@@ -31,7 +31,7 @@ const server = http.createServer((request, response) => {
 
   const relative = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');
   const filename = path.resolve(root, relative);
-  if (!filename.startsWith(`${root}${path.sep}`) || !fs.existsSync(filename) || !fs.statSync(filename).isFile()) {
+  if (relative.split(/[\\/]/).some((segment) => segment.startsWith('.')) || !filename.startsWith(`${root}${path.sep}`) || !fs.existsSync(filename) || !fs.statSync(filename).isFile()) {
     response.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' });
     response.end('Not found');
     return;

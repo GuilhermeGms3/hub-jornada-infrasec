@@ -1,8 +1,10 @@
+import { intensiveLessons } from './lessons-intensive';
 import { lesson as l } from './authoring';
 const cisco =
   'https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301_CCNA_v2.0_Exam_Topics_PDF.pdf';
 const rfc = 'https://www.rfc-editor.org/rfc/rfc2131';
 export const networkLessons = [
+  ...intensiveLessons,
   l(
     'connectivity',
     'O caminho do cliente até o serviço',

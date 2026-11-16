@@ -1,0 +1,19 @@
+# O .env tem senhas e token: nunca pode ir para o Git/GitHub.
+.env
+
+# Saídas de compilação do PlatformIO (são geradas de novo a cada build).
+firmware/.pio/
+firmware/.vscode/
+
+# Binário de firmware gerado (o Docker gera dentro da imagem).
+*.bin
+
+# Lixo de Python e de sistema.
+__pycache__/
+*.pyc
+.venv/
+Thumbs.db
+.DS_Store
+
+# Gerado na compilação pelo gravador (IP do Zabbix vindo do .env)
+firmware/src/config_build.h

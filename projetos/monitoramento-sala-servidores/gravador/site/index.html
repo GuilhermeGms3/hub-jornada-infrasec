@@ -1,0 +1,164 @@
+<!doctype html>
+<!--
+  Página do GRAVADOR de firmware (http://localhost:8090)
+  ------------------------------------------------------------------
+  Grava o ESP32 direto do navegador, pelo cabo USB, sem instalar nada.
+  Como funciona: o Chrome/Edge têm o "WebSerial", que deixa uma página
+  conversar com uma porta serial (o chip CP2102 da placa) — mas SÓ depois
+  de você escolher a porta numa janela. Nenhum site acessa sua placa sozinho.
+
+  A parte "inteligente" está em app.js. Este arquivo é só a estrutura e o visual.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gravador ESP32 · Sala do Servidor</title>
+  <style>
+    /* Cores em variáveis: um lugar só para mudar o tema (claro/escuro). */
+    :root {
+      --fundo: #f1f5f9; --painel: #ffffff; --borda: #e2e8f0; --texto: #0f172a;
+      --fraco: #64748b; --destaque: #0284c7; --texto-destaque: #ffffff;
+      --ok: #059669; --ok-fundo: #ecfdf5; --erro: #dc2626; --erro-fundo: #fef2f2;
+      --aviso: #b45309; --aviso-fundo: #fffbeb; --log: #0f172a; --log-texto: #cbd5e1;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fundo: #0b1120; --painel: #111827; --borda: #1f2937; --texto: #e5e7eb;
+        --fraco: #94a3b8; --destaque: #38bdf8; --texto-destaque: #0b1120;
+        --ok: #34d399; --ok-fundo: #052e1f; --erro: #f87171; --erro-fundo: #2a0f12;
+        --aviso: #fbbf24; --aviso-fundo: #2a1c05; --log: #020617; --log-texto: #94a3b8;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--fundo); color: var(--texto);
+           font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 24px; margin: 0 0 4px; }
+    .sub { color: var(--fraco); margin: 0 0 20px; }
+    .painel { background: var(--painel); border: 1px solid var(--borda); border-radius: 12px;
+              padding: 20px; margin-bottom: 16px; }
+    .painel h2 { font-size: 17px; margin: 0 0 12px; }
+    ol.passos { list-style: none; padding: 0; margin: 0 0 16px; }
+    ol.passos li { display: flex; gap: 12px; margin-bottom: 14px; }
+    .num { flex: 0 0 26px; height: 26px; border-radius: 8px; background: var(--destaque);
+           color: var(--texto-destaque); font-weight: 700; display: grid; place-items: center; font-size: 13px; }
+    .fraco { color: var(--fraco); font-size: 13px; margin: 2px 0 0; }
+    code { font-family: ui-monospace, Consolas, monospace; font-size: 0.92em; }
+    button { font: inherit; border: 0; border-radius: 10px; padding: 12px 18px; cursor: pointer; font-weight: 700; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .principal { width: 100%; background: var(--destaque); color: var(--texto-destaque); font-size: 16px; }
+    .secundario { background: transparent; color: var(--texto); border: 1px solid var(--borda); }
+    a.botao { display: inline-block; font-weight: 700; border-radius: 10px; padding: 12px 18px; text-decoration: none; }
+    a.botao[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+    .barra { height: 8px; background: var(--borda); border-radius: 99px; overflow: hidden; margin-top: 12px; }
+    .barra > div { height: 100%; width: 0; background: var(--destaque); transition: width .2s; }
+    .caixa { border-radius: 10px; padding: 12px 14px; margin-top: 14px; font-size: 14px; }
+    .caixa.ok { background: var(--ok-fundo); color: var(--ok); }
+    .caixa.erro { background: var(--erro-fundo); color: var(--erro); }
+    .caixa.aviso { background: var(--aviso-fundo); color: var(--aviso); }
+    .caixa p { margin: 4px 0; color: var(--texto); }
+    .log { background: var(--log); color: var(--log-texto); border-radius: 10px; padding: 12px;
+           font: 12px/1.5 ui-monospace, Consolas, monospace; white-space: pre-wrap; word-break: break-all;
+           max-height: 260px; overflow-y: auto; margin-top: 14px; }
+    .monitor { max-height: 360px; }
+    .linha-botoes { display: flex; gap: 8px; flex-wrap: wrap; }
+    .descoberta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 14px; }
+    .descoberta b { font-family: ui-monospace, Consolas, monospace; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Gravador do ESP32</h1>
+  <p class="sub">Sala do Servidor — grava o firmware pelo navegador, sem instalar nada.</p>
+
+  <!-- Aparece só se o navegador não tiver WebSerial (Firefox, Safari, celular). -->
+  <div id="sem-webserial" class="painel caixa aviso" hidden>
+    <strong>Este navegador não consegue gravar placas.</strong>
+    <p>Abra esta página no <b>Google Chrome</b> ou no <b>Microsoft Edge</b>, num computador.
+       Firefox e Safari não têm acesso à porta serial, e celular não serve para esta etapa.</p>
+  </div>
+
+  <section class="painel" id="painel-gravar">
+    <h2>Gravar firmware</h2>
+    <ol class="passos">
+      <li><span class="num">1</span><div>
+        Ligue o ESP32 neste computador com um cabo USB <b>de dados</b>.
+        <p class="fraco">Cabo só de carregar não funciona e não avisa: é a causa nº 1 de "a porta não aparece".
+           A placa usa o chip CP2102; se o Windows não reconhecer, instale o driver "CP210x" da Silicon Labs.</p>
+      </div></li>
+      <li><span class="num">2</span><div>
+        <span id="status-firmware">Procurando o firmware neste servidor…</span>
+      </div></li>
+      <li><span class="num">3</span><div>
+        Clique em <b>Gravar</b> e escolha a porta na janela do navegador.
+        <p class="fraco">Costuma aparecer como <code>CP2102 USB to UART</code> ou <code>Silicon Labs CP210x (COMx)</code>.
+           Lista vazia = cabo de carregar ou driver faltando.</p>
+      </div></li>
+    </ol>
+
+    <button id="botao-gravar" class="principal" disabled>Gravar no ESP32</button>
+    <div class="barra" id="barra" hidden><div id="barra-progresso"></div></div>
+
+    <div id="caixa-pronto" class="caixa ok" hidden>
+      <strong>✔ Gravado com sucesso!</strong> <span id="chip-detectado"></span>
+      <p><b>Próximo passo — configurar o Wi-Fi pelo celular:</b></p>
+      <p>1. A placa reiniciou e o LED está piscando <b>devagar</b> (modo configuração).</p>
+      <p>2. No celular, conecte na rede Wi-Fi <code>Sala-Servidor-XXXX</code> (sem senha).</p>
+      <p>3. A página de configuração abre sozinha (se não abrir, acesse <code>http://192.168.4.1</code>).</p>
+      <p>4. Escolha a rede da casa (<b>2,4 GHz</b>), digite a senha e salve.</p>
+      <p>5. Use o <b>Monitor Serial</b> abaixo para ver o <b>IP</b> e o <b>MAC</b> que a placa recebeu.</p>
+      <p>6. Na página do ESP32, confira os limites e defina a <b>senha do OTA</b>: daí em diante, as próximas versões já podem ir pela rede.</p>
+    </div>
+
+    <div id="caixa-erro" class="caixa erro" hidden>
+      <strong>✖ Não deu certo.</strong> Veja o detalhe no registro abaixo.
+      <p>Se travou em "Connecting…": <b>segure o botão BOOT</b> da placa, clique em Gravar de novo
+         e solte o botão quando a barra começar a andar. Algumas placas não entram sozinhas no modo de gravação.</p>
+      <p>Se disser que a porta está ocupada: feche o Monitor Serial (aqui ou em outro programa).</p>
+    </div>
+
+    <div id="log-gravacao" class="log" hidden></div>
+  </section>
+
+  <section class="painel" id="painel-ota">
+    <h2>Atualizar pela rede (sem cabo)</h2>
+    <p class="fraco" style="margin:0 0 12px">Existem dois arquivos, cada um para um caminho:</p>
+    <ul class="fraco" style="margin:0 0 14px;padding-left:20px">
+      <li><b>Pelo cabo</b> (botão "Gravar no ESP32" acima): use na primeira gravação, quando a tabela de partições
+          mudar ou se a placa não ligar. Ele usa o <code>sala-servidor.bin</code>, regrava a memória toda
+          e <b>apaga o Wi-Fi e os ajustes</b> salvos.</li>
+      <li><b>Pela rede</b> (botão abaixo): use nas atualizações normais. Baixe o <code>sala-servidor-ota.bin</code> e envie em
+          <code>http://sala-servidor.local/atualizar</code>. Ele troca só o programa e <b>mantém o Wi-Fi e os ajustes</b>.</li>
+    </ul>
+    <a id="botao-ota" class="botao secundario" href="firmware/sala-servidor-ota.bin" download aria-disabled="true">Baixar sala-servidor-ota.bin</a>
+    <p class="fraco" id="status-ota" style="margin-top:10px"></p>
+  </section>
+
+  <section class="painel" id="painel-monitor">
+    <h2>Monitor Serial</h2>
+    <p class="fraco" style="margin:0 0 12px">
+      Mostra o que a placa escreve pelo cabo USB (115200 bauds): uma linha a cada 2 s com os sensores,
+      o IP e o MAC. Use para descobrir o IP e para calibrar os sensores.
+    </p>
+    <div class="linha-botoes">
+      <button id="botao-monitor" class="secundario">Abrir Monitor Serial</button>
+      <button id="botao-reiniciar" class="secundario" disabled>Reiniciar a placa</button>
+      <button id="botao-limpar" class="secundario">Limpar</button>
+    </div>
+    <div class="descoberta" id="descoberta" hidden>
+      <span>IP: <b id="ip-visto">—</b></span>
+      <span>MAC: <b id="mac-visto">—</b></span>
+    </div>
+    <div id="log-monitor" class="log monitor" hidden></div>
+  </section>
+
+  <p class="fraco">Firmware servido por este computador em <code>/firmware/</code>.
+     Para recompilar após mudar o código: <code>docker compose up -d --build gravador</code>.</p>
+</main>
+
+<!-- type="module": permite "import" da biblioteca esptool-js direto do CDN. -->
+<script type="module" src="app.js"></script>
+</body>
+</html>
