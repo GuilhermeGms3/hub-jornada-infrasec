@@ -1,0 +1,184 @@
+$ docker compose --profile tools run --rm ansible
+
+PLAY [Collect real OSPFv3 state using local Docker CLI] ************************
+
+TASK [Read IPv6 OSPF neighbors] ************************************************
+ok: [r1]
+
+TASK [Require adjacency with the other router] *********************************
+ok: [r1] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [Show collected evidence] *************************************************
+ok: [r1] => {
+    "neighbors.stdout_lines": [
+        "Neighbor ID     Pri    DeadTime    State/IfState         Duration I/F[State]",
+        "2.2.2.2           1    00:00:36     Full/PointToPoint    00:01:03 eth0[PointToPoint]"
+    ]
+}
+
+PLAY [Collect real OSPFv3 state using local Docker CLI] ************************
+
+TASK [Read IPv6 OSPF neighbors] ************************************************
+ok: [r2]
+
+TASK [Require adjacency with the other router] *********************************
+ok: [r2] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [Show collected evidence] *************************************************
+ok: [r2] => {
+    "neighbors.stdout_lines": [
+        "Neighbor ID     Pri    DeadTime    State/IfState         Duration I/F[State]",
+        "1.1.1.1           1    00:00:35     Full/PointToPoint    00:01:04 eth0[PointToPoint]"
+    ]
+}
+
+PLAY RECAP *********************************************************************
+r1                         : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+r2                         : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+ Container infrasec-ccna-advanced-ansible-run-0abbc9af5656 Creating
+ Container infrasec-ccna-advanced-ansible-run-0abbc9af5656 Created
+
+exit=0
+
+$ python verify.py fault
+Neighbor ID     Pri    DeadTime    State/IfState         Duration I/F[State]
+ Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIPng, O - OSPFv3, I - IS-IS, B - BGP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv6 unicast VRF default:
+O   2001:db8:1::1/128 [110/0] is directly connected, lo, weight 1, 00:01:53
+O   fd42:ccaa:12::/64 [110/10] is directly connected, eth0, weight 1, 00:01:53
+
+PASS: fault (real FRR state)
+
+exit=0
+
+$ docker compose --profile tools run --rm ansible
+
+PLAY [Collect real OSPFv3 state using local Docker CLI] ************************
+
+TASK [Read IPv6 OSPF neighbors] ************************************************
+ok: [r1]
+
+TASK [Require adjacency with the other router] *********************************
+[ERROR]: Task failed: Action failed: Neighbor not Full; investigate area, timers and interface before changing configuration.
+Origin: /lab/collect.yaml:12:7
+
+10       register: neighbors
+11       changed_when: false
+12     - name: Require adjacency with the other router
+         ^ column 7
+
+fatal: [r1]: FAILED! => {
+    "assertion": "'Full' in neighbors.stdout",
+    "changed": false,
+    "evaluated_to": false,
+    "msg": "Neighbor not Full; investigate area, timers and interface before changing configuration."
+}
+
+PLAY RECAP *********************************************************************
+r1                         : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+ Container infrasec-ccna-advanced-ansible-run-f207b8b3d4c9 Creating
+ Container infrasec-ccna-advanced-ansible-run-f207b8b3d4c9 Created
+
+
+exit=2
+
+$ python verify.py recover
+Neighbor ID     Pri    DeadTime    State/IfState         Duration I/F[State]
+2.2.2.2           1    00:00:30     Full/PointToPoint    00:00:05 eth0[PointToPoint]
+ Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIPng, O - OSPFv3, I - IS-IS, B - BGP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv6 unicast VRF default:
+O   2001:db8:1::1/128 [110/0] is directly connected, lo, weight 1, 00:02:06
+O>* 2001:db8:2::1/128 [110/10] via fe80::48ac:f7ff:fefa:8958, eth0, weight 1, 00:00:01
+O   fd42:ccaa:12::/64 [110/10] is directly connected, eth0, weight 1, 00:02:06
+O>* fd42:ccaa:12::12/128 [110/10] via fe80::48ac:f7ff:fefa:8958, eth0, weight 1, 00:00:01
+
+PING 2001:db8:2::1 (2001:db8:2::1) from 2001:db8:1::1: 56 data bytes
+64 bytes from 2001:db8:2::1: seq=0 ttl=64 time=0.066 ms
+64 bytes from 2001:db8:2::1: seq=1 ttl=64 time=0.105 ms
+64 bytes from 2001:db8:2::1: seq=2 ttl=64 time=0.096 ms
+
+--- 2001:db8:2::1 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.066/0.089/0.105 ms
+
+PING 2001:db8:1::1 (2001:db8:1::1) from 2001:db8:2::1: 56 data bytes
+64 bytes from 2001:db8:1::1: seq=0 ttl=64 time=0.123 ms
+64 bytes from 2001:db8:1::1: seq=1 ttl=64 time=0.075 ms
+64 bytes from 2001:db8:1::1: seq=2 ttl=64 time=0.099 ms
+
+--- 2001:db8:1::1 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.075/0.099/0.123 ms
+
+PASS: recover (real FRR state)
+
+exit=0
+
+$ docker compose --profile tools run --rm ansible
+
+PLAY [Collect real OSPFv3 state using local Docker CLI] ************************
+
+TASK [Read IPv6 OSPF neighbors] ************************************************
+ok: [r1]
+
+TASK [Require adjacency with the other router] *********************************
+ok: [r1] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [Show collected evidence] *************************************************
+ok: [r1] => {
+    "neighbors.stdout_lines": [
+        "Neighbor ID     Pri    DeadTime    State/IfState         Duration I/F[State]",
+        "2.2.2.2           1    00:00:32     Full/PointToPoint    00:00:13 eth0[PointToPoint]"
+    ]
+}
+
+PLAY [Collect real OSPFv3 state using local Docker CLI] ************************
+
+TASK [Read IPv6 OSPF neighbors] ************************************************
+ok: [r2]
+
+TASK [Require adjacency with the other router] *********************************
+ok: [r2] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [Show collected evidence] *************************************************
+ok: [r2] => {
+    "neighbors.stdout_lines": [
+        "Neighbor ID     Pri    DeadTime    State/IfState         Duration I/F[State]",
+        "1.1.1.1           1    00:00:36     Full/PointToPoint    00:00:13 eth0[PointToPoint]"
+    ]
+}
+
+PLAY RECAP *********************************************************************
+r1                         : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+r2                         : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+ Container infrasec-ccna-advanced-ansible-run-2b4e6c939b02 Creating
+ Container infrasec-ccna-advanced-ansible-run-2b4e6c939b02 Created
+
+exit=0

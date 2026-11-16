@@ -1,0 +1,30 @@
+- name: Collect real OSPFv3 state using local Docker CLI
+  hosts: routers
+  gather_facts: false
+  serial: 1
+  tasks:
+    - name: Read IPv6 OSPF neighbors
+      ansible.builtin.command:
+        argv: [docker, compose, exec, -T, "{{ inventory_hostname }}", vtysh, -c, show ipv6 ospf6 neighbor]
+        chdir: "{{ playbook_dir }}"
+      register: neighbors
+      changed_when: false
+    - name: Require adjacency with the other router
+      ansible.builtin.assert:
+        that:
+          - "'Full' in neighbors.stdout"
+          - "('2.2.2.2' if inventory_hostname == 'r1' else '1.1.1.1') in neighbors.stdout"
+        fail_msg: Neighbor not Full; investigate area, timers and interface before changing configuration.
+    - name: Show collected evidence
+      ansible.builtin.debug:
+        var: neighbors.stdout_lines
+    - name: Read learned IPv6 routes
+      ansible.builtin.command:
+        argv: [docker, compose, exec, -T, "{{ inventory_hostname }}", vtysh, -c, show ipv6 route ospf6]
+        chdir: "{{ playbook_dir }}"
+      register: routes
+      changed_when: false
+    - name: Require remote loopback learned by OSPF
+      ansible.builtin.assert:
+        that:
+          - "('2001:db8:2::1/128' if inventory_hostname == 'r1' else '2001:db8:1::1/128') in routes.stdout"

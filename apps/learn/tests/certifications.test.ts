@@ -98,7 +98,7 @@ describe('roteiros e ensino com disponibilidade explícita', () => {
       expect(certificationRoute(route)).toBeNull();
   });
   it('o índice usado no backup corresponde exatamente às aulas e opções publicadas', () => {
-    expect(lessons).toHaveLength(66);
+    expect(lessons).toHaveLength(71);
     expect(lessonIndex.size).toBe(lessons.length);
     for (const l of lessons) {
       expect(lessonIndex.get(l.id)).toEqual({

@@ -1,0 +1,5 @@
+zebra=yes
+ospf6d=yes
+vtysh_enable=yes
+zebra_options=" -A 127.0.0.1 -s 90000000"
+ospf6d_options=" -A 127.0.0.1"

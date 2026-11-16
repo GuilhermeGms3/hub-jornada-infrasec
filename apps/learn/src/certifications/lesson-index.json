@@ -42,6 +42,41 @@
     "correct": "o2"
   },
   {
+    "id": "ipv6-deep",
+    "title": "IPv6: prefixos, ND, SLAAC e rota de retorno",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "ospfv3-lab",
+    "title": "OSPFv3 executável: da adjacência ao ping",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "wireless-deep",
+    "title": "Wireless: diagnosticar RF, autenticação, DHCP e DNS",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "aaa-deep",
+    "title": "AAA: autenticação, autorização e recuperação segura",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
+    "id": "ansible-deep",
+    "title": "Ansible executável: inventário, coleta e falha explícita",
+    "version": "1.0",
+    "options": ["o1", "o2", "o3"],
+    "correct": "o2"
+  },
+  {
     "id": "connectivity",
     "title": "O caminho do cliente até o serviço",
     "version": "1.0",

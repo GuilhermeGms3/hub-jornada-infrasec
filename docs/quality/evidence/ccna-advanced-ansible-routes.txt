@@ -1,0 +1,63 @@
+
+PLAY [Collect real OSPFv3 state using local Docker CLI] ************************
+
+TASK [Read IPv6 OSPF neighbors] ************************************************
+ok: [r1]
+
+TASK [Require adjacency with the other router] *********************************
+ok: [r1] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [Show collected evidence] *************************************************
+ok: [r1] => {
+    "neighbors.stdout_lines": [
+        "Neighbor ID     Pri    DeadTime    State/IfState         Duration I/F[State]",
+        "2.2.2.2           1    00:00:36     Full/PointToPoint    00:01:29 eth0[PointToPoint]"
+    ]
+}
+
+TASK [Read learned IPv6 routes] ************************************************
+ok: [r1]
+
+TASK [Require remote loopback learned by OSPF] *********************************
+ok: [r1] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+PLAY [Collect real OSPFv3 state using local Docker CLI] ************************
+
+TASK [Read IPv6 OSPF neighbors] ************************************************
+ok: [r2]
+
+TASK [Require adjacency with the other router] *********************************
+ok: [r2] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [Show collected evidence] *************************************************
+ok: [r2] => {
+    "neighbors.stdout_lines": [
+        "Neighbor ID     Pri    DeadTime    State/IfState         Duration I/F[State]",
+        "1.1.1.1           1    00:00:39     Full/PointToPoint    00:01:30 eth0[PointToPoint]"
+    ]
+}
+
+TASK [Read learned IPv6 routes] ************************************************
+ok: [r2]
+
+TASK [Require remote loopback learned by OSPF] *********************************
+ok: [r2] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+PLAY RECAP *********************************************************************
+r1                         : ok=5    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+r2                         : ok=5    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+ Container infrasec-ccna-advanced-ansible-run-a93f4c7c9e11 Creating
+ Container infrasec-ccna-advanced-ansible-run-a93f4c7c9e11 Created

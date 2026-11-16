@@ -1,0 +1,43 @@
+name: infrasec-ccna-advanced
+services:
+  r1:
+    image: quay.io/frrouting/frr:10.3.1
+    cap_add: [NET_ADMIN, NET_RAW, SYS_ADMIN]
+    sysctls:
+      net.ipv6.conf.all.forwarding: 1
+    volumes:
+      - ./vtysh.conf:/etc/frr/vtysh.conf:ro
+      - ./daemons:/etc/frr/daemons:ro
+      - ./r1.conf:/etc/frr/frr.conf:ro
+    networks:
+      transit:
+        ipv6_address: fd42:ccaa:12::11
+  r2:
+    image: quay.io/frrouting/frr:10.3.1
+    cap_add: [NET_ADMIN, NET_RAW, SYS_ADMIN]
+    sysctls:
+      net.ipv6.conf.all.forwarding: 1
+    volumes:
+      - ./vtysh.conf:/etc/frr/vtysh.conf:ro
+      - ./daemons:/etc/frr/daemons:ro
+      - ./r2.conf:/etc/frr/frr.conf:ro
+    networks:
+      transit:
+        ipv6_address: fd42:ccaa:12::12
+  ansible:
+    profiles: [tools]
+    build:
+      context: .
+      dockerfile: Dockerfile.ansible
+    working_dir: /lab
+    volumes:
+      - .:/lab:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: [ansible-playbook, -i, inventory.ini, collect.yaml]
+networks:
+  transit:
+    internal: true
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: fd42:ccaa:12::/64

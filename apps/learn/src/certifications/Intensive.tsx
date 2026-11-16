@@ -1,3 +1,4 @@
+import { AdvancedPractice } from './AdvancedPractice';
 import { operationsLessons } from './lessons-operations';
 import { labRecipes } from './lab-recipes';
 import { useEffect, useState } from 'react';
@@ -75,6 +76,7 @@ export function CcnaSupport({ week }: { week: number }) {
           </p>
         </section>
       )}
+      <AdvancedPractice key={week} week={week} />
       {week === 2 && <SubnetTrainer />}
       {week === 10 && <RoomLab />}
       {week === 12 && <ExamDrill />}

@@ -1,5 +1,12 @@
 # Project Memory
 
+## CCNA práticas avançadas — 2026-11-16
+- Cinco aulas novas (71 totais), semanas 3/6/8/9/10: IPv6, OSPFv3, wireless, AAA e Ansible. Mesmo estado/backup e identidade visual.
+- labs/ccna-advanced: FRR 10.3.1 Docker, verificador saudável/falha/recuperação e Ansible core 2.19.4 de coleta/assert. Execução real passou Full, rota /128 e ping bidirecional; Ansible falhou como esperado durante falha de área e passou após recuperação. Serviços encerrados. LF obrigatório nos arquivos Linux.
+- Validação do Hub:159 Vitest,48 E2E frontend, typecheck/lint/Prettier/builds/compose config.
+- Wireless/AAA IOS/hardware não executados. Revisão humana/calibração pendentes: docs/quality/CCNA_REVIEW_PROTOCOL.md. Relatório: docs/quality/CCNA_ADVANCED_LABS.md.
+
+
 ## CCNA intensivo e monitoramento — 2026-11-16
 - Branch codex/ccna-intensive-monitoring. Seis aulas novas (66 totais), treino /24–/30, receitas IOS, Jeremy por semana e ensaio curto 20 itens reaproveitados, sem equivalência à prova.
 - Cópia MIT de Brendo Nery 05706cf4 em projetos/monitoramento-sala-servidores; painel interno simulado e execução real independente. Não iniciar automaticamente; docker.sock/HTTP exigem bancada isolada.

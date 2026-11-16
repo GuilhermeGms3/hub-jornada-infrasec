@@ -23,7 +23,7 @@ Não iniciado automaticamente. Agente original acessa docker.sock; portas são p
 
 Reddit é opinião/anecdota; não confirma distribuição real da v2.0 ainda não lançada. GitHub pesquisado como referência de prática; nenhum banco de provas ou solução de Jeremy publicado por terceiros foi importado. Seleção editorial: explicar mecanismos, montar do zero e injetar uma falha por vez. Não há promessa de aprovação nem reprodução de questões confidenciais.
 
-## Limites
+## Limites do lote inicial (atualização em CCNA_ADVANCED_LABS.md)
 Curso intensivo ainda requer expansão dos outros objetivos, especialmente práticas executáveis de OSPFv3, IPv6, wireless, AAA e Ansible. Receitas não são arquivos .pkt novos nem emulação IOS. Validação humana do conteúdo e calibração psicométrica não realizadas. Não anunciar curso integral nem similitude comprovada com prova v2.0.
 
 ## Validação executada
@@ -34,3 +34,5 @@ Curso intensivo ainda requer expansão dos outros objetivos, especialmente prát
 - Docker compose --env-file .env.example config --quiet: passou; stack não iniciada, hardware e notificações não testados.
 - HTTP local: .env.example retorna 404; LICENSE retorna 200.
 - Whitespace normalizado em dois arquivos vendor para diff --check; nenhuma mudança funcional no upstream.
+
+Expansão posterior executada: [CCNA_ADVANCED_LABS.md](CCNA_ADVANCED_LABS.md), incluindo FRR/IPv6/OSPFv3 e Ansible reais. Revisão humana e calibração continuam pendentes.

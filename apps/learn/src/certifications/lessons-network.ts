@@ -1,3 +1,4 @@
+import { advancedLessons } from './lessons-advanced';
 import { intensiveLessons } from './lessons-intensive';
 import { lesson as l } from './authoring';
 const cisco =
@@ -5,6 +6,7 @@ const cisco =
 const rfc = 'https://www.rfc-editor.org/rfc/rfc2131';
 export const networkLessons = [
   ...intensiveLessons,
+  ...advancedLessons,
   l(
     'connectivity',
     'O caminho do cliente até o serviço',
